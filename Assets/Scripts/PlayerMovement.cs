@@ -6,31 +6,31 @@ using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed;
+    [SerializeField] private float moveSpeed;
 
-    public float groundDrag;
+    [SerializeField] private float groundDrag;
 
     [Header("Jump")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
-    bool readyToJump;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpCooldown;
+    [SerializeField] private float airMultiplier;
+    [SerializeField] private bool readyToJump;
 
     [HideInInspector] public float walkSpeed;
     [HideInInspector] public float sprintSpeed;
 
     [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
-    public float playerHeight;
-    public LayerMask whatIsGround;
-    bool grounded;
+    [SerializeField] private float playerHeight;
+    [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private bool grounded;
 
-    public Transform orientation;
+    [SerializeField] private Transform orientation;
 
-    float horizontalInput;
-    float verticalInput;
+    [SerializeField] private float horizontalInput;
+    [SerializeField] private float verticalInput;
 
     Vector3 moveDirection;
 
