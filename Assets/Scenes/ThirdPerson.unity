@@ -370,7 +370,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 453204239}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -8.96, y: -0.63, z: 11.81}
   m_LocalScale: {x: -4.627866, y: 4.8766, z: 6.1280284}
   m_ConstrainProportionsScale: 0
@@ -798,7 +798,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 45
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -822,7 +822,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651723982}
-  m_LocalRotation: {x: 0.18426844, y: -1e-45, z: -0, w: 0.98287594}
+  m_LocalRotation: {x: 0.18934672, y: 0.00000001817272, z: -0.000000003504337, w: 0.9819103}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1303,7 +1303,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 45
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -1560,7 +1560,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1045522466}
   m_CommonLens: 1
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 45
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -1579,7 +1579,7 @@ MonoBehaviour:
   m_YAxis:
     Value: 0.5
     m_SpeedMode: 0
-    m_MaxSpeed: 2
+    m_MaxSpeed: 10
     m_AccelTime: 0.2
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -1603,7 +1603,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 800
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -1892,6 +1892,8 @@ GameObject:
   - component: {fileID: 1114067491}
   - component: {fileID: 1114067493}
   - component: {fileID: 1114067494}
+  - component: {fileID: 1114067495}
+  - component: {fileID: 1114067496}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1946,23 +1948,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
+  walkSpeed: 7
+  dashSpeed: 20
+  dashSpeedChangeFactor: 50
+  maxYSpeed: 0
   groundDrag: 4
-  jumpForce: 20
+  jumpForce: 10
   jumpCooldown: 0.25
   airMultiplier: 0.4
   readyToJump: 0
-  walkSpeed: 0
-  sprintSpeed: 0
   jumpKey: 32
   playerHeight: 2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  grounded: 0
   orientation: {fileID: 1074790925}
-  horizontalInput: 0
-  verticalInput: 0
+  isDashing: 0
 --- !u!114 &1114067494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114067490}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e989eead01388014fa52ee1258490862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {fileID: 1442877238}
+  rayGoInDistance: 20
+  rayGoOutDistance: 6
+  impulseForce: 50
+  goInCooldown: 0.25
+  goOutCooldown: 0.25
+  canGoIn: 0
+  canGoOut: 0
+  goInKey: 0
+  goOutKey: 324
+--- !u!114 &1114067495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1971,19 +1995,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 1114067490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e989eead01388014fa52ee1258490862, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d32d0fb3f7ca2d4091e041e31de727d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {fileID: 1442877238}
-  rayGoInDistance: 20
-  rayGoOutDistance: 6
-  impulseForce: 200
-  goInCooldown: 0.25
-  goOutCooldown: 0.25
-  canGoIn: 0
-  canGoOut: 0
-  goInKey: 323
-  goOutKey: 324
+  cam: {fileID: 1442877238}
+  attackPoint: {fileID: 374020249}
+  objectToThrow: {fileID: 1402352202464208765, guid: 3a5ef8d34228cbf4caa4ac043393ad3c, type: 3}
+  totalThrows: -1
+  throwCooldown: 1
+  throwKey: 323
+  throwForce: 50
+  throwUpwardForce: 10
+--- !u!114 &1114067496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114067490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56ef357c94b38143a1fbd5db15c2ae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orientation: {fileID: 1442877238}
+  dashForce: 20
+  dashUpwardForce: 0
+  maxDashYSpeed: 5
+  dashDuration: 0.25
+  cam: {fileID: 1442877241}
+  dashFov: 95
+  disableGravity: 1
+  resetVel: 1
+  dashCd: 0.5
+  dashKey: 101
 --- !u!1 &1119079890
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,7 +2047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1119079891
 Transform:
   m_ObjectHideFlags: 0
@@ -2620,7 +2665,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442877237}
-  m_LocalRotation: {x: 0.20701738, y: -0.000000029156729, z: 0.0000000061695995, w: 0.9783373}
+  m_LocalRotation: {x: 0.20956, y: -0.00000003918383, z: 0.000000008397831, w: 0.97779584}
   m_LocalPosition: {x: 1.54, y: 3.6269999, z: -0.15999985}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2653,7 +2698,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 50
+  field of view: 45
   orthographic: 0
   orthographic size: 10
   m_Depth: 0
@@ -2726,6 +2771,7 @@ MonoBehaviour:
   thirdPersonCam: {fileID: 927636596}
   combatCam: {fileID: 2034988132}
   currentStyle: 0
+  type: 1
 --- !u!1 &1564437701
 GameObject:
   m_ObjectHideFlags: 3
@@ -3101,7 +3147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1712850960
 Transform:
   m_ObjectHideFlags: 0
@@ -3394,7 +3440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1876728537
 Transform:
   m_ObjectHideFlags: 0
@@ -3588,7 +3634,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 45
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -3612,7 +3658,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2034112915}
-  m_LocalRotation: {x: 0.20701736, y: -1e-45, z: -0, w: 0.9783373}
+  m_LocalRotation: {x: 0.20955999, y: -0.000000021769367, z: 0.0000000046655844, w: 0.9777958}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3710,7 +3756,7 @@ MonoBehaviour:
   m_YAxis:
     Value: 0.5
     m_SpeedMode: 0
-    m_MaxSpeed: 2
+    m_MaxSpeed: 10
     m_AccelTime: 0.2
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -3734,7 +3780,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 800
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -3817,7 +3863,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113276882}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e78fa47e1844ce84186d8be27af436eb, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -3843,7 +3889,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9512cd84ec9332e449fd689554729057, type: 2}
+  - {fileID: 2100000, guid: c1482d4b7fa83bd4fbb27810a53e0b7d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

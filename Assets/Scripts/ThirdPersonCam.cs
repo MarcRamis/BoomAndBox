@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using Cinemachine;
 
 public class ThirdPersonCam : MonoBehaviour
 {
@@ -23,11 +25,23 @@ public class ThirdPersonCam : MonoBehaviour
         Basic,
         Combat
     }
+    
+    [SerializeField] private ECameraType type = ECameraType.ThirdPerson;
+    private enum ECameraType
+    {
+        FirstPerson,
+        ThirdPerson
+    }
 
+    public GameObject myCurrentCamera;
+    
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
+        if (currentStyle == CameraStyle.Basic) myCurrentCamera = thirdPersonCam;
+        else if (currentStyle == CameraStyle.Combat) myCurrentCamera = combatCam;
     }
 
     private void Update()
@@ -65,9 +79,23 @@ public class ThirdPersonCam : MonoBehaviour
         combatCam.SetActive(false);
         thirdPersonCam.SetActive(false);
 
-        if (newStyle == CameraStyle.Basic) thirdPersonCam.SetActive(true);
-        if (newStyle == CameraStyle.Combat) combatCam.SetActive(true);
+        if (newStyle == CameraStyle.Basic)
+        {
+            myCurrentCamera = thirdPersonCam;
+            thirdPersonCam.SetActive(true);
+        }
+
+        if (newStyle == CameraStyle.Combat) 
+        { 
+            combatCam.SetActive(true);
+            myCurrentCamera = combatCam;
+        }
 
         currentStyle = newStyle;
+    }
+
+    public void ChangeFov(float value, float duration)
+    {
+        //myCurrentCamera.GetComponent<CinemachineFreeLook>().m_Lens.FieldOfView = Mathf.Lerp(, value, duration);
     }
 }
