@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7758673559187864017}
   - component: {fileID: 1199600341851000207}
   - component: {fileID: 6404944236442116962}
+  - component: {fileID: 1405958941355102222}
   m_Layer: 0
   m_Name: SphereTest
   m_TagString: Untagged
@@ -223,3 +224,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7, y: 1, z: 0.7}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1405958941355102222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402352202464208765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b088ca87b0320c74cb0c2f358982de32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

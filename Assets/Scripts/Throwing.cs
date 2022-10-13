@@ -18,9 +18,10 @@ public class Throwing : MonoBehaviour
     public KeyCode throwKey = KeyCode.Mouse0;
     public float throwForce;
     public float throwUpwardForce;
-
+    
     bool readyToThrow;
-
+    public Transform lastCoinPos;
+    
     private void Start()
     {
         readyToThrow = true;
@@ -40,7 +41,7 @@ public class Throwing : MonoBehaviour
 
         // instantiate object to throw
         GameObject projectile = Instantiate(objectToThrow, attackPoint.position, cam.rotation);
-
+        lastCoinPos = projectile.transform;
         // get rigidbody component
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 

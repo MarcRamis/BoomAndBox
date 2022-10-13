@@ -8,6 +8,7 @@ public class Dashing : MonoBehaviour
     public Transform orientation;
     private Rigidbody rb;
     private PlayerMovement pm;
+    private Throwing tr;
 
     [Header("Dashing")]
     public float dashForce;
@@ -31,11 +32,14 @@ public class Dashing : MonoBehaviour
 
     [Header("Input")]
     public KeyCode dashKey = KeyCode.E;
+    
+    private Vector3 directionToDash;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
+        tr = GetComponent<Throwing>();
         
         originalFov = cam.GetComponent<Camera>().fieldOfView;
     }
@@ -59,7 +63,10 @@ public class Dashing : MonoBehaviour
 
         //cam.ChangeFov(dashFov, dashDuration);
         
-        Vector3 forceToApply = orientation.forward * dashForce + orientation.up * dashUpwardForce;
+        Vector3 direction = tr.lastCoinPos.position - transform.position;
+        direction = direction.normalized;
+
+        Vector3 forceToApply = direction * dashForce + orientation.up * dashUpwardForce;
         
         delayedForceToApply = forceToApply;
         Invoke(nameof(DelayedDashForce), 0.025f);
@@ -70,6 +77,8 @@ public class Dashing : MonoBehaviour
 
         if (disableGravity)
             rb.useGravity = false;
+
+        GetComponent<TrailRenderer>().emitting = true;
     }
 
     private void DelayedDashForce()
@@ -89,5 +98,7 @@ public class Dashing : MonoBehaviour
 
         if (disableGravity)
             rb.useGravity = true;
+
+        GetComponent<TrailRenderer>().emitting = false;
     }
 }
