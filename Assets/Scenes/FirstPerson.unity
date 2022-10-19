@@ -605,7 +605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1114067492}
   - component: {fileID: 1114067491}
-  - component: {fileID: 1114067493}
+  - component: {fileID: 1114067494}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -649,7 +649,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1114067493
+--- !u!114 &1114067494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -658,14 +658,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1114067490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75fe41c66c0da0c42a20efc2126dbcb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 642dea59948ad3846b1df50d04c75d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  groundDrag: 5
-  jumpForce: 8
-  jumpCooldown: 0.25
+  groundDrag: 4
+  jumpForce: 14
+  jumpCooldown: 1
   airMultiplier: 0.4
+  walkSpeed: 0
+  sprintSpeed: 0
   jumpKey: 32
   playerHeight: 2
   whatIsGround:
