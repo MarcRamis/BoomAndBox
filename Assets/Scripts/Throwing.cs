@@ -9,44 +9,64 @@ public class Throwing : MonoBehaviour
     public Transform cam;
     public Transform attackPoint;
     public GameObject objectToThrow;
-    public Throwing_Obj_Logic toL;
+    private Throwing_Obj_Logic toL;
     
     [Header("Settings")]
+    public int totalThrows;
     public float throwCooldown;
 
     [Header("Throwing")]
     public KeyCode throwKey = KeyCode.Mouse0;
+    private int clickCounter = 0;
     public float throwForce;
     public float throwUpwardForce;
     
+    bool readyToThrow;
+    public Transform lastCoinPos;
+    
     private void Start()
     {
+        toL = objectToThrow.GetComponent<Throwing_Obj_Logic>();
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(throwKey) && toL.m_State == Throwing_Obj_Logic.EThrowingState.ATTACHED)
+        if(Input.GetKeyDown(throwKey))
+        {
+            ManageInputState();
+        }
+    }
+
+    private void ManageInputState()
+    {
+        if (toL.m_State == Throwing_Obj_Logic.EThrowingState.ATTACHED)
         {
             Throw();
         }
-    }
-    
-    private bool LookingAtThrowingObj()
-    {
-        return false;
+        else if(toL.m_State == Throwing_Obj_Logic.EThrowingState.THROW)
+        {
+
+        }
     }
 
     private void Throw()
     {
-        // Dettach the component
-        objectToThrow.transform.parent = null;
-        // set the throwing state of the obj
+        // Dettach & Change preferences
+        objectToThrow.transform.SetParent(null);
+            
+            // change state
         toL.SetNewState(Throwing_Obj_Logic.EThrowingState.THROW);
         
-        // Make the impulse
             // get rigidbody component
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
-        
+            // change preferences
+        projectileRb.useGravity = true;
+        projectileRb.isKinematic = false;
+        projectileRb.interpolation = RigidbodyInterpolation.Interpolate;
+        projectileRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+
+        // Make Impulse
             // calculate direction
         Vector3 forceDirection = cam.transform.forward;
 

@@ -46,12 +46,12 @@ public class Throwing_Obj_Logic : MonoBehaviour
         }
         else if(m_State == EThrowingState.THROW)
         {
-            m_Rb.useGravity = true;
-            m_Rb.isKinematic = false;
-            m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
-            m_Rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-            m_Collider.enabled = true;
+            //m_Rb.useGravity = true;
+            //m_Rb.isKinematic = false;
+            //m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
+            //m_Rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            //
+            //m_Collider.enabled = true;
         }
         else if (m_State == EThrowingState.RETAINED)
         {
@@ -79,5 +79,10 @@ public class Throwing_Obj_Logic : MonoBehaviour
     public void SetNewState(EThrowingState newState)
     {
         m_State = newState;
+    }
+
+    public void MakeImpulse()
+    {
+        m_Rb.AddForce(Vector3.forward * 5, ForceMode.Impulse);
     }
 }

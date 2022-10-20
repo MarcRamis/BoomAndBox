@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &366644091 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1402352202464208765, guid: 3a5ef8d34228cbf4caa4ac043393ad3c, type: 3}
+  m_PrefabInstance: {fileID: 1911251863}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &369623028
 GameObject:
   m_ObjectHideFlags: 3
@@ -192,7 +197,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369623028}
-  m_LocalRotation: {x: -0.009691916, y: 0.07467419, z: 0.00072579674, w: 0.9971607}
+  m_LocalRotation: {x: -0.009691918, y: 0.074674144, z: 0.0007257964, w: 0.9971607}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -398,7 +403,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 453476248}
-  m_LocalRotation: {x: 0.059646394, y: 0.07454399, z: -0.0044667283, w: 0.9954223}
+  m_LocalRotation: {x: 0.059646394, y: 0.074544, z: -0.004466729, w: 0.9954223}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1862,12 +1867,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 1442877238}
   attackPoint: {fileID: 374020249}
-  objectToThrow: {fileID: 1402352202464208765, guid: 3a5ef8d34228cbf4caa4ac043393ad3c, type: 3}
+  objectToThrow: {fileID: 366644091}
   toL: {fileID: 1911251865}
+  totalThrows: 0
   throwCooldown: 1
   throwKey: 323
   throwForce: 50
   throwUpwardForce: 10
+  lastCoinPos: {fileID: 0}
 --- !u!114 &1114067496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3248,7 +3255,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1405958941355102222, guid: 3a5ef8d34228cbf4caa4ac043393ad3c, type: 3}
   m_PrefabInstance: {fileID: 1911251863}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 366644091}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b088ca87b0320c74cb0c2f358982de32, type: 3}
