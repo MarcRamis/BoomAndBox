@@ -60,10 +60,8 @@ public class Dashing : MonoBehaviour
 
         pm.isDashing = true;
         pm.maxYSpeed = maxDashYSpeed;
-
-        //cam.ChangeFov(dashFov, dashDuration);
         
-        Vector3 direction = tr.lastCoinPos.position - transform.position;
+        Vector3 direction = tr.objectToThrow.transform.position - transform.position;
         direction = direction.normalized;
 
         Vector3 forceToApply = direction * dashForce + orientation.up * dashUpwardForce;
@@ -72,8 +70,6 @@ public class Dashing : MonoBehaviour
         Invoke(nameof(DelayedDashForce), 0.025f);
 
         Invoke(nameof(ResetDash), dashDuration);
-
-        //cam.DoFov(dashFov);
 
         if (disableGravity)
             rb.useGravity = false;
