@@ -9,9 +9,9 @@ public class Throwing : MonoBehaviour
     public Transform cam;
     public Transform attackPoint;
     public GameObject objectToThrow;
-
+    public Throwing_Obj_Logic toL;
+    
     [Header("Settings")]
-    public int totalThrows;
     public float throwCooldown;
 
     [Header("Throwing")]
@@ -19,48 +19,39 @@ public class Throwing : MonoBehaviour
     public float throwForce;
     public float throwUpwardForce;
     
-    bool readyToThrow;
-    public Transform lastCoinPos;
-    
     private void Start()
     {
-        readyToThrow = true;
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(throwKey) && readyToThrow && (totalThrows > 0 || totalThrows == -1))
+        if(Input.GetKeyDown(throwKey) && toL.m_State == Throwing_Obj_Logic.EThrowingState.ATTACHED)
         {
             Throw();
         }
     }
+    
+    private bool LookingAtThrowingObj()
+    {
+        return false;
+    }
 
     private void Throw()
     {
-        readyToThrow = false;
-
-        // instantiate object to throw
-        GameObject projectile = Instantiate(objectToThrow, attackPoint.position, cam.rotation);
-        lastCoinPos = projectile.transform;
-        // get rigidbody component
-        Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
-
-        // calculate direction
+        // Dettach the component
+        objectToThrow.transform.parent = null;
+        // set the throwing state of the obj
+        toL.SetNewState(Throwing_Obj_Logic.EThrowingState.THROW);
+        
+        // Make the impulse
+            // get rigidbody component
+        Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
+        
+            // calculate direction
         Vector3 forceDirection = cam.transform.forward;
 
-        // add force
+            // add force
         Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce;
-
         projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
-        
-        if (totalThrows != -1) totalThrows--;
-
-        // implement throwCooldown
-        Invoke(nameof(ResetThrow), throwCooldown);
-    }
-
-    private void ResetThrow()
-    {
-        readyToThrow = true;
     }
 }
