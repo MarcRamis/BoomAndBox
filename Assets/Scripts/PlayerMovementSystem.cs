@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementSystem : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed;

@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dashing : MonoBehaviour
+public class DashingSystem : MonoBehaviour
 {
     [Header("References")]
     public Transform orientation;
-    private Rigidbody rb;
-    private PlayerMovement pm;
-    private Throwing tr;
+    private Rigidbody m_Rb;
+    private PlayerMovementSystem pm;
+    private ThrowingSystem tr;
 
     [Header("Dashing")]
     public float dashForce;
@@ -17,15 +17,11 @@ public class Dashing : MonoBehaviour
     public float dashDuration;
     private Vector3 delayedForceToApply;
     
-    [Header("CameraEffects")]
-    public ThirdPersonCam cam;
-    public float dashFov;
-    private float originalFov;
-    
     [Header("Settings")]
     public bool disableGravity = false;
     public bool resetVel = true;
-
+    
+    // To prevent spam
     [Header("Cooldown")]
     public float dashCd;
     private float dashCdTimer;
@@ -37,11 +33,9 @@ public class Dashing : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        pm = GetComponent<PlayerMovement>();
-        tr = GetComponent<Throwing>();
-        
-        originalFov = cam.GetComponent<Camera>().fieldOfView;
+        m_Rb = GetComponent<Rigidbody>();
+        pm = GetComponent<PlayerMovementSystem>();
+        tr = GetComponent<ThrowingSystem>();
     }
 
     private void Update()
@@ -70,9 +64,9 @@ public class Dashing : MonoBehaviour
         Invoke(nameof(DelayedDashForce), 0.025f);
 
         Invoke(nameof(ResetDash), dashDuration);
-
+        
         if (disableGravity)
-            rb.useGravity = false;
+            m_Rb.useGravity = false;
 
         GetComponent<TrailRenderer>().emitting = true;
     }
@@ -80,21 +74,29 @@ public class Dashing : MonoBehaviour
     private void DelayedDashForce()
     {
         if (resetVel)
-            rb.velocity = Vector3.zero;
+            m_Rb.velocity = Vector3.zero;
     
-        rb.AddForce(delayedForceToApply, ForceMode.Impulse);
+        m_Rb.AddForce(delayedForceToApply, ForceMode.Impulse);
     }
 
     private void ResetDash()
     {
         pm.isDashing = false;
         pm.maxYSpeed = 0;
-        
-        //cam.ChangeFov(originalFov, dashDuration);
 
         if (disableGravity)
-            rb.useGravity = true;
+            m_Rb.useGravity = true;
 
         GetComponent<TrailRenderer>().emitting = false;
+    }
+
+    private bool MakeRaycast(float distance)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, orientation.forward, out hit, distance))
+        {
+            return true;
+        }
+        return false;
     }
 }

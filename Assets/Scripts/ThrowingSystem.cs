@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Throwing : MonoBehaviour
+public class ThrowingSystem : MonoBehaviour
 {
     [Header("References")]
     public Transform cam;
@@ -11,7 +11,7 @@ public class Throwing : MonoBehaviour
     public Transform standPosition;
     public Transform toAttach;
     public GameObject objectToThrow;
-    private Throwing_Obj_Logic toL;
+    private ThrowingObj toL;
     
     [Header("Settings")]
     public int totalThrows;
@@ -29,37 +29,37 @@ public class Throwing : MonoBehaviour
     
     private void Start()
     {
-        toL = objectToThrow.GetComponent<Throwing_Obj_Logic>();
+        toL = objectToThrow.GetComponent<ThrowingObj>();
     }
 
     private void Update()
     {
         if(Input.GetKeyDown(throwKey))
         {
-            if (toL.m_State == Throwing_Obj_Logic.EThrowingState.ATTACHED)
+            if (toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
             {
                 objectToThrow.transform.SetParent(null);
                 Throw();
             }
-            else if(toL.m_State == Throwing_Obj_Logic.EThrowingState.THROW)
+            else if(toL.m_State == ThrowingObj.EThrowingState.THROW)
             {
-                toL.SetNewState(Throwing_Obj_Logic.EThrowingState.RETAINED);
+                toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
             }
         }
-        if (Input.GetKeyUp(throwKey) && toL.m_State == Throwing_Obj_Logic.EThrowingState.RETAINED)
+        if (Input.GetKeyUp(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
         {
             Throw();
         }
         
-        if (Input.GetKeyDown(returnKey) && toL.m_State != Throwing_Obj_Logic.EThrowingState.ATTACHED)
+        if (Input.GetKeyDown(returnKey) && toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
         {
-            toL.SetNewState(Throwing_Obj_Logic.EThrowingState.COMEBACK);
+            toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
         }
     }
 
     private void FixedUpdate()
     {
-        if (toL.m_State != Throwing_Obj_Logic.EThrowingState.COMEBACK) return;
+        if (toL.m_State != ThrowingObj.EThrowingState.COMEBACK) return;
             
         ComeBack();
     }
@@ -68,7 +68,7 @@ public class Throwing : MonoBehaviour
     {
         // Preferences
             // change state
-        toL.SetNewState(Throwing_Obj_Logic.EThrowingState.THROW);
+        toL.SetNewState(ThrowingObj.EThrowingState.THROW);
         
             // get rigidbody component
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
@@ -102,7 +102,7 @@ public class Throwing : MonoBehaviour
 
         if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < 0.2)
         {
-            toL.SetNewState(Throwing_Obj_Logic.EThrowingState.ATTACHED);
+            toL.SetNewState(ThrowingObj.EThrowingState.ATTACHED);
             objectToThrow.transform.SetParent(toAttach);
         }
     }
