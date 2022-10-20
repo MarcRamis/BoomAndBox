@@ -8,17 +8,20 @@ public class Throwing : MonoBehaviour
     [Header("References")]
     public Transform cam;
     public Transform attackPoint;
+    public Transform standPosition;
+    public Transform toAttach;
     public GameObject objectToThrow;
     private Throwing_Obj_Logic toL;
     
     [Header("Settings")]
     public int totalThrows;
     public float throwCooldown;
-
+    
     [Header("Throwing")]
     public KeyCode throwKey = KeyCode.Mouse0;
-    private int clickCounter = 0;
+    public KeyCode returnKey = KeyCode.Mouse1;
     public float throwForce;
+    public float comebackForce;
     public float throwUpwardForce;
     
     bool readyToThrow;
@@ -47,13 +50,23 @@ public class Throwing : MonoBehaviour
         {
             Throw();
         }
+        
+        if (Input.GetKeyDown(returnKey) && toL.m_State != Throwing_Obj_Logic.EThrowingState.ATTACHED)
+        {
+            toL.SetNewState(Throwing_Obj_Logic.EThrowingState.COMEBACK);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (toL.m_State != Throwing_Obj_Logic.EThrowingState.COMEBACK) return;
+            
+        ComeBack();
     }
 
     private void Throw()
     {
-        // Dettach & Change preferences
-        
-            
+        // Preferences
             // change state
         toL.SetNewState(Throwing_Obj_Logic.EThrowingState.THROW);
         
@@ -72,5 +85,25 @@ public class Throwing : MonoBehaviour
             // add force
         Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce;
         projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
+    }
+
+    private void ComeBack()
+    {
+        Vector3 direction = standPosition.position - objectToThrow.transform.position;
+        direction = direction.normalized * comebackForce;
+
+        Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
+        projectileRb.velocity = direction;
+        
+        if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < 4)
+        {
+            projectileRb.velocity = direction * 0.2f;
+        }
+
+        if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < 0.2)
+        {
+            toL.SetNewState(Throwing_Obj_Logic.EThrowingState.ATTACHED);
+            objectToThrow.transform.SetParent(toAttach);
+        }
     }
 }
