@@ -197,7 +197,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369623028}
-  m_LocalRotation: {x: -0.009691918, y: 0.074674144, z: 0.0007257964, w: 0.9971607}
+  m_LocalRotation: {x: -0.009691915, y: 0.07467416, z: 0.0007257963, w: 0.9971607}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -215,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 374020249}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: positionToRelocate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 590417864}
   - component: {fileID: 590417867}
   - component: {fileID: 590417866}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: leftEye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1156,7 +1156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 722282861}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LookAtCombat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1510,7 +1510,7 @@ GameObject:
   - component: {fileID: 873350477}
   - component: {fileID: 873350480}
   - component: {fileID: 873350479}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1692,7 +1692,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1045522466}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FollowCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1723,7 +1723,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1074790925}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Orientation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1761,7 +1761,7 @@ GameObject:
   - component: {fileID: 1114067495}
   - component: {fileID: 1114067496}
   - component: {fileID: 1114067497}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1868,7 +1868,6 @@ MonoBehaviour:
   cam: {fileID: 1442877238}
   attackPoint: {fileID: 374020249}
   objectToThrow: {fileID: 366644091}
-  toL: {fileID: 1911251865}
   totalThrows: 0
   throwCooldown: 1
   throwKey: 323
@@ -2018,7 +2017,7 @@ GameObject:
   - component: {fileID: 1119079894}
   - component: {fileID: 1119079893}
   - component: {fileID: 1119079895}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2318,7 +2317,7 @@ GameObject:
   - component: {fileID: 1422958959}
   - component: {fileID: 1422958958}
   - component: {fileID: 1422958957}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlayerObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2634,7 +2633,7 @@ GameObject:
   - component: {fileID: 1596009320}
   - component: {fileID: 1596009323}
   - component: {fileID: 1596009322}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rightEye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2914,7 +2913,7 @@ GameObject:
   - component: {fileID: 1712850960}
   - component: {fileID: 1712850963}
   - component: {fileID: 1712850962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2997,7 +2996,7 @@ GameObject:
   - component: {fileID: 1869724420}
   - component: {fileID: 1869724423}
   - component: {fileID: 1869724422}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3080,7 +3079,7 @@ GameObject:
   - component: {fileID: 1876728537}
   - component: {fileID: 1876728540}
   - component: {fileID: 1876728539}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: leftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3207,6 +3206,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SphereTest
       objectReference: {fileID: 0}
+    - target: {fileID: 1402352202464208765, guid: 3a5ef8d34228cbf4caa4ac043393ad3c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 1405958941355102222, guid: 3a5ef8d34228cbf4caa4ac043393ad3c, type: 3}
       propertyPath: player
       value: 
@@ -3250,17 +3253,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1402352202464208761, guid: 3a5ef8d34228cbf4caa4ac043393ad3c, type: 3}
   m_PrefabInstance: {fileID: 1911251863}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1911251865 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1405958941355102222, guid: 3a5ef8d34228cbf4caa4ac043393ad3c, type: 3}
-  m_PrefabInstance: {fileID: 1911251863}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366644091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b088ca87b0320c74cb0c2f358982de32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2008142741
 GameObject:
   m_ObjectHideFlags: 0
@@ -3272,7 +3264,7 @@ GameObject:
   - component: {fileID: 2008142742}
   - component: {fileID: 2008142745}
   - component: {fileID: 2008142744}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

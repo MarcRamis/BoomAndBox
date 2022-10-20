@@ -7,7 +7,6 @@ public class Throwing_Obj_Logic : MonoBehaviour
     public EThrowingState m_State = EThrowingState.ATTACHED;
     [SerializeField] private Transform player;
     [SerializeField] private Transform positionToRelocate;
-    private BoxCollider m_Collider;
     public enum EThrowingState
     {
         ATTACHED,
@@ -22,7 +21,6 @@ public class Throwing_Obj_Logic : MonoBehaviour
     public void Start()
     {
         m_Rb = GetComponent<Rigidbody>();
-        m_Collider = GetComponent<BoxCollider>();
     }
 
     private void Update()
@@ -41,8 +39,6 @@ public class Throwing_Obj_Logic : MonoBehaviour
             m_Rb.isKinematic = true;
             m_Rb.interpolation = RigidbodyInterpolation.None;
             m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
-
-            m_Collider.enabled = false;
         }
         else if(m_State == EThrowingState.THROW)
         {
@@ -62,8 +58,6 @@ public class Throwing_Obj_Logic : MonoBehaviour
             m_Rb.interpolation = RigidbodyInterpolation.None;
             m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
             m_Rb.velocity = Vector3.zero;
-
-            m_Collider.enabled = false;
         }
         else if (m_State == EThrowingState.COMEBACK)
         {
@@ -71,8 +65,6 @@ public class Throwing_Obj_Logic : MonoBehaviour
             m_Rb.isKinematic = false;
             m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
             m_Rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-            m_Collider.enabled = true;
         }
     }
 

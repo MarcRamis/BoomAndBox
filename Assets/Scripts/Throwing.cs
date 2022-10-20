@@ -33,26 +33,26 @@ public class Throwing : MonoBehaviour
     {
         if(Input.GetKeyDown(throwKey))
         {
-            ManageInputState();
+            if (toL.m_State == Throwing_Obj_Logic.EThrowingState.ATTACHED)
+            {
+                objectToThrow.transform.SetParent(null);
+                Throw();
+            }
+            else if(toL.m_State == Throwing_Obj_Logic.EThrowingState.THROW)
+            {
+                toL.SetNewState(Throwing_Obj_Logic.EThrowingState.RETAINED);
+            }
         }
-    }
-
-    private void ManageInputState()
-    {
-        if (toL.m_State == Throwing_Obj_Logic.EThrowingState.ATTACHED)
+        if (Input.GetKeyUp(throwKey) && toL.m_State == Throwing_Obj_Logic.EThrowingState.RETAINED)
         {
             Throw();
-        }
-        else if(toL.m_State == Throwing_Obj_Logic.EThrowingState.THROW)
-        {
-
         }
     }
 
     private void Throw()
     {
         // Dettach & Change preferences
-        objectToThrow.transform.SetParent(null);
+        
             
             // change state
         toL.SetNewState(Throwing_Obj_Logic.EThrowingState.THROW);
@@ -64,7 +64,6 @@ public class Throwing : MonoBehaviour
         projectileRb.isKinematic = false;
         projectileRb.interpolation = RigidbodyInterpolation.Interpolate;
         projectileRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
 
         // Make Impulse
             // calculate direction
