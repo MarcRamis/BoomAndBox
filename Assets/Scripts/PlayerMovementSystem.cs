@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementSystem : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform orientation;
 
     [HideInInspector] public bool isDashing;
-    private bool isGrounded;
+    [HideInInspector] public bool isGrounded;
     private float horizontalInput;
     private float verticalInput;
     private Vector3 moveDirection;

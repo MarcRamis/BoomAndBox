@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Throwing_Obj_Logic : MonoBehaviour
+public class ThrowingObj : MonoBehaviour
 {
     public EThrowingState m_State = EThrowingState.ATTACHED;
     [SerializeField] private Transform player;
