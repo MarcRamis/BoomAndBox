@@ -11,7 +11,7 @@ public class ThrowingSystem : MonoBehaviour
     public Transform standPosition;
     public Transform toAttach;
     public GameObject objectToThrow;
-    private ThrowingObj toL;
+    [HideInInspector] public ThrowingObj toL;
     
     [Header("Settings")]
     public int totalThrows;

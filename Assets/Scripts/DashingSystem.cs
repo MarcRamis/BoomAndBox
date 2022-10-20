@@ -11,6 +11,7 @@ public class DashingSystem : MonoBehaviour
     private ThrowingSystem tr;
 
     [Header("Dashing")]
+    public float dashDistance;
     public float dashForce;
     public float dashUpwardForce;
     public float maxDashYSpeed;
@@ -40,7 +41,9 @@ public class DashingSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(dashKey))
+        MakeRaycast(dashDistance);
+
+        if (Input.GetKeyDown(dashKey) && pm.isGrounded)
             Dash();
 
         if (dashCdTimer > 0)
@@ -90,13 +93,16 @@ public class DashingSystem : MonoBehaviour
         GetComponent<TrailRenderer>().emitting = false;
     }
 
-    private bool MakeRaycast(float distance)
+    private void MakeRaycast(float distance)
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, orientation.forward, out hit, distance))
         {
-            return true;
         }
-        return false;
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(transform.position, orientation.forward * dashDistance);
     }
 }

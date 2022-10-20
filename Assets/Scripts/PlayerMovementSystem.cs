@@ -32,7 +32,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform orientation;
 
     [HideInInspector] public bool isDashing;
-    private bool isGrounded;
+    [HideInInspector] public bool isGrounded;
     private float horizontalInput;
     private float verticalInput;
     private Vector3 moveDirection;
