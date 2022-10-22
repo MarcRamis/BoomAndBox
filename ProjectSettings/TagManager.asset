@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Cam
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - whatIsGround
   - Coin
   - Player
-  - 
-  - 
+  - Dashing_Obj
+  - Dashing_Obj_Coin
   - 
   - 
   - 

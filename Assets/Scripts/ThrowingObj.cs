@@ -7,6 +7,7 @@ public class ThrowingObj : MonoBehaviour
     public EThrowingState m_State = EThrowingState.ATTACHED;
     [SerializeField] private Transform player;
     [SerializeField] private Transform positionToRelocate;
+    [SerializeField] private Collider dashing_Collider;
     public enum EThrowingState
     {
         ATTACHED,
@@ -41,6 +42,7 @@ public class ThrowingObj : MonoBehaviour
             m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 
             m_Collider.isTrigger = false;
+            dashing_Collider.enabled = false;
         }
         else if(m_State == EThrowingState.THROW)
         {
@@ -50,6 +52,7 @@ public class ThrowingObj : MonoBehaviour
             //m_Rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
             m_Collider.isTrigger = false;
+            dashing_Collider.enabled = true;
         }
         else if (m_State == EThrowingState.RETAINED)
         {
@@ -60,6 +63,7 @@ public class ThrowingObj : MonoBehaviour
             m_Rb.velocity = Vector3.zero;
 
             m_Collider.isTrigger = false;
+            dashing_Collider.enabled = true;
         }
         else if (m_State == EThrowingState.COMEBACK)
         {
@@ -67,8 +71,9 @@ public class ThrowingObj : MonoBehaviour
             m_Rb.isKinematic = false;
             m_Rb.interpolation = RigidbodyInterpolation.Interpolate;  
             m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
-
+            
             m_Collider.isTrigger = true;
+            dashing_Collider.enabled = false;
         }
     }
 

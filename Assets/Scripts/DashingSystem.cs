@@ -21,6 +21,7 @@ public class DashingSystem : MonoBehaviour
     [Header("Settings")]
     public bool disableGravity = false;
     public bool resetVel = true;
+    public LayerMask dashingLayers;
     
     // To prevent spam
     [Header("Cooldown")]
@@ -31,6 +32,7 @@ public class DashingSystem : MonoBehaviour
     public KeyCode dashKey = KeyCode.E;
     
     private Vector3 directionToDash;
+    public Transform m_Target;
 
     private void Start()
     {
@@ -41,10 +43,18 @@ public class DashingSystem : MonoBehaviour
 
     private void Update()
     {
-        MakeRaycast(dashDistance);
+        SelectTarget();
 
-        if (Input.GetKeyDown(dashKey) && pm.isGrounded)
-            Dash();
+        if (m_Target != null)
+        {
+            // Dash to dashing obj static
+            if (Input.GetKeyDown(dashKey) && m_Target.gameObject.layer == LayerMask.NameToLayer("Dashing_Obj"))
+                Dash();
+
+            // Dash to dashing obj dynamic
+            if (Input.GetKeyDown(dashKey) && pm.isGrounded && tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
+                Dash();
+        }
 
         if (dashCdTimer > 0)
             dashCdTimer -= Time.deltaTime;
@@ -58,7 +68,7 @@ public class DashingSystem : MonoBehaviour
         pm.isDashing = true;
         pm.maxYSpeed = maxDashYSpeed;
         
-        Vector3 direction = tr.objectToThrow.transform.position - transform.position;
+        Vector3 direction = m_Target.position - transform.position;
         direction = direction.normalized;
 
         Vector3 forceToApply = direction * dashForce + orientation.up * dashUpwardForce;
@@ -93,11 +103,16 @@ public class DashingSystem : MonoBehaviour
         GetComponent<TrailRenderer>().emitting = false;
     }
 
-    private void MakeRaycast(float distance)
+    private void SelectTarget()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, orientation.forward, out hit, distance))
+        if (Physics.Raycast(transform.position, orientation.forward, out hit, dashDistance, dashingLayers.value))
         {
+            m_Target = hit.collider.transform;
+        }
+        else
+        {
+            m_Target = null;
         }
     }
     private void OnDrawGizmos()
