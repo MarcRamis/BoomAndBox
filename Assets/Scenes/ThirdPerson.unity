@@ -130,6 +130,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1223918065140899260, guid: a3cbd3c67e21fe44c9c183c04d2f264f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7383570164174428774, guid: a3cbd3c67e21fe44c9c183c04d2f264f, type: 3}
+      propertyPath: lockX
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8248218992571347937, guid: a3cbd3c67e21fe44c9c183c04d2f264f, type: 3}
       propertyPath: m_Name
       value: Metal (1)
@@ -351,7 +359,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369623028}
-  m_LocalRotation: {x: -0.10280407, y: 0.062335573, z: 0.0064553097, w: 0.99272555}
+  m_LocalRotation: {x: -0.102804065, y: 0.062335536, z: 0.0064553055, w: 0.99272555}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2616,7 +2624,7 @@ GameObject:
   - component: {fileID: 1442877241}
   m_Layer: 0
   m_Name: PlayerCam
-  m_TagString: Untagged
+  m_TagString: Cam
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
