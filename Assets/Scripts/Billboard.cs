@@ -15,6 +15,8 @@ public class Billboard : MonoBehaviour
 
     private GameObject m_Cam;
 
+    //public bool isSelected = false;
+
     public enum BillboardType { LookAtCamera, CameraForward };
 
     private void Awake()
@@ -22,6 +24,14 @@ public class Billboard : MonoBehaviour
         originalRotation = transform.rotation.eulerAngles;
 
         m_Cam = GameObject.FindGameObjectWithTag("Cam");
+    }
+
+    private void Update()
+    {
+        //if (isSelected)
+        //    gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        //else
+        //    gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     // Use Late update so everything should have finished moving.

@@ -124,6 +124,7 @@ public class PlayerMovementSystem : MonoBehaviour
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
 
+        // Esto a lo mejor tengo que caparlo a partir de la altura del jugador
         // limit y vel
         if (maxYSpeed != 0 && rb.velocity.y > maxYSpeed)
         {
