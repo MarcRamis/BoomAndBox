@@ -31,14 +31,18 @@ public class DashingSystem : MonoBehaviour
     [Header("Input")]
     public KeyCode dashKey = KeyCode.E;
     
+    [Header("Effects")]
+    public GameObject speedPs;
     private Vector3 directionToDash;
-    public Transform m_Target;
+    [HideInInspector] public Transform m_Target;
 
     private void Start()
     {
         m_Rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovementSystem>();
         tr = GetComponent<ThrowingSystem>();
+
+        speedPs.SetActive(false);
     }
 
     private void Update()
@@ -81,7 +85,7 @@ public class DashingSystem : MonoBehaviour
         if (disableGravity)
             m_Rb.useGravity = false;
 
-        GetComponent<TrailRenderer>().emitting = true;
+        DoEffects();
     }
 
     private void DelayedDashForce()
@@ -101,6 +105,7 @@ public class DashingSystem : MonoBehaviour
             m_Rb.useGravity = true;
 
         GetComponent<TrailRenderer>().emitting = false;
+        speedPs.SetActive(false);
     }
 
     private void SelectTarget()
@@ -119,5 +124,11 @@ public class DashingSystem : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(transform.position, orientation.forward * dashDistance);
+    }
+
+    private void DoEffects()
+    {
+        speedPs.SetActive(true);
+        GetComponent<TrailRenderer>().emitting = true;
     }
 }
