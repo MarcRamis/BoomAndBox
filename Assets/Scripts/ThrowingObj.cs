@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ThrowingObj : MonoBehaviour
 {
+    private Vector3 initialPos;
     public EThrowingState m_State = EThrowingState.ATTACHED;
     public int maxCounterToBeThrowed = 1;
     [SerializeField] private Transform player;
@@ -18,8 +19,13 @@ public class ThrowingObj : MonoBehaviour
     }
     private Rigidbody m_Rb;
     private Collider m_Collider;
-    
-    public void Start()
+
+    private void Awake()
+    {
+        initialPos = transform.position;
+    }
+
+    private void Start()
     {
         m_Rb = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();

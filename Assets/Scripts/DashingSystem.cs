@@ -56,7 +56,7 @@ public class DashingSystem : MonoBehaviour
                 Dash();
 
             // Dash to dashing obj dynamic
-            if (Input.GetKeyDown(dashKey) && pm.isGrounded && tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
+            if (Input.GetKeyDown(dashKey) && tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
                 Dash();
         }
 
