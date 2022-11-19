@@ -26,7 +26,10 @@ public class ThrowingSystem : MonoBehaviour
     
     bool readyToThrow;
     public Transform lastCoinPos;
-    
+    private Vector3 saveFirstThrowDir;
+
+    private int throwsCounter = 0; 
+
     private void Start()
     {
         toL = objectToThrow.GetComponent<ThrowingObj>();
@@ -34,23 +37,25 @@ public class ThrowingSystem : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(throwKey))
+        // Throw BOX CHARACTER 
+        // This could be a switch but i'm prototyping
+        if(Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
         {
-            if (toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
-            {
-                objectToThrow.transform.SetParent(null);
-                Throw();
-            }
-            else if(toL.m_State == ThrowingObj.EThrowingState.THROW)
-            {
-                toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
-            }
+            objectToThrow.transform.SetParent(null);
+            Throw(cam.transform.forward);
+            saveFirstThrowDir = cam.transform.forward;
         }
-        if (Input.GetKeyUp(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
+        else if(Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.THROW)
         {
-            Throw();
+            toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
+        }
+
+        else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
+        {
+            Throw(saveFirstThrowDir);
         }
         
+        // Comeback to BOOM CHARACTER
         if (Input.GetKeyDown(returnKey) && toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
         {
             toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
@@ -63,13 +68,21 @@ public class ThrowingSystem : MonoBehaviour
             
         ComeBack();
     }
-
-    private void Throw()
+    
+    private void Throw(Vector3 forceDirection)
     {
         // Preferences
             // change state
-        toL.SetNewState(ThrowingObj.EThrowingState.THROW);
-        
+        if (throwsCounter > toL.maxCounterToBeThrowed)
+        {
+            toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
+        }
+        else
+        {
+            throwsCounter++;
+            toL.SetNewState(ThrowingObj.EThrowingState.THROW);
+        }
+
             // get rigidbody component
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
             // change preferences
@@ -77,10 +90,6 @@ public class ThrowingSystem : MonoBehaviour
         projectileRb.isKinematic = false;
         projectileRb.interpolation = RigidbodyInterpolation.Interpolate;
         projectileRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        // Make Impulse
-            // calculate direction
-        Vector3 forceDirection = cam.transform.forward;
 
             // add force
         Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce;
@@ -102,8 +111,10 @@ public class ThrowingSystem : MonoBehaviour
 
         if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < 0.2)
         {
+            // This is the reset of the BOX CHARACTER
             toL.SetNewState(ThrowingObj.EThrowingState.ATTACHED);
             objectToThrow.transform.SetParent(toAttach);
+            throwsCounter = 0;
         }
     }
 }

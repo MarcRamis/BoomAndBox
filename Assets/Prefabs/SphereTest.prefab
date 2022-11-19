@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_State: 0
+  maxCounterToBeThrowed: 1
   player: {fileID: 0}
   positionToRelocate: {fileID: 0}
   dashing_Collider: {fileID: 0}

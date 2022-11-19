@@ -5750,7 +5750,7 @@ MonoBehaviour:
   totalThrows: 0
   throwCooldown: 1
   throwKey: 323
-  returnKey: 324
+  returnKey: 0
   throwForce: 50
   comebackForce: 100
   throwUpwardForce: 10

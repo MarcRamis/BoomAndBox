@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThrowingObj : MonoBehaviour
 {
     public EThrowingState m_State = EThrowingState.ATTACHED;
+    public int maxCounterToBeThrowed = 1;
     [SerializeField] private Transform player;
     [SerializeField] private Transform positionToRelocate;
     [SerializeField] private Collider dashing_Collider;
