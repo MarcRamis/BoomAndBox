@@ -86,7 +86,7 @@ public class ThrowingSystem : MonoBehaviour
             // get rigidbody component
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
             // change preferences
-        projectileRb.useGravity = true;
+        projectileRb.useGravity = false;
         projectileRb.isKinematic = false;
         projectileRb.interpolation = RigidbodyInterpolation.Interpolate;
         projectileRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -108,7 +108,7 @@ public class ThrowingSystem : MonoBehaviour
         {
             projectileRb.velocity = direction * 0.2f;
         }
-
+        
         if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < 0.2)
         {
             // This is the reset of the BOX CHARACTER
