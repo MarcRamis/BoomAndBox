@@ -11,7 +11,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Transform playerObj;
     [SerializeField] private Transform combatLookAt;
-    // Reference styles
+    
+    // Reference camera in game
     [SerializeField] private GameObject newCamera;
     
     [Header("Settings")]

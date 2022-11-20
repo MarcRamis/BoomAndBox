@@ -6,23 +6,21 @@ using TMPro;
 public class PlayerMovementSystem : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed;
+    private float moveSpeed;
     [SerializeField] private float walkSpeed;
-    
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashSpeedChangeFactor;
 
     [SerializeField] public float maxYSpeed;
-    
     [SerializeField] private float groundDrag;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce;
     [SerializeField] private float jumpCooldown;
     [SerializeField] private float airMultiplier;
-    [SerializeField] private bool readyToJump;
+    private bool readyToJump;
 
-    [Header("Keybinds")]
+    [Header("Inputs")]
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
@@ -33,24 +31,26 @@ public class PlayerMovementSystem : MonoBehaviour
 
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isGrounded;
+
+    // Internal variables
     private float horizontalInput;
     private float verticalInput;
     private Vector3 moveDirection;
     private Rigidbody rb;
-    
-    private EMoveState state;
-    public enum EMoveState
-    {
-        walking,
-        dashing,
-        air
-    }
     
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
     private EMoveState lastState;
     private bool keepMomentum;
     private float speedChangeFactor;
+    private EMoveState state;
+    
+    public enum EMoveState
+    {
+        walking,
+        dashing,
+        air
+    }
 
     private void Start()
     {
@@ -60,6 +60,7 @@ public class PlayerMovementSystem : MonoBehaviour
         readyToJump = true;
     }
 
+    // Update
     private void Update()
     {
         // ground check
@@ -76,11 +77,13 @@ public class PlayerMovementSystem : MonoBehaviour
             rb.drag = 0;
     }
 
+    // Fixed update
     private void FixedUpdate()
     {
         MovePlayer();
     }
 
+    // Functions
     private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
