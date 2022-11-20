@@ -11,31 +11,34 @@ public class DashingSystem : MonoBehaviour
     private ThrowingSystem tr;
 
     [Header("Dashing")]
-    public float dashDistance;
-    public float dashForce;
-    public float dashUpwardForce;
-    public float maxDashYSpeed;
-    public float dashDuration;
+    [SerializeField] private float dashDistance;
+    [SerializeField] private float dashForce;
+    [SerializeField] private float dashUpwardForce;
+    [SerializeField] private float maxDashYSpeed;
+    [SerializeField] private float dashDuration;
     private Vector3 delayedForceToApply;
     
     [Header("Settings")]
-    public bool disableGravity = false;
-    public bool resetVel = true;
-    public LayerMask dashingLayers;
+    [SerializeField] private bool disableGravity = false;
+    [SerializeField] private bool resetVel = true;
+    [SerializeField] private LayerMask dashingLayers;
     
     // To prevent spam
     [Header("Cooldown")]
-    public float dashCd;
+    [SerializeField] private float dashCd;
     private float dashCdTimer;
 
     [Header("Input")]
-    public KeyCode dashKey = KeyCode.E;
+    [SerializeField] private KeyCode dashKey = KeyCode.E;
     
     [Header("Effects")]
-    public GameObject speedPs;
-    private Vector3 directionToDash;
+    [SerializeField] private GameObject speedPs;
     [HideInInspector] public Transform m_Target;
 
+    // Internal variables
+    private Vector3 directionToDash;
+    
+    // Start
     private void Start()
     {
         m_Rb = GetComponent<Rigidbody>();
@@ -45,6 +48,7 @@ public class DashingSystem : MonoBehaviour
         speedPs.SetActive(false);
     }
 
+    // Update
     private void Update()
     {
         SelectTarget();
