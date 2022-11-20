@@ -5742,19 +5742,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 6449113727418759625}
-  attackPoint: {fileID: 6449113728488599142}
   standPosition: {fileID: 6449113728488599142}
   toAttach: {fileID: 6449113727373662095}
   objectToThrow: {fileID: 5335073555746238997}
   toL: {fileID: 0}
-  totalThrows: 0
-  throwCooldown: 1
   throwKey: 323
   returnKey: 324
-  throwForce: 50
-  comebackForce: 100
-  throwUpwardForce: 10
-  lastCoinPos: {fileID: 0}
+  throwForce: 100
+  throwUpwardForce: 0
+  maxCounterToBeThrowed: 1
+  comebackForce: 200
+  distanceToTargetForSlowReturn: 6
+  multiplierSlowSpeed: 0.1
 --- !u!114 &6449113727613805783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5926,7 +5925,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6449113727740359222
 CanvasRenderer:

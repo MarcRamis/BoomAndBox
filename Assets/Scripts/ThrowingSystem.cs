@@ -6,35 +6,37 @@ using TMPro;
 public class ThrowingSystem : MonoBehaviour
 {
     [Header("References")]
-    public Transform cam;
-    public Transform attackPoint;
-    public Transform standPosition;
-    public Transform toAttach;
-    public GameObject objectToThrow;
+    [SerializeField] private Transform cam;
+    [SerializeField] private Transform standPosition;
+    [SerializeField] private Transform toAttach;
+    [SerializeField] private GameObject objectToThrow;
     [HideInInspector] public ThrowingObj toL;
     
-    [Header("Settings")]
-    public int totalThrows;
-    public float throwCooldown;
+    [Header("Inputs")]
+    [SerializeField] private KeyCode throwKey = KeyCode.Mouse0;
+    [SerializeField] private KeyCode returnKey = KeyCode.Mouse1;
     
-    [Header("Throwing")]
-    public KeyCode throwKey = KeyCode.Mouse0;
-    public KeyCode returnKey = KeyCode.Mouse1;
-    public float throwForce;
-    public float comebackForce;
-    public float throwUpwardForce;
-    
-    bool readyToThrow;
-    public Transform lastCoinPos;
-    private Vector3 saveFirstThrowDir;
+    [Header("Throw")]
+    [SerializeField] private float throwForce;
+    [SerializeField] private float throwUpwardForce;
+    [SerializeField] private float maxCounterToBeThrowed;
 
+    [Header("Return")]
+    [SerializeField] private float comebackForce;
+    [SerializeField] private float distanceToTargetForSlowReturn;
+    [SerializeField] private float multiplierSlowSpeed;
+
+    // Internal variables
+    private Vector3 saveFirstThrowDir;
     private int throwsCounter = 0; 
 
+    // Start
     private void Start()
     {
         toL = objectToThrow.GetComponent<ThrowingObj>();
     }
 
+    // Update
     private void Update()
     {
         // Throw BOX CHARACTER 
@@ -62,6 +64,7 @@ public class ThrowingSystem : MonoBehaviour
         }
     }
 
+    // Fixed Update
     private void FixedUpdate()
     {
         if (toL.m_State != ThrowingObj.EThrowingState.COMEBACK) return;
@@ -69,11 +72,12 @@ public class ThrowingSystem : MonoBehaviour
         ComeBack();
     }
     
+    // Functions
     private void Throw(Vector3 forceDirection)
     {
         // Preferences
             // change state
-        if (throwsCounter > toL.maxCounterToBeThrowed)
+        if (throwsCounter > maxCounterToBeThrowed)
         {
             toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
         }
@@ -95,7 +99,6 @@ public class ThrowingSystem : MonoBehaviour
         Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce;
         projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
     }
-
     private void ComeBack()
     {
         Vector3 direction = standPosition.position - objectToThrow.transform.position;
@@ -104,9 +107,9 @@ public class ThrowingSystem : MonoBehaviour
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
         projectileRb.velocity = direction;
         
-        if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < 4)
+        if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < distanceToTargetForSlowReturn)
         {
-            projectileRb.velocity = direction * 0.2f;
+            projectileRb.velocity = direction * multiplierSlowSpeed;
         }
         
         if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < 0.2)
