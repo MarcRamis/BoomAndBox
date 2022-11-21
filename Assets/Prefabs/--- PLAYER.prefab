@@ -5745,10 +5745,11 @@ MonoBehaviour:
   objectToThrow: {fileID: 5335073555746238997}
   toL: {fileID: 0}
   throwKey: 323
-  returnKey: 324
+  returnKey: 306
   throwForce: 100
   throwUpwardForce: 0
   maxCounterToBeThrowed: 1
+  canBeRedirected: 0
   comebackForce: 200
   distanceToTargetForSlowReturn: 6
   multiplierSlowSpeed: 0.1
@@ -7010,7 +7011,7 @@ PrefabInstance:
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 6449113727613805787}
+      objectReference: {fileID: 6449113727613805789}
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: dashCollider
       value: 
@@ -7023,6 +7024,10 @@ PrefabInstance:
       propertyPath: positionToRelocate
       value: 
       objectReference: {fileID: 6449113728488599142}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: maxDistanceToReturn
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7390341569393603921, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: m_Name
       value: Companion

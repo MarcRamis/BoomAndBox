@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class ThrowingObj : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private GameObject player;
+
+    [Header("Settings")]
+    [SerializeField] private float maxDistanceToReturn;
+
     // Internal Variables
     private Vector3 initialPos;
     public enum EThrowingState
@@ -39,6 +45,10 @@ public class ThrowingObj : MonoBehaviour
     // Fixed Update
     private void FixedUpdate()
     {
+        if (Vector3.Distance(player.transform.position, transform.position) > maxDistanceToReturn)
+        {
+            SetNewState(EThrowingState.COMEBACK);
+        }
     }
     
     // Functions
@@ -91,9 +101,5 @@ public class ThrowingObj : MonoBehaviour
     public void MakeImpulse()
     {
         m_Rb.AddForce(Vector3.forward * 5, ForceMode.Impulse);
-    }
-    private void EnableDashCollider()
-    {
-
     }
 }

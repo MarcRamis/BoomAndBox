@@ -20,6 +20,7 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float throwForce;
     [SerializeField] private float throwUpwardForce;
     [SerializeField] private float maxCounterToBeThrowed;
+    [SerializeField] private bool canBeRedirected;
 
     [Header("Return")]
     [SerializeField] private float comebackForce;
@@ -54,7 +55,8 @@ public class ThrowingSystem : MonoBehaviour
 
         else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
         {
-            Throw(saveFirstThrowDir);
+            if(!canBeRedirected) Throw(saveFirstThrowDir);
+            else Throw(cam.transform.forward);
         }
         
         // Comeback to BOOM CHARACTER
