@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cam
+  - standPosition.position
+  - Companion
   layers:
   - Default
   - TransparentFX
@@ -13,7 +15,7 @@ TagManager:
   - Water
   - UI
   - whatIsGround
-  - Coin
+  - Companion
   - Player
   - Dashing_Obj
   - Dashing_Obj_Coin
