@@ -7012,6 +7012,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6449113727613805787}
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: dashCollider
+      value: 
+      objectReference: {fileID: 59622705555108669}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: dashingCollider
+      value: 
+      objectReference: {fileID: 8924770618131038548}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: positionToRelocate
       value: 
       objectReference: {fileID: 6449113728488599142}
@@ -7121,5 +7129,10 @@ Transform:
 --- !u!1 &5335073555746238997 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7390341569393603921, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+  m_PrefabInstance: {fileID: 3208315150353794884}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &8924770618131038548 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 6295221075636438544, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
   m_PrefabInstance: {fileID: 3208315150353794884}
   m_PrefabAsset: {fileID: 0}

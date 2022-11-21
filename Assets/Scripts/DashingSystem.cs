@@ -5,7 +5,7 @@ using UnityEngine;
 public class DashingSystem : MonoBehaviour
 {
     [Header("References")]
-    public Transform orientation;
+    [SerializeField] public Transform orientation;
     private Rigidbody m_Rb;
     private PlayerMovementSystem pm;
     private ThrowingSystem tr;
@@ -27,13 +27,13 @@ public class DashingSystem : MonoBehaviour
     [Header("Cooldown")]
     [SerializeField] private float dashCd;
     private float dashCdTimer;
-
-    [Header("Input")]
+    
+    [Header("Inputs")]
     [SerializeField] private KeyCode dashKey = KeyCode.E;
     
     [Header("Effects")]
     [SerializeField] private GameObject speedPs;
-    [HideInInspector] public Transform m_Target;
+     public Transform m_Target;
 
     // Internal variables
     private Vector3 directionToDash;
@@ -51,19 +51,22 @@ public class DashingSystem : MonoBehaviour
     // Update
     private void Update()
     {
+        // Search for something to dash
         SelectTarget();
-
+        
+        // Dash
         if (m_Target != null)
         {
-            // Dash to dashing obj static
-            if (Input.GetKeyDown(dashKey) && m_Target.gameObject.layer == LayerMask.NameToLayer("Dashing_Obj"))
-                Dash();
-
-            // Dash to dashing obj dynamic
-            if (Input.GetKeyDown(dashKey) && tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
-                Dash();
+            if (Input.GetKeyDown(dashKey))
+            {
+                if (m_Target.gameObject.layer == LayerMask.NameToLayer("Dashing_Obj") || tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
+                {
+                    Dash();
+                }
+            }
         }
 
+        // Rest Cooldown
         if (dashCdTimer > 0)
             dashCdTimer -= Time.deltaTime;
     }
@@ -121,7 +124,7 @@ public class DashingSystem : MonoBehaviour
         }
         else
         {
-            m_Target = null;
+            m_Target = tr.objectToThrow.transform;
         }
     }
     private void OnDrawGizmos()

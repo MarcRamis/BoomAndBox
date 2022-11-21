@@ -9,7 +9,7 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private Transform cam;
     [SerializeField] private Transform standPosition;
     [SerializeField] private Transform toAttach;
-    [SerializeField] private GameObject objectToThrow;
+    [SerializeField] public GameObject objectToThrow;
     [HideInInspector] public ThrowingObj toL;
     
     [Header("Inputs")]
