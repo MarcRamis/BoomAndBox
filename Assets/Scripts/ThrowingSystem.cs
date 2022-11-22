@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using MoreMountains.Feedbacks;
 
 public class ThrowingSystem : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float distanceToTargetForSlowReturn;
     [SerializeField] private float multiplierSlowSpeed;
 
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks comebackFeedback;
+    
     // Internal variables
     private Vector3 saveFirstThrowDir;
     private int throwsCounter = 0; 
@@ -120,6 +124,8 @@ public class ThrowingSystem : MonoBehaviour
             toL.SetNewState(ThrowingObj.EThrowingState.ATTACHED);
             objectToThrow.transform.SetParent(toAttach);
             throwsCounter = 0;
+
+            comebackFeedback.PlayFeedbacks();
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using MoreMountains.Feedbacks;
 
 public class PlayerMovementSystem : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float jumpCooldown;
     [SerializeField] private float airMultiplier;
-    private bool readyToJump;
+    [HideInInspector] private bool readyToJump;
 
     [Header("Inputs")]
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
@@ -26,11 +27,12 @@ public class PlayerMovementSystem : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask whatIsGround;
-
     [SerializeField] private Transform orientation;
-
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isGrounded;
+    
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks jumpFeedback;
 
     // Internal variables
     private float horizontalInput;
@@ -113,7 +115,9 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // in air
         else if (!isGrounded)
+        {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        }
     }
 
     private void SpeedControl()
@@ -141,6 +145,7 @@ public class PlayerMovementSystem : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        jumpFeedback.PlayFeedbacks();
     }
     private void ResetJump()
     {

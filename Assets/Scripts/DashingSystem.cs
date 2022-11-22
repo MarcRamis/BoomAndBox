@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class DashingSystem : MonoBehaviour
 {
@@ -33,8 +34,11 @@ public class DashingSystem : MonoBehaviour
     
     [Header("Effects")]
     [SerializeField] private GameObject speedPs;
-     public Transform m_Target;
+    [HideInInspector] public Transform m_Target;
 
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks dashFeedback;
+    
     // Internal variables
     private Vector3 directionToDash;
     
@@ -59,9 +63,14 @@ public class DashingSystem : MonoBehaviour
         {
             if (Input.GetKeyDown(dashKey))
             {
-                if (m_Target.gameObject.layer == LayerMask.NameToLayer("Dashing_Obj") || tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
+                if (m_Target.gameObject.layer == LayerMask.NameToLayer("Dashing_Obj")
+                    || (tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED && tr.toL.m_State != ThrowingObj.EThrowingState.COMEBACK))
                 {
+                    if (dashCdTimer > 0) return;
+                    else dashCdTimer = dashCd;
+
                     Dash();
+                    DoEffects();
                 }
             }
         }
@@ -73,9 +82,6 @@ public class DashingSystem : MonoBehaviour
 
     private void Dash()
     {
-        if (dashCdTimer > 0) return;
-        else dashCdTimer = dashCd;
-
         pm.isDashing = true;
         pm.maxYSpeed = maxDashYSpeed;
         
@@ -91,8 +97,6 @@ public class DashingSystem : MonoBehaviour
         
         if (disableGravity)
             m_Rb.useGravity = false;
-
-        DoEffects();
     }
 
     private void DelayedDashForce()
@@ -135,6 +139,7 @@ public class DashingSystem : MonoBehaviour
 
     private void DoEffects()
     {
+        dashFeedback.PlayFeedbacks();
         speedPs.SetActive(true);
         GetComponent<TrailRenderer>().emitting = true;
     }
