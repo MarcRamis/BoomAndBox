@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using MoreMountains.Feedbacks;
 
 public class ThrowingSystem : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private Transform cam;
     [SerializeField] private Transform standPosition;
     [SerializeField] private Transform toAttach;
-    [SerializeField] private GameObject objectToThrow;
+    [SerializeField] public GameObject objectToThrow;
     [HideInInspector] public ThrowingObj toL;
     
     [Header("Inputs")]
@@ -20,12 +21,16 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float throwForce;
     [SerializeField] private float throwUpwardForce;
     [SerializeField] private float maxCounterToBeThrowed;
+    [SerializeField] private bool canBeRedirected;
 
     [Header("Return")]
     [SerializeField] private float comebackForce;
     [SerializeField] private float distanceToTargetForSlowReturn;
     [SerializeField] private float multiplierSlowSpeed;
 
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks comebackFeedback;
+    
     // Internal variables
     private Vector3 saveFirstThrowDir;
     private int throwsCounter = 0; 
@@ -54,7 +59,8 @@ public class ThrowingSystem : MonoBehaviour
 
         else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
         {
-            Throw(saveFirstThrowDir);
+            if(!canBeRedirected) Throw(saveFirstThrowDir);
+            else Throw(cam.transform.forward);
         }
         
         // Comeback to BOOM CHARACTER
@@ -118,6 +124,8 @@ public class ThrowingSystem : MonoBehaviour
             toL.SetNewState(ThrowingObj.EThrowingState.ATTACHED);
             objectToThrow.transform.SetParent(toAttach);
             throwsCounter = 0;
+
+            comebackFeedback.PlayFeedbacks();
         }
     }
 }

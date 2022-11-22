@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class DashingSystem : MonoBehaviour
 {
     [Header("References")]
-    public Transform orientation;
+    [SerializeField] public Transform orientation;
     private Rigidbody m_Rb;
     private PlayerMovementSystem pm;
     private ThrowingSystem tr;
@@ -27,14 +28,17 @@ public class DashingSystem : MonoBehaviour
     [Header("Cooldown")]
     [SerializeField] private float dashCd;
     private float dashCdTimer;
-
-    [Header("Input")]
+    
+    [Header("Inputs")]
     [SerializeField] private KeyCode dashKey = KeyCode.E;
     
     [Header("Effects")]
     [SerializeField] private GameObject speedPs;
     [HideInInspector] public Transform m_Target;
 
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks dashFeedback;
+    
     // Internal variables
     private Vector3 directionToDash;
     
@@ -51,28 +55,33 @@ public class DashingSystem : MonoBehaviour
     // Update
     private void Update()
     {
+        // Search for something to dash
         SelectTarget();
-
+        
+        // Dash
         if (m_Target != null)
         {
-            // Dash to dashing obj static
-            if (Input.GetKeyDown(dashKey) && m_Target.gameObject.layer == LayerMask.NameToLayer("Dashing_Obj"))
-                Dash();
+            if (Input.GetKeyDown(dashKey))
+            {
+                if (m_Target.gameObject.layer == LayerMask.NameToLayer("Dashing_Obj")
+                    || (tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED && tr.toL.m_State != ThrowingObj.EThrowingState.COMEBACK))
+                {
+                    if (dashCdTimer > 0) return;
+                    else dashCdTimer = dashCd;
 
-            // Dash to dashing obj dynamic
-            if (Input.GetKeyDown(dashKey) && tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
-                Dash();
+                    Dash();
+                    DoEffects();
+                }
+            }
         }
 
+        // Rest Cooldown
         if (dashCdTimer > 0)
             dashCdTimer -= Time.deltaTime;
     }
 
     private void Dash()
     {
-        if (dashCdTimer > 0) return;
-        else dashCdTimer = dashCd;
-
         pm.isDashing = true;
         pm.maxYSpeed = maxDashYSpeed;
         
@@ -88,8 +97,6 @@ public class DashingSystem : MonoBehaviour
         
         if (disableGravity)
             m_Rb.useGravity = false;
-
-        DoEffects();
     }
 
     private void DelayedDashForce()
@@ -121,7 +128,7 @@ public class DashingSystem : MonoBehaviour
         }
         else
         {
-            m_Target = null;
+            m_Target = tr.objectToThrow.transform;
         }
     }
     private void OnDrawGizmos()
@@ -132,6 +139,7 @@ public class DashingSystem : MonoBehaviour
 
     private void DoEffects()
     {
+        dashFeedback.PlayFeedbacks();
         speedPs.SetActive(true);
         GetComponent<TrailRenderer>().emitting = true;
     }

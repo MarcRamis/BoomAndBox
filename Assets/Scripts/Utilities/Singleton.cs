@@ -1,31 +1,28 @@
 
-namespace SummerTeam.RogueLite
+/// <summary>
+/// Singleton pattern.
+/// This class can be called from anywhere and only exists one instance at a time.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// 
+public class Singleton<T> where T : new()
 {
-    /// <summary>
-    /// Singleton pattern.
-    /// This class can be called from anywhere and only exists one instance at a time.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// 
-    public class Singleton<T> where T : new()
+    private static T instance;
+
+    public static T Instance
     {
-        private static T instance;
-
-        public static T Instance
+        private set { }
+        get
         {
-            private set { }
-            get
+            if (instance == null)
             {
-                if (instance == null)
-                {
-                    instance = new T();
-                }
-
-                return instance;
+                instance = new T();
             }
-        }
 
-        // Private constructor prevents from instancing a sigleton with new.
-        protected Singleton() { }
+            return instance;
+        }
     }
+
+    // Private constructor prevents from instancing a sigleton with new.
+    protected Singleton() { }
 }
