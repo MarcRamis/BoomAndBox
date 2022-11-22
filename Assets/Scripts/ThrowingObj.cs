@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class ThrowingObj : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class ThrowingObj : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
+
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks comebackingFeedback;
 
     // Internal Variables
     private Vector3 initialPos;

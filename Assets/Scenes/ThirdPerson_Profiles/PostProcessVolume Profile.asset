@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7599112838228099629
+--- !u!114 &-2320207685975327266
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,23 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
-  m_Name: ChromaticAberration
+  m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
+  m_Name: DepthOfField
   m_EditorClassIdentifier: 
   active: 1
   enabled:
     overrideState: 1
     value: 1
-  spectralLut:
+  focusDistance:
     overrideState: 1
-    value: {fileID: 0}
-    defaultState: 1
-  intensity:
+    value: 10
+  aperture:
     overrideState: 1
-    value: 0
-  fastMode:
+    value: 5.6
+  focalLength:
     overrideState: 1
-    value: 0
+    value: 50
+  kernelSize:
+    overrideState: 1
+    value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,7 +44,7 @@ MonoBehaviour:
   - {fileID: 7573885248332110702}
   - {fileID: 3651239518578329751}
   - {fileID: 4919555039446472436}
-  - {fileID: -7599112838228099629}
+  - {fileID: -2320207685975327266}
 --- !u!114 &3651239518578329751
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -153,7 +155,7 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.2
+    value: 0.3
   smoothness:
     overrideState: 0
     value: 0.2
