@@ -89,8 +89,8 @@ public class ThrowingObj : MonoBehaviour
         else if (m_State == EThrowingState.COMEBACK)
         {
             m_Rb.useGravity = false;
-            m_Rb.isKinematic = false;
-            m_Rb.interpolation = RigidbodyInterpolation.Interpolate;  
+            m_Rb.isKinematic = true;
+            m_Rb.interpolation = RigidbodyInterpolation.Extrapolate;  
             m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 
             m_Collider.isTrigger = true;

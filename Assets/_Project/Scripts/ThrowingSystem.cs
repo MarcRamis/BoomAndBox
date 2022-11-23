@@ -24,17 +24,27 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private bool canBeRedirected;
 
     [Header("Return")]
+    [SerializeField] public EReturnType returnType;
     [SerializeField] private float comebackForce;
     [SerializeField] private float distanceToTargetForSlowReturn;
     [SerializeField] private float multiplierSlowSpeed;
+    [SerializeField] private float returnTime;
+    [SerializeField] private AnimationCurve returnCurveSmooth;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackFeedback;
     [SerializeField] private MMFeedbacks throwingFeedback;
-    
+
+    // Constant variables
+    private const float targetNearDistance = 0.2f;
+
     // Internal variables
     private Vector3 saveFirstThrowDir;
-    private int throwsCounter = 0; 
+    private int throwsCounter = 0;
+    private float elapsedTime;
+    private Vector3 startPosition;
+
+    public enum EReturnType { FORCE, INTERPOLATION };
 
     // Start
     private void Start()
@@ -76,10 +86,18 @@ public class ThrowingSystem : MonoBehaviour
     private void FixedUpdate()
     {
         if (toL.m_State != ThrowingObj.EThrowingState.COMEBACK) return;
-            
-        ComeBack();
+
+        switch (returnType)
+        {
+            case EReturnType.FORCE:
+                ComeBackForce();
+                break;
+            case EReturnType.INTERPOLATION:
+                ComeBackInterp();
+                break;
+        }
     }
-    
+
     // Functions
     private void Throw(Vector3 forceDirection)
     {
@@ -107,7 +125,7 @@ public class ThrowingSystem : MonoBehaviour
         Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce;
         projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
     }
-    private void ComeBack()
+    private void ComeBackForce()
     {
         Vector3 direction = standPosition.position - objectToThrow.transform.position;
         direction = direction.normalized * comebackForce;
@@ -119,13 +137,30 @@ public class ThrowingSystem : MonoBehaviour
         {
             projectileRb.velocity = direction * multiplierSlowSpeed;
         }
+
+        TargetIsNear();
+    }
+
+    private void ComeBackInterp()
+    {
+        startPosition = objectToThrow.transform.position;
+        elapsedTime += Time.fixedDeltaTime;
+        float percentageComplete = elapsedTime / returnTime;
         
-        if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < 0.2)
+        objectToThrow.transform.position = Vector3.Lerp(startPosition, standPosition.position, returnCurveSmooth.Evaluate(percentageComplete));
+        
+        TargetIsNear();
+    }
+
+    private void TargetIsNear()
+    {
+        if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < targetNearDistance)
         {
             // This is the reset of the BOX CHARACTER
             toL.SetNewState(ThrowingObj.EThrowingState.ATTACHED);
             objectToThrow.transform.SetParent(toAttach);
             throwsCounter = 0;
+            elapsedTime = 0;
 
             comebackFeedback.PlayFeedbacks();
         }

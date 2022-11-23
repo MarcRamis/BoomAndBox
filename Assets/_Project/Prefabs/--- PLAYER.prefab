@@ -7023,7 +7023,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727418759626}
-  m_LocalRotation: {x: 0.094567716, y: 0.097639084, z: -0.009320418, w: 0.9906749}
+  m_LocalRotation: {x: 0.094567716, y: 0.09763901, z: -0.009320412, w: 0.9906749}
   m_LocalPosition: {x: -0.06999999, y: 2.2779999, z: -2.3199997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7214,7 +7214,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727515996880}
-  m_LocalRotation: {x: 0.09456771, y: 0.09763905, z: -0.0093204165, w: 0.9906749}
+  m_LocalRotation: {x: 0.09456771, y: 0.09763901, z: -0.009320412, w: 0.9906749}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7507,9 +7507,35 @@ MonoBehaviour:
   throwUpwardForce: 0
   maxCounterToBeThrowed: 1
   canBeRedirected: 0
+  returnType: 1
   comebackForce: 200
   distanceToTargetForSlowReturn: 6
   multiplierSlowSpeed: 0.1
+  returnTime: 1
+  returnCurveSmooth:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   comebackFeedback: {fileID: 8663891436926828339}
   throwingFeedback: {fileID: 541924060}
 --- !u!114 &6449113727613805783
