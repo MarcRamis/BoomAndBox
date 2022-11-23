@@ -30,6 +30,7 @@ public class ThrowingSystem : MonoBehaviour
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackFeedback;
+    [SerializeField] private MMFeedbacks throwingFeedback;
     
     // Internal variables
     private Vector3 saveFirstThrowDir;
@@ -51,6 +52,7 @@ public class ThrowingSystem : MonoBehaviour
             objectToThrow.transform.SetParent(null);
             Throw(cam.transform.forward);
             saveFirstThrowDir = cam.transform.forward;
+            throwingFeedback.PlayFeedbacks();
         }
         else if(Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.THROW)
         {

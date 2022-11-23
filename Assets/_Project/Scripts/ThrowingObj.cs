@@ -106,4 +106,9 @@ public class ThrowingObj : MonoBehaviour
     {
         m_Rb.AddForce(Vector3.forward * 5, ForceMode.Impulse);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        m_State = EThrowingState.COMEBACK;
+    }
 }
