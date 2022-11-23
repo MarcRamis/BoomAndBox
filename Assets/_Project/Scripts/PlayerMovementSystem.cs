@@ -19,7 +19,14 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float jumpCooldown;
     [SerializeField] private float airMultiplier;
+    [SerializeField] private int doubleJumpCounter = 1;
     [HideInInspector] private bool readyToJump;
+
+    [Header("Land")]
+    [SerializeField] private float veryLowTimeLanding = 0.2f;
+    [SerializeField] private float lowTimeLanding = 0.5f;
+    [SerializeField] private float middleTimeLanding = 1.0f;
+    [SerializeField] private float highTimeLanding = 2.0f;
 
     [Header("Inputs")]
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
@@ -33,6 +40,7 @@ public class PlayerMovementSystem : MonoBehaviour
     
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks jumpFeedback;
+    [SerializeField] private MMFeedbacks doubleJumpFeedback;
     [SerializeField] private MMFeedbacks landingFeedback;
 
     // Constants variables
@@ -43,7 +51,6 @@ public class PlayerMovementSystem : MonoBehaviour
     private float verticalInput;
     private Vector3 moveDirection;
     private Rigidbody rb;
-    
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
     private EMoveState lastState;
@@ -52,6 +59,8 @@ public class PlayerMovementSystem : MonoBehaviour
     private EMoveState state;
     private bool landing;
     private float velocityLastFrame;
+    private float timeInAir;
+    private int currentDoubleJumps;
     
     public enum EMoveState
     {
@@ -66,6 +75,7 @@ public class PlayerMovementSystem : MonoBehaviour
         rb.freezeRotation = true;
 
         readyToJump = true;
+        currentDoubleJumps = doubleJumpCounter;
     }
 
     // Update
@@ -90,13 +100,35 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         MovePlayer();
 
+        // landing
         // Get land point. Were going down last frame, and now reached an almost null velocity
-        if (landing && (velocityLastFrame < 0) && (Mathf.Abs(rb.velocity.y) < lowVelocity))
-        {
-            landingFeedback.PlayFeedbacks();
+        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(rb.velocity.y) < lowVelocity))
+        {   
+            if (timeInAir >= highTimeLanding)
+            {
+                landingFeedback.PlayFeedbacks();
+            }
+            else if (timeInAir >= middleTimeLanding)
+            {
+                landingFeedback.PlayFeedbacks();
+            }
+            else if (timeInAir >= lowTimeLanding)
+            {
+            }
+            else
+            {
+            }
+                
             landing = false;
+            timeInAir = 0;
         }
         velocityLastFrame = rb.velocity.y;
+        
+        // Count the time the player is landing
+        if (landing)
+        {
+            timeInAir += Time.fixedDeltaTime;
+        }
     }
 
     // Functions
@@ -106,14 +138,28 @@ public class PlayerMovementSystem : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump
-        if (Input.GetKey(jumpKey) && readyToJump && isGrounded)
+        if (Input.GetKey(jumpKey))
         {
-            readyToJump = false;
-            landing = true;
+            // Jump on ground
+            if (readyToJump && isGrounded)
+            {
+                readyToJump = false;
 
-            Jump();
+                Jump();
+                jumpFeedback.PlayFeedbacks();
 
-            Invoke(nameof(ResetJump), jumpCooldown);
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
+
+            // Double Jump in air
+            else if (readyToJump && landing && currentDoubleJumps > 0)
+            {
+                Jump();
+                doubleJumpFeedback.PlayFeedbacks();
+
+                currentDoubleJumps--;
+                timeInAir = 0;
+            }
         }
     }
 
@@ -126,7 +172,9 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // on ground
         if (isGrounded)
+        { 
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
 
         // in air
         else if (!isGrounded)
@@ -160,7 +208,6 @@ public class PlayerMovementSystem : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-        jumpFeedback.PlayFeedbacks();
     }
     private void ResetJump()
     {
@@ -173,13 +220,16 @@ public class PlayerMovementSystem : MonoBehaviour
         if (isDashing)
         {
             state = EMoveState.dashing;
-            desiredMoveSpeed = dashSpeed;
-            speedChangeFactor = dashSpeedChangeFactor;
-        }
+            //desiredMoveSpeed = dashSpeed;
+            //speedChangeFactor = dashSpeedChangeFactor;
 
+            timeInAir = 0;
+        }
+        
         // Mode - Walking
         else if (isGrounded)
         {
+            currentDoubleJumps = doubleJumpCounter;
             state = EMoveState.walking;
             desiredMoveSpeed = walkSpeed;
         }
@@ -187,6 +237,7 @@ public class PlayerMovementSystem : MonoBehaviour
         // Mode - Air
         else
         {
+            landing = true;
             state = EMoveState.air;
         }
 
