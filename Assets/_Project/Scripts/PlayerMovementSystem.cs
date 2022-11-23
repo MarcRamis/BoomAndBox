@@ -220,8 +220,8 @@ public class PlayerMovementSystem : MonoBehaviour
         if (isDashing)
         {
             state = EMoveState.dashing;
-            desiredMoveSpeed = dashSpeed;
-            speedChangeFactor = dashSpeedChangeFactor;
+            //desiredMoveSpeed = dashSpeed;
+            //speedChangeFactor = dashSpeedChangeFactor;
 
             timeInAir = 0;
         }
