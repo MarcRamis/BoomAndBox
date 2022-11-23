@@ -90,6 +90,7 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         MovePlayer();
 
+        // landing
         // Get land point. Were going down last frame, and now reached an almost null velocity
         if (landing && (velocityLastFrame < 0) && (Mathf.Abs(rb.velocity.y) < lowVelocity))
         {
@@ -126,7 +127,9 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // on ground
         if (isGrounded)
+        {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
 
         // in air
         else if (!isGrounded)
