@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class Switcher : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class Switcher : MonoBehaviour
     [SerializeField] private Platform.EPlatformState secondGroupPlatformsSwapState;
 
     private bool isActivated = false;
+
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks hitFeedback;
+
 
     // Functions
     private void Switch()
@@ -55,7 +60,8 @@ public class Switcher : MonoBehaviour
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Companion"))
         {
             Switch();
-            
+            hitFeedback.PlayFeedbacks();
+
             GameObject companion = GameObject.FindGameObjectWithTag("Companion");
             companion.GetComponent<ThrowingObj>().SetNewState(ThrowingObj.EThrowingState.COMEBACK);
         }
