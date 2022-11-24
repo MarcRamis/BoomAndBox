@@ -7,6 +7,7 @@ TagManager:
   - Cam
   - standPosition.position
   - Companion
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Player
   - Dashing_Obj
   - Dashing_Obj_Coin
-  - 
+  - Enemy
   - 
   - 
   - 
