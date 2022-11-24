@@ -7505,7 +7505,7 @@ MonoBehaviour:
   returnKey: 306
   throwForce: 100
   throwUpwardForce: 0
-  maxCounterToBeThrowed: 1
+  maxCounterToBeThrowed: 0
   canBeRedirected: 0
   returnType: 1
   comebackForce: 200
@@ -7551,7 +7551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {fileID: 6449113727418759625}
-  dashType: 0
+  dashType: 1
   dashDistance: 21.89
   dashForce: 50
   dashUpwardForce: 0
