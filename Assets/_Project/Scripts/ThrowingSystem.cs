@@ -90,9 +90,11 @@ public class ThrowingSystem : MonoBehaviour
         switch (returnType)
         {
             case EReturnType.FORCE:
+                toL.isReturningWithForce = true;
                 ComeBackForce();
                 break;
             case EReturnType.INTERPOLATION:
+                toL.isReturningWithForce = false;
                 ComeBackInterp();
                 break;
         }
@@ -163,6 +165,19 @@ public class ThrowingSystem : MonoBehaviour
             elapsedTime = 0;
 
             comebackFeedback.PlayFeedbacks();
+        }
+    }
+
+    private void HandleState()
+    {
+        switch (returnType)
+        {
+            case EReturnType.FORCE:
+                toL.isReturningWithForce = true;
+                break;
+            case EReturnType.INTERPOLATION:
+                toL.isReturningWithForce = false;
+                break;
         }
     }
 }

@@ -72,9 +72,10 @@ public class DashingSystem : MonoBehaviour
         {
             if (Input.GetKeyDown(dashKey))
             {
-                if (m_Target.gameObject.layer == LayerMask.NameToLayer("Dashing_Obj")
-                    || (tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED && tr.toL.m_State != ThrowingObj.EThrowingState.COMEBACK))
+                if (tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED && tr.toL.m_State != ThrowingObj.EThrowingState.COMEBACK)
                 {
+                    tr.toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
+
                     if (dashCdTimer > 0) return;
                     else dashCdTimer = dashCd;
 
