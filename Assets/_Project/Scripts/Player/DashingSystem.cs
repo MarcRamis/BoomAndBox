@@ -13,7 +13,6 @@ public class DashingSystem : MonoBehaviour
 
     [Header("Dashing")]
     [SerializeField] private float dashDistance;
-    [SerializeField] private float maxDashYSpeed;
     [SerializeField] private float dashDuration;
     [SerializeField] private float dashInterpTime = 3f;
     [SerializeField] private AnimationCurve dashInterpCurveSmooth;
