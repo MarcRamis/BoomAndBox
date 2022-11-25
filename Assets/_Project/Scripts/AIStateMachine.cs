@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class AIStateMachine
 {
-    public AIState[] states;
+    public IAIState[] states;
     public Agent agent;
-    public AIStateID currentState;
+    public AiBehaviour currentState;
 
     public AIStateMachine(Agent agent)
     {
         this.agent = agent;
-        int numStates = System.Enum.GetNames(typeof(AIStateID)).Length;
-        states = new AIState[numStates];
+        int numStates = System.Enum.GetNames(typeof(AiBehaviour)).Length;
+        states = new IAIState[numStates];
     }
 
-    public void RegisterState(AIState state)
+    public void RegisterState(IAIState state)
     {
         int index = (int)state.GetId();
         states[index] = state;
     }
 
-    public AIState GetState(AIStateID stateID)
+    public IAIState GetState(AiBehaviour stateID)
     {
         int index = (int)stateID;
         return states[index];
@@ -32,7 +32,7 @@ public class AIStateMachine
         GetState(currentState)?.Update(agent);
     }
 
-    public void ChangeState(AIStateID newState)
+    public void ChangeState(AiBehaviour newState)
     {
         GetState(currentState)?.Exit(agent);
         currentState = newState;

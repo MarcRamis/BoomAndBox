@@ -1,12 +1,12 @@
-﻿public enum AIStateID
+﻿public enum AiBehaviour
 {
     IDLE,
-    DEATH
+    DRON_CHARGE
 }
 
-public interface AIState
+public interface IAIState
 {
-    AIStateID GetId();
+    AiBehaviour GetId();
 
     void Enter(Agent agent);
     void Update(Agent agent);

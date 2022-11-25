@@ -5,8 +5,8 @@ using UnityEngine;
 public enum EEnemyState
 {
     IDLE,
-    FOLLOW_TARGET,
-    CHARGING,
+    CHASE_PLAYER,
+    PREPARING,
     CHARGE
 }
 

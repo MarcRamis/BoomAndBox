@@ -2,16 +2,17 @@
 
 public abstract class Agent : MonoBehaviour
 {
-    public AIStateMachine stateMachine;
-    public AIStateID initialState;
-
+    [Header("Agent Settings")]
+    [SerializeField] protected AiBehaviour initialState;
+    protected AIStateMachine stateMachine;
+    
     protected void Start()
     {
         stateMachine = new AIStateMachine(this);
         stateMachine.ChangeState(initialState);
     }
-
-    protected void Update()
+    
+    protected void FixedUpdate()
     {
         stateMachine.Update();
     }
