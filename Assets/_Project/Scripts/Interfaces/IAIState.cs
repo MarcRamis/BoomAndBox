@@ -1,6 +1,7 @@
 ﻿public enum AiBehaviour
 {
-    IDLE,
+    ORBIT,
+    CHASE_PLAYER,
     DRON_CHARGE
 }
 

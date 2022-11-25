@@ -15,5 +15,6 @@ public abstract class Agent : MonoBehaviour
     protected void FixedUpdate()
     {
         stateMachine.Update();
+        Debug.Log("a");
     }
 }

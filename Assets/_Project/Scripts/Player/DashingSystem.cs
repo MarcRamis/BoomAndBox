@@ -86,7 +86,7 @@ public class DashingSystem : MonoBehaviour
             }
         }
 
-        // Rest Cooldown
+        // Reset Cooldown
         if (dashCdTimer > 0)
             dashCdTimer -= Time.deltaTime;
     }

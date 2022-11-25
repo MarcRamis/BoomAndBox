@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using MoreMountains.Tools;
+using MoreMountains.Feedbacks;
 
 public class Dron : Enemy
 {
@@ -19,7 +20,8 @@ public class Dron : Enemy
     [SerializeField] private float distanceToFollowPlayer;
     [SerializeField] private float distanceToLosePlayer;
     [SerializeField] private float distanceToStartCharging;
-    [SerializeField] private float timeCharging;
+    [SerializeField] private float timePreparing;
+    [SerializeField] private float cooldownCharge;
     [SerializeField] private float forceCharge;
     [SerializeField] private float moveSpeed;
 
@@ -28,11 +30,15 @@ public class Dron : Enemy
     private GameObject followTarget;
     [SerializeField] private MMAutoRotate mMAutoRotate;
 
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks preparingFeedback;
+    [SerializeField] private MMFeedbacks chargeFeedback;
+
     // Constant variables
 
     // Internal variables
     private Rigidbody m_Rb;
-    private bool isCharging;
+    private bool isPreparing;
 
     // Start
     void Start()
@@ -40,31 +46,47 @@ public class Dron : Enemy
         m_Rb = GetComponent<Rigidbody>();
         followTarget = player;
         mMAutoRotate.OrbitCenterTransform = idleTarget.transform;
+        mMAutoRotate.enabled = true;
     }
 
     // Update 
     void Update()
     {
-        ManageStates();
     }
     private void FixedUpdate()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) < distanceToStartCharging)
+        if (enemyState != EEnemyState.PREPARING && enemyState != EEnemyState.CHARGE)
         {
-            if (!isCharging)
+            // start preparing for charge
+            if (Vector3.Distance(player.transform.position, transform.position) < distanceToStartCharging)
             {
                 enemyState = EEnemyState.PREPARING;
-                isCharging = true;
-                Invoke(nameof(DoCharge), timeCharging);
+                isPreparing = true;
+
+                // Prepare for charge
+                Invoke(nameof(DoCharge), timePreparing);
+            }
+
+            // chase player
+            else if (Vector3.Distance(player.transform.position, transform.position) < distanceToFollowPlayer && !isPreparing)
+            {
+                mMAutoRotate.enabled = false;
+                enemyState = EEnemyState.CHASE_PLAYER;
+                m_Rb.velocity = Seek(player.transform.position) * moveSpeed * Time.fixedDeltaTime;
+            }
+
+            // idle
+            else if (Vector3.Distance(player.transform.position, transform.position) < distanceToLosePlayer && !isPreparing)
+            {
+                mMAutoRotate.enabled = true;
+                enemyState = EEnemyState.IDLE;
             }
         }
-        else if (Vector3.Distance(player.transform.position, transform.position) < distanceToFollowPlayer)
+        // preparing state
+        else if (enemyState == EEnemyState.PREPARING)
         {
-            enemyState = EEnemyState.CHASE_PLAYER;
-        }
-        else if (Vector3.Distance(player.transform.position, transform.position) < distanceToLosePlayer)
-        {
-            enemyState = EEnemyState.IDLE;
+            m_Rb.velocity = Vector3.zero;
+            preparingFeedback.PlayFeedbacks();
         }
     }
 
@@ -74,16 +96,17 @@ public class Dron : Enemy
         {
             case EEnemyState.IDLE:
                 
-                mMAutoRotate.enabled = true;
+                
                 
                 break;
             case EEnemyState.CHASE_PLAYER:
-                
-                mMAutoRotate.enabled = false;
-                m_Rb.velocity = Seek(player.transform.position) * moveSpeed * Time.fixedDeltaTime;
+
+               
 
                 break;
             case EEnemyState.PREPARING:
+
+                
 
                 break;
             case EEnemyState.CHARGE:
@@ -94,17 +117,31 @@ public class Dron : Enemy
     
     private void DoCharge()
     {
+        // cooldown?
+
         enemyState = EEnemyState.CHARGE;
+
+        Debug.Log("Charge");
+        chargeFeedback.PlayFeedbacks();
         Charge();
     }
 
     private void Charge()
     {
+        // calc force
         Vector3 direction = player.transform.position - transform.position;
         direction = direction.normalized;
         Vector3 forceToApply = direction * forceCharge;
-
         m_Rb.AddForce(forceToApply, ForceMode.Impulse);
+        
+        // check new states
+        Invoke(nameof(ResetState), cooldownCharge);
+    }
+    
+    private void ResetState()
+    {
+        enemyState = EEnemyState.IDLE;
+        isPreparing = false;
     }
 
     public override void Damage(int damageAmount)

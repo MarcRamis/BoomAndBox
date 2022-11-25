@@ -89,7 +89,7 @@ public class PlayerMovementSystem : MonoBehaviour
         StateHandler();
 
         // handle drag
-        if (state == EMoveState.walking)
+        if (state == EMoveState.walking || state == EMoveState.air)
             rb.drag = groundDrag;
         else
             rb.drag = 0;

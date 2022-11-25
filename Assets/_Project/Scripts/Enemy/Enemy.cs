@@ -28,7 +28,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     // Update
     void Update()
     {
-        
+        Debug.Log("Enemy");
     }
     
     public virtual void Init()
