@@ -47,10 +47,10 @@ public class PlayerMovementSystem : MonoBehaviour
     private const float lowVelocity = 0.1f;
 
     // Internal variables
+    private Rigidbody m_Rb;
     private float horizontalInput;
     private float verticalInput;
     private Vector3 moveDirection;
-    private Rigidbody rb;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
     private EMoveState lastState;
@@ -72,8 +72,8 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        m_Rb = GetComponent<Rigidbody>();
+        m_Rb.freezeRotation = true;
 
         readyToJump = true;
         currentDoubleJumps = doubleJumpCounter;
@@ -91,9 +91,9 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // handle drag
         if (state == EMoveState.walking || isDoubleJumping)
-            rb.drag = groundDrag;
+            m_Rb.drag = groundDrag;
         else
-            rb.drag = 0;
+            m_Rb.drag = 0;
     }
 
     // Fixed update
@@ -103,7 +103,7 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // landing
         // Get land point. Were going down last frame, and now reached an almost null velocity
-        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(rb.velocity.y) < lowVelocity))
+        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(m_Rb.velocity.y) < lowVelocity))
         {   
             if (timeInAir >= highTimeLanding)
             {
@@ -116,14 +116,14 @@ public class PlayerMovementSystem : MonoBehaviour
             else if (timeInAir >= lowTimeLanding)
             {
             }
-            else
+            else if (timeInAir >= veryLowTimeLanding)
             {
             }
                 
             landing = false;
             timeInAir = 0;
         }
-        velocityLastFrame = rb.velocity.y;
+        velocityLastFrame = m_Rb.velocity.y;
         
         // Count the time the player is landing
         if (landing)
@@ -156,6 +156,7 @@ public class PlayerMovementSystem : MonoBehaviour
             else if (readyToJump && landing && currentDoubleJumps > 0)
             {
                 isDoubleJumping = true;
+                
                 Jump();
                 doubleJumpFeedback.PlayFeedbacks();
 
@@ -176,42 +177,42 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // on ground
         if (isGrounded)
-        { 
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        {
+            m_Rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         }
 
         // in air
         else if (!isGrounded)
         {
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            m_Rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
 
     private void SpeedControl()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        Vector3 flatVel = new Vector3(m_Rb.velocity.x, 0f, m_Rb.velocity.z);
 
         // limit velocity if needed
         if (flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            m_Rb.velocity = new Vector3(limitedVel.x, m_Rb.velocity.y, limitedVel.z);
         }
 
         // Esto a lo mejor tengo que caparlo a partir de la altura del jugador
         // limit y vel
-        if (maxYSpeed != 0 && rb.velocity.y > maxYSpeed)
+        if (maxYSpeed != 0 && m_Rb.velocity.y > maxYSpeed)
         {
-            rb.velocity = new Vector3(rb.velocity.x, maxYSpeed, rb.velocity.z);
+            m_Rb.velocity = new Vector3(m_Rb.velocity.x, maxYSpeed, m_Rb.velocity.z);
         }
     }
     
     private void Jump()
     {
         // reset y velocity
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        m_Rb.velocity = new Vector3(m_Rb.velocity.x, 0f, m_Rb.velocity.z);
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        m_Rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
     private void ResetJump()
     {

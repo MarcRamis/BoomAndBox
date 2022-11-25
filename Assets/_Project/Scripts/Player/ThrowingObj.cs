@@ -10,6 +10,7 @@ public class ThrowingObj : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
+    [SerializeField] private float maxLargeDistanceToReturn;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
@@ -21,6 +22,7 @@ public class ThrowingObj : MonoBehaviour
     {
         ATTACHED,
         THROW,
+        THROW_LARGE,
         RETAINED,
         COMEBACK
     }
@@ -50,53 +52,70 @@ public class ThrowingObj : MonoBehaviour
     // Fixed Update
     private void FixedUpdate()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) > maxDistanceToReturn)
+        if (Vector3.Distance(player.transform.position, transform.position) > maxDistanceToReturn && m_State != EThrowingState.THROW_LARGE)
         {
             if (m_State != EThrowingState.RETAINED && m_State != EThrowingState.COMEBACK)
                 SetNewState(EThrowingState.RETAINED);
+        }
+        else if(Vector3.Distance(player.transform.position, transform.position) > maxLargeDistanceToReturn && m_State == EThrowingState.THROW_LARGE)
+        {
+            SetNewState(EThrowingState.COMEBACK);
         }
     }
     
     // Functions
     public void StateHandler()
     {
-        if (m_State == EThrowingState.ATTACHED)
+        switch (m_State)
         {
-            m_Rb.useGravity = false;
-            m_Rb.isKinematic = true;
-            m_Rb.interpolation = RigidbodyInterpolation.None;
-            m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            case EThrowingState.ATTACHED:
 
-            m_Collider.isTrigger = false;
-        }
-        
-        else if(m_State == EThrowingState.THROW)
-        {
-            //m_Rb.useGravity = true;
-            //m_Rb.isKinematic = false;
-            //m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
-            //m_Rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+                m_Rb.useGravity = false;
+                m_Rb.isKinematic = true;
+                m_Rb.interpolation = RigidbodyInterpolation.None;
+                m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 
-            m_Collider.isTrigger = false;
-        }
-        else if (m_State == EThrowingState.RETAINED)
-        {
-            m_Rb.useGravity = false;
-            m_Rb.isKinematic = false;
-            m_Rb.interpolation = RigidbodyInterpolation.None;
-            m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
-            m_Rb.velocity = Vector3.zero;
+                m_Collider.isTrigger = false;
 
-            m_Collider.isTrigger = false;
-        }
-        else if (m_State == EThrowingState.COMEBACK)
-        {
-            m_Rb.useGravity = false;
-            m_Rb.isKinematic = true;
-            m_Rb.interpolation = RigidbodyInterpolation.Extrapolate;
-            m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                break;
+            case EThrowingState.THROW:
 
-            m_Collider.isTrigger = true;
+                m_Rb.useGravity = false;
+                m_Rb.isKinematic = false;
+                m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
+                m_Rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                m_Collider.isTrigger = false;
+
+                break;
+            case EThrowingState.THROW_LARGE:
+
+                m_Rb.useGravity = false;
+                m_Rb.isKinematic = false;
+                m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
+                m_Rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                m_Collider.isTrigger = false;
+
+                break;
+            case EThrowingState.RETAINED:
+
+                m_Rb.useGravity = false;
+                m_Rb.isKinematic = false;
+                m_Rb.interpolation = RigidbodyInterpolation.None;
+                m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                m_Rb.velocity = Vector3.zero;
+
+                m_Collider.isTrigger = false;
+
+                break;
+            case EThrowingState.COMEBACK:
+
+                m_Rb.useGravity = false;
+                m_Rb.isKinematic = true;
+                m_Rb.interpolation = RigidbodyInterpolation.Extrapolate;
+                m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                m_Collider.isTrigger = true;
+
+                break;
         }
     }
 
@@ -114,4 +133,10 @@ public class ThrowingObj : MonoBehaviour
     {
         m_State = EThrowingState.COMEBACK;
     }
-}
+    public bool CanDash()
+    {
+        return m_State != ThrowingObj.EThrowingState.ATTACHED
+        && m_State != ThrowingObj.EThrowingState.COMEBACK
+        && m_State != ThrowingObj.EThrowingState.THROW_LARGE;
+    }   
+}       

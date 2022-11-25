@@ -15,13 +15,14 @@ public class ThrowingSystem : MonoBehaviour
     
     [Header("Inputs")]
     [SerializeField] private KeyCode throwKey = KeyCode.Mouse0;
-    [SerializeField] private KeyCode returnKey = KeyCode.Mouse1;
+    [SerializeField] private KeyCode throwLargeKey = KeyCode.Mouse1;
+    [SerializeField] private KeyCode returnKey = KeyCode.LeftControl;
     
     [Header("Throw")]
     [SerializeField] private float throwForce;
-    [SerializeField] private float throwUpwardForce;
-    [SerializeField] private float maxCounterToBeThrowed;
-    [SerializeField] private bool canBeRedirected;
+    [SerializeField] private float throwLargeForce;
+    [SerializeField] private float throwCooldown = 0.25f;
+    private bool readyToThrow = true;
 
     [Header("Return")]
     [SerializeField] private float comebackForce;
@@ -29,6 +30,8 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float multiplierSlowSpeed;
     [SerializeField] private float returnTime;
     [SerializeField] private AnimationCurve returnCurveSmooth;
+
+    [Header("Cooldown")]
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackFeedback;
@@ -38,8 +41,6 @@ public class ThrowingSystem : MonoBehaviour
     private const float targetNearDistance = 0.2f;
 
     // Internal variables
-    private Vector3 saveFirstThrowDir;
-    private int throwsCounter = 0;
     private float elapsedTime;
     private Vector3 startPosition;
 
@@ -53,24 +54,41 @@ public class ThrowingSystem : MonoBehaviour
     private void Update()
     {
         // Throw BOX CHARACTER 
-        // This could be a switch but i'm prototyping
-        if(Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
+        if (readyToThrow)
         {
-            objectToThrow.transform.SetParent(null);
-            Throw(cam.transform.forward);
-            saveFirstThrowDir = cam.transform.forward;
-            throwingFeedback.PlayFeedbacks();
-        }
-        else if(Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.THROW)
-        {
-            toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
+            if (Input.GetKey(throwLargeKey))
+            {
+                // Falta feedback para cuando estás apuntando
+
+                if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
+                {
+                    // change state
+                    toL.SetNewState(ThrowingObj.EThrowingState.THROW_LARGE);
+                    // Do Throw
+                    Throw(cam.transform.forward, throwLargeForce);
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
+                {
+                    // change state
+                    toL.SetNewState(ThrowingObj.EThrowingState.THROW);
+                    // Do Throw
+                    Throw(cam.transform.forward, throwForce);
+                }
+                else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.THROW)
+                {
+                    toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
+                }
+
+                else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
+                {
+                    toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
+                }
+            }
         }
 
-        else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
-        {
-            toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
-        }
-        
         // Comeback to BOOM CHARACTER
         if (Input.GetKeyDown(returnKey) && toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
         {
@@ -85,27 +103,25 @@ public class ThrowingSystem : MonoBehaviour
 
         ComeBackInterp();
     }
-
+    
     // Functions
-    private void Throw(Vector3 forceDirection)
+    private void Throw(Vector3 forceDirection, float force)
     {
         // Preferences
-            // change state
-        toL.SetNewState(ThrowingObj.EThrowingState.THROW);
+        readyToThrow = false;
+        objectToThrow.transform.SetParent(null);
+        throwingFeedback.PlayFeedbacks();
 
-        // get rigidbody component
+        // Get rigidbody component
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
-            // change preferences
-        projectileRb.useGravity = false;
-        projectileRb.isKinematic = false;
-        projectileRb.interpolation = RigidbodyInterpolation.Interpolate;
-        projectileRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-            // add force
-        Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce;
+        // Change preferences
+        toL.StateHandler();
+        
+        // Add force
+        Vector3 forceToAdd = forceDirection * force;
         projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
     }
-
     private void ComeBackInterp()
     {
         startPosition = objectToThrow.transform.position;
@@ -113,22 +129,25 @@ public class ThrowingSystem : MonoBehaviour
         float percentageComplete = elapsedTime / returnTime;
         
         objectToThrow.transform.position = Vector3.Lerp(startPosition, standPosition.position, returnCurveSmooth.Evaluate(percentageComplete));
-        
-        TargetIsNear();
-    }
 
-    private void TargetIsNear()
-    {
         if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < targetNearDistance)
         {
-            // This is the reset of the BOX CHARACTER
-            toL.SetNewState(ThrowingObj.EThrowingState.ATTACHED);
-            objectToThrow.transform.SetParent(toAttach);
-            throwsCounter = 0;
-            elapsedTime = 0;
-
-            comebackFeedback.PlayFeedbacks();
+            ResetThrow();
         }
     }
+    private void ResetThrow()
+    {
+        // This is the reset of the BOX CHARACTER
+        toL.SetNewState(ThrowingObj.EThrowingState.ATTACHED);
+        objectToThrow.transform.SetParent(toAttach);
+        elapsedTime = 0;
+        comebackFeedback.PlayFeedbacks();
 
+        // timer to throw again
+        Invoke(nameof(ResetThrowCooldown), throwCooldown);
+    }
+    private void ResetThrowCooldown()
+    {
+        readyToThrow = true;
+    }
 }

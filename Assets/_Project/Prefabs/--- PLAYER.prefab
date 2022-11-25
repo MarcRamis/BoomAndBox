@@ -5837,6 +5837,7 @@ MonoBehaviour:
   - {fileID: 412633733}
   - {fileID: 23402547486074281}
   - {fileID: 412633734}
+  - {fileID: 1044785148}
   InitializationMode: 2
   SafeMode: 3
   Direction: 0
@@ -5976,7 +5977,7 @@ MonoBehaviour:
       m_DecayTime: 0.2
       m_ScaleWithImpact: 1
       m_HoldForever: 0
-    m_ImpactRadius: 20
+    m_ImpactRadius: 10
     m_DirectionMode: 0
     m_DissipationMode: 2
     m_DissipationDistance: 100
@@ -7502,12 +7503,11 @@ MonoBehaviour:
   objectToThrow: {fileID: 5335073555746238997}
   toL: {fileID: 0}
   throwKey: 323
+  throwLargeKey: 324
   returnKey: 306
-  throwForce: 100
-  throwUpwardForce: 0
-  maxCounterToBeThrowed: 0
-  canBeRedirected: 0
-  returnType: 1
+  throwForce: 50
+  throwLargeForce: 100
+  throwCooldown: 0.25
   comebackForce: 200
   distanceToTargetForSlowReturn: 6
   multiplierSlowSpeed: 0.1
@@ -7551,10 +7551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {fileID: 6449113727418759625}
-  dashType: 1
   dashDistance: 21.89
-  dashForce: 50
-  dashUpwardForce: 0
   maxDashYSpeed: 50
   dashDuration: 0.25
   dashInterpTime: 1
@@ -7583,7 +7580,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   disableGravity: 1
-  resetVel: 1
   dashingLayers:
     serializedVersion: 2
     m_Bits: 1536
@@ -8791,7 +8787,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728576391527}
-  m_LocalRotation: {x: 0.13092797, y: 0.062127292, z: -0.0082212705, w: 0.98940915}
+  m_LocalRotation: {x: 0.13092795, y: 0.062127326, z: -0.008221274, w: 0.98940915}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9148,7 +9144,11 @@ PrefabInstance:
       objectReference: {fileID: 2080720006}
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: maxDistanceToReturn
-      value: 100
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: maxLargeDistanceToReturn
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7390341569393603921, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: m_Name
