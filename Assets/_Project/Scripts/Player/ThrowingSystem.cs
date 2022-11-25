@@ -25,9 +25,6 @@ public class ThrowingSystem : MonoBehaviour
     private bool readyToThrow = true;
 
     [Header("Return")]
-    [SerializeField] private float comebackForce;
-    [SerializeField] private float distanceToTargetForSlowReturn;
-    [SerializeField] private float multiplierSlowSpeed;
     [SerializeField] private float returnTime;
     [SerializeField] private AnimationCurve returnCurveSmooth;
 
