@@ -139,7 +139,7 @@ public class PlayerMovementSystem : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump
-        if (Input.GetKey(jumpKey))
+        if (Input.GetKeyDown(jumpKey))
         {
             // Jump on ground
             if (readyToJump && isGrounded)
