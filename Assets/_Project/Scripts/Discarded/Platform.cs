@@ -4,56 +4,85 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    /// <summary> 
-    /// What does every platform type
-    /// Default --> Stands
-    /// Tangible Non Tangible --> Swap between being tangible or non tangible. They need to be added on a switcher
-    /// </summary>
-
-    [Header("References")]
-    private Collider m_Collider;
-    [SerializeField] private Material solidMaterial;
-    [SerializeField] private Material tangibleMaterial;
-
+    //[Header("References")]
+    //private Collider m_Collider;
+    //[SerializeField] private Material solidMaterial;
+    //[SerializeField] private Material tangibleMaterial;
+    
     [SerializeField] public enum EPlatformType { DEFAULT, TANGNONTANG}
     [Header("Settings")]
     [SerializeField] private EPlatformType platformType;
-    
-    [SerializeField] public enum EPlatformState { SOLID, NONTANGIBLE,}
-    [SerializeField] private EPlatformState platformState;
-    
+    [SerializeField] private bool isMovable = false;
+    [SerializeField] private Transform startPosition;
+    [SerializeField] private Transform endPosition;
+    [SerializeField] private float moveTime;
+    [SerializeField] private AnimationCurve moveCurveSmooth;
+    private float elapsedTime;
+    private bool reachDestination;
+
+    // Switcher
+    //[SerializeField] public enum EPlatformState { SOLID, NONTANGIBLE,}
+    //[SerializeField] private EPlatformState platformState;
+
     // Awake
     private void Awake()
     {
-        m_Collider = GetComponent<Collider>();
+        //m_Collider = GetComponent<Collider>();
     }
 
     private void Start()
     {
-        HandleState();
+        // switcher
+        //HandleTangibleState();
     }
-
-    // Functions
-    public void HandleState()
+    
+    private void FixedUpdate()
     {
-        switch (platformState)
+        if (isMovable)
         {
-            case EPlatformState.SOLID:
+            elapsedTime += Time.fixedDeltaTime;
+            float percentageComplete = elapsedTime / moveTime;
 
-                m_Collider.enabled = true;
-                GetComponent<Renderer>().material= solidMaterial; 
-                break;
+            if (reachDestination)
+            {
+                transform.position = Vector3.Lerp(endPosition.position, startPosition.position, moveCurveSmooth.Evaluate(percentageComplete));
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(startPosition.position, endPosition.position, moveCurveSmooth.Evaluate(percentageComplete));
+            }
             
-            case EPlatformState.NONTANGIBLE:
+            if (percentageComplete >= 1.0f)
+            {
+                reachDestination = !reachDestination;
+                percentageComplete = 0.0f;
+                elapsedTime = 0.0f;
+            }
 
-                m_Collider.enabled = false;
-                GetComponent<Renderer>().material = tangibleMaterial;
-                break;
         }
     }
 
-    public void ChangeState(EPlatformState _state)
-    {
-        platformState = _state;
-    }
+    // Functions
+    //public void HandleTangibleState()
+    //{
+    //    switch (platformState)
+    //    {
+    //        case EPlatformState.SOLID:
+    //
+    //            m_Collider.enabled = true;
+    //            GetComponent<Renderer>().material= solidMaterial; 
+    //            break;
+    //        
+    //        case EPlatformState.NONTANGIBLE:
+    //
+    //            m_Collider.enabled = false;
+    //            GetComponent<Renderer>().material = tangibleMaterial;
+    //            break;
+    //    }
+    //}
+
+    //public void ChangeState(EPlatformState _state)
+    //{
+    //    platformState = _state;
+    //}
 }
