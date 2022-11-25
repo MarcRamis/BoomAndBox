@@ -7552,7 +7552,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {fileID: 6449113727418759625}
   dashDistance: 21.89
-  maxDashYSpeed: 50
   dashDuration: 0.25
   dashInterpTime: 1
   dashInterpCurveSmooth:
@@ -8709,7 +8708,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728492538123}
-  m_LocalRotation: {x: -0.102804065, y: 0.06233554, z: 0.0064553055, w: 0.99272555}
+  m_LocalRotation: {x: -0.10280407, y: 0.062335577, z: 0.0064553106, w: 0.99272555}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8787,7 +8786,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728576391527}
-  m_LocalRotation: {x: 0.13092795, y: 0.062127326, z: -0.008221274, w: 0.98940915}
+  m_LocalRotation: {x: 0.13092797, y: 0.062127292, z: -0.0082212705, w: 0.98940915}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
