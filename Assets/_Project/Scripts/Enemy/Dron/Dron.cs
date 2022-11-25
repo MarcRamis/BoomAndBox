@@ -76,7 +76,7 @@ public class Dron : Enemy
             }
 
             // idle
-            else if (Vector3.Distance(player.transform.position, transform.position) < distanceToLosePlayer && !isPreparing)
+            else 
             {
                 mMAutoRotate.enabled = true;
                 enemyState = EEnemyState.IDLE;
@@ -87,6 +87,12 @@ public class Dron : Enemy
         {
             m_Rb.velocity = Vector3.zero;
             preparingFeedback.PlayFeedbacks();
+        }
+
+        else
+        {
+            mMAutoRotate.enabled = true;
+            enemyState = EEnemyState.IDLE;
         }
     }
 

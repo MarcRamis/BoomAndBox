@@ -61,6 +61,7 @@ public class PlayerMovementSystem : MonoBehaviour
     private float velocityLastFrame;
     private float timeInAir;
     private int currentDoubleJumps;
+    private bool isDoubleJumping;
     
     public enum EMoveState
     {
@@ -89,7 +90,7 @@ public class PlayerMovementSystem : MonoBehaviour
         StateHandler();
 
         // handle drag
-        if (state == EMoveState.walking || state == EMoveState.air)
+        if (state == EMoveState.walking || isDoubleJumping)
             rb.drag = groundDrag;
         else
             rb.drag = 0;
@@ -154,11 +155,14 @@ public class PlayerMovementSystem : MonoBehaviour
             // Double Jump in air
             else if (readyToJump && landing && currentDoubleJumps > 0)
             {
+                isDoubleJumping = true;
                 Jump();
                 doubleJumpFeedback.PlayFeedbacks();
 
                 currentDoubleJumps--;
                 timeInAir = 0;
+
+                Invoke(nameof(ResetDoubleJump), jumpCooldown);
             }
         }
     }
@@ -212,6 +216,10 @@ public class PlayerMovementSystem : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+    private void ResetDoubleJump()
+    {
+        isDoubleJumping = false;
     }
 
     private void StateHandler()
