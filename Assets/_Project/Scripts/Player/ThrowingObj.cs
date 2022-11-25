@@ -13,10 +13,10 @@ public class ThrowingObj : MonoBehaviour
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
-
+    
     // Internal Variables
-    private Vector3 startThrowingPosition;
-    [HideInInspector] public bool isReturningWithForce;
+    [HideInInspector] public Vector3 startThrowingPosition;
+    
     public enum EThrowingState
     {
         ATTACHED,
@@ -24,7 +24,7 @@ public class ThrowingObj : MonoBehaviour
         RETAINED,
         COMEBACK
     }
-    [HideInInspector] public EThrowingState m_State = EThrowingState.ATTACHED;
+    public EThrowingState m_State = EThrowingState.ATTACHED;
     private Rigidbody m_Rb;
     private Collider m_Collider;
 
@@ -52,7 +52,8 @@ public class ThrowingObj : MonoBehaviour
     {
         if (Vector3.Distance(player.transform.position, transform.position) > maxDistanceToReturn)
         {
-            SetNewState(EThrowingState.RETAINED);
+            if (m_State != EThrowingState.RETAINED && m_State != EThrowingState.COMEBACK)
+                SetNewState(EThrowingState.RETAINED);
         }
     }
     
@@ -91,19 +92,8 @@ public class ThrowingObj : MonoBehaviour
         else if (m_State == EThrowingState.COMEBACK)
         {
             m_Rb.useGravity = false;
-
-            if (isReturningWithForce)
-            {
-                m_Rb.isKinematic = false;
-                m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
-            }
-            else
-            {
-                m_Rb.isKinematic = true;
-                m_Rb.interpolation = RigidbodyInterpolation.Extrapolate;
-            }
-
-
+            m_Rb.isKinematic = true;
+            m_Rb.interpolation = RigidbodyInterpolation.Extrapolate;
             m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 
             m_Collider.isTrigger = true;

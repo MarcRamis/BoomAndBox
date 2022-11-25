@@ -24,7 +24,6 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private bool canBeRedirected;
 
     [Header("Return")]
-    [SerializeField] public EReturnType returnType;
     [SerializeField] private float comebackForce;
     [SerializeField] private float distanceToTargetForSlowReturn;
     [SerializeField] private float multiplierSlowSpeed;
@@ -43,8 +42,6 @@ public class ThrowingSystem : MonoBehaviour
     private int throwsCounter = 0;
     private float elapsedTime;
     private Vector3 startPosition;
-
-    public enum EReturnType { FORCE, INTERPOLATION };
 
     // Start
     private void Start()
@@ -71,8 +68,7 @@ public class ThrowingSystem : MonoBehaviour
 
         else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
         {
-            if(!canBeRedirected) Throw(saveFirstThrowDir);
-            else Throw(cam.transform.forward);
+            toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
         }
         
         // Comeback to BOOM CHARACTER
@@ -87,17 +83,7 @@ public class ThrowingSystem : MonoBehaviour
     {
         if (toL.m_State != ThrowingObj.EThrowingState.COMEBACK) return;
 
-        switch (returnType)
-        {
-            case EReturnType.FORCE:
-                toL.isReturningWithForce = true;
-                ComeBackForce();
-                break;
-            case EReturnType.INTERPOLATION:
-                toL.isReturningWithForce = false;
-                ComeBackInterp();
-                break;
-        }
+        ComeBackInterp();
     }
 
     // Functions
@@ -105,17 +91,9 @@ public class ThrowingSystem : MonoBehaviour
     {
         // Preferences
             // change state
-        if (throwsCounter > maxCounterToBeThrowed)
-        {
-            toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
-        }
-        else
-        {
-            throwsCounter++;
-            toL.SetNewState(ThrowingObj.EThrowingState.THROW);
-        }
+        toL.SetNewState(ThrowingObj.EThrowingState.THROW);
 
-            // get rigidbody component
+        // get rigidbody component
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
             // change preferences
         projectileRb.useGravity = false;
@@ -126,21 +104,6 @@ public class ThrowingSystem : MonoBehaviour
             // add force
         Vector3 forceToAdd = forceDirection * throwForce + transform.up * throwUpwardForce;
         projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
-    }
-    private void ComeBackForce()
-    {
-        Vector3 direction = standPosition.position - objectToThrow.transform.position;
-        direction = direction.normalized * comebackForce;
-
-        Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
-        projectileRb.velocity = direction;
-        
-        if (Vector3.Distance(standPosition.position, objectToThrow.transform.position) < distanceToTargetForSlowReturn)
-        {
-            projectileRb.velocity = direction * multiplierSlowSpeed;
-        }
-
-        TargetIsNear();
     }
 
     private void ComeBackInterp()
@@ -168,16 +131,4 @@ public class ThrowingSystem : MonoBehaviour
         }
     }
 
-    private void HandleState()
-    {
-        switch (returnType)
-        {
-            case EReturnType.FORCE:
-                toL.isReturningWithForce = true;
-                break;
-            case EReturnType.INTERPOLATION:
-                toL.isReturningWithForce = false;
-                break;
-        }
-    }
 }
