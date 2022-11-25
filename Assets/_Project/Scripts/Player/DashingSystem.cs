@@ -12,28 +12,21 @@ public class DashingSystem : MonoBehaviour
     private ThrowingSystem tr;
 
     [Header("Dashing")]
-    [SerializeField] private EDashType dashType;
     [SerializeField] private float dashDistance;
-    [SerializeField] private float dashForce;
-    [SerializeField] private float dashUpwardForce;
-    [SerializeField] private float maxDashYSpeed;
     [SerializeField] private float dashDuration;
     [SerializeField] private float dashInterpTime = 3f;
     [SerializeField] private AnimationCurve dashInterpCurveSmooth;
-    private Vector3 delayedForceToApply;
     
     [Header("Settings")]
     [SerializeField] private bool disableGravity = false;
-    [SerializeField] private bool resetVel = true;
     [SerializeField] private LayerMask dashingLayers;
     
-    // To prevent spam
     [Header("Cooldown")]
     [SerializeField] private float dashCd;
     private float dashCdTimer;
     
     [Header("Inputs")]
-    [SerializeField] private KeyCode dashKey = KeyCode.E;
+    [SerializeField] private KeyCode dashKey = KeyCode.LeftShift;
     
     [Header("Effects")]
     [SerializeField] private GameObject speedPs;
@@ -46,10 +39,8 @@ public class DashingSystem : MonoBehaviour
     private const float targetNearDistance = 0.2f;
 
     // Internal variables
-    private Vector3 directionToDash;
     private Vector3 startPosition;
     private float elapsedTime;
-    public enum EDashType { DELAYEDFORCE, INTERPOLATION }
     
     // Start
     private void Start()
@@ -70,19 +61,33 @@ public class DashingSystem : MonoBehaviour
         // Dash
         if (m_Target != null)
         {
-            if (Input.GetKeyDown(dashKey))
+            // cant dash when companion is in mode: comeback, attached && throw_large
+            if (tr.toL.CanDash())
             {
-                if (tr.toL.m_State != ThrowingObj.EThrowingState.ATTACHED && tr.toL.m_State != ThrowingObj.EThrowingState.COMEBACK)
+                // if key input dash can dash
+                if (Input.GetKeyDown(dashKey))
                 {
-                    tr.toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
-
-                    if (dashCdTimer > 0) return;
-                    else dashCdTimer = dashCd;
-
-                    pm.isDashing = true;
-                    
-                    DoEffects();
+                    DoDash();
                 }
+                // if retained instant dash
+                else if (tr.toL.m_State == ThrowingObj.EThrowingState.RETAINED)
+                {
+                    DoDash();
+                }
+                // it could dash in throw large mode if the distance is enough close like the throw mode
+                //else if ()
+                //{
+                //
+                //}
+            }
+            else
+            {
+                if (pm.isDashing)
+                {
+                    dashCdTimer = dashCd;
+                    ResetDash();
+                }
+               
             }
         }
 
@@ -91,25 +96,32 @@ public class DashingSystem : MonoBehaviour
             dashCdTimer -= Time.deltaTime;
     }
 
+    // Fixed Update
     private void FixedUpdate()
     {
+        // always this is true do the interpolation to the companion
         if (pm.isDashing)
         {
-            switch (dashType)
-            {
-                case EDashType.DELAYEDFORCE:
-                    Dash();
-                    break;
-                case EDashType.INTERPOLATION:
-                    DashInterpo();
-                    break;
-            }
+            DashInterpo();
         }
+    }
+
+    // Functions
+    private void DoDash()
+    {
+        // cooldown
+        if (dashCdTimer > 0) return;
+        else dashCdTimer = dashCd;
+
+        pm.isDashing = true;
+
+        // feedback
+        DoEffects();
     }
 
     private void DashInterpo()
     {
-        // set variables
+        // change preferences
         startPosition = transform.position;
         m_Rb.useGravity = false;
         m_Rb.isKinematic = true;
@@ -126,74 +138,38 @@ public class DashingSystem : MonoBehaviour
         if (Vector3.Distance(transform.position, tr.objectToThrow.transform.position) < targetNearDistance)
         {
             // Reset
-            elapsedTime = 0;
-            m_Rb.useGravity = true;
-            m_Rb.isKinematic = false;
-            m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
-
             ResetDash();
         }
     }
-
-
-    private void Dash()
-    {
-        pm.maxYSpeed = maxDashYSpeed;
-        
-        Vector3 direction = m_Target.position - transform.position;
-        direction = direction.normalized;
-
-        Vector3 forceToApply = direction * dashForce + orientation.up * dashUpwardForce;
-        
-        delayedForceToApply = forceToApply;
-        Invoke(nameof(DelayedDashForce), 0.025f);
-
-        Invoke(nameof(ResetDash), dashDuration);
-        
-        if (disableGravity)
-            m_Rb.useGravity = false;
-    }
-
-    private void DelayedDashForce()
-    {
-        if (resetVel)
-            m_Rb.velocity = Vector3.zero;
-    
-        m_Rb.AddForce(delayedForceToApply, ForceMode.Impulse);
-    }
-
     private void ResetDash()
     {
-        pm.isDashing = false;
-        pm.maxYSpeed = 0;
+        // change preferences again
+        elapsedTime = 0;
+        m_Rb.useGravity = true;
+        m_Rb.isKinematic = false;
+        m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
 
+        // set modes
+        pm.isDashing = false;
+        tr.toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
+
+        // gravity
         if (disableGravity)
             m_Rb.useGravity = true;
-
+    
+        // effects
         GetComponent<TrailRenderer>().emitting = false;
         speedPs.SetActive(false);
     }
 
     private void SelectTarget()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, orientation.forward, out hit, dashDistance, dashingLayers.value))
-        {
-            m_Target = hit.collider.transform;
-        }
-        else
-        {
-            m_Target = tr.objectToThrow.transform;
-        }
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position, orientation.forward * dashDistance);
+        m_Target = tr.objectToThrow.transform;
     }
 
     private void DoEffects()
     {
+        // start effects
         dashFeedback.PlayFeedbacks();
         speedPs.SetActive(true);
         GetComponent<TrailRenderer>().emitting = true;
