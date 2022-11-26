@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxLimitsTrigger : MonoBehaviour
+public class BoxTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
