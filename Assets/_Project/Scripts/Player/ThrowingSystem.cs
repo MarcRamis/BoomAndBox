@@ -28,8 +28,6 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float returnTime;
     [SerializeField] private AnimationCurve returnCurveSmooth;
 
-    [Header("Cooldown")]
-
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackFeedback;
     [SerializeField] private MMFeedbacks throwingFeedback;

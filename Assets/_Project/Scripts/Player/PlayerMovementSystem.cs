@@ -21,12 +21,16 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private float airMultiplier;
     [SerializeField] private int doubleJumpCounter = 1;
     [HideInInspector] private bool readyToJump;
+    [SerializeField] private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
 
     [Header("Land")]
     [SerializeField] private float veryLowTimeLanding = 0.2f;
     [SerializeField] private float lowTimeLanding = 0.5f;
     [SerializeField] private float middleTimeLanding = 1.0f;
     [SerializeField] private float highTimeLanding = 2.0f;
+    private bool landing;
+    private float velocityLastFrame;
 
     [Header("Inputs")]
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
@@ -57,8 +61,6 @@ public class PlayerMovementSystem : MonoBehaviour
     private bool keepMomentum;
     private float speedChangeFactor;
     private EMoveState state;
-    private bool landing;
-    private float velocityLastFrame;
     private float timeInAir;
     private int currentDoubleJumps;
     private bool isDoubleJumping;
@@ -82,68 +84,52 @@ public class PlayerMovementSystem : MonoBehaviour
     // Update
     private void Update()
     {
-        // ground check
+        // Ground check
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
 
         MyInput();
         SpeedControl();
         StateHandler();
 
-        // handle drag
-        if (state == EMoveState.walking || isDoubleJumping)
-            m_Rb.drag = groundDrag;
-        else
-            m_Rb.drag = 0;
+        // Handle drag
+        HandleDrag();
     }
 
     // Fixed update
     private void FixedUpdate()
     {
         MovePlayer();
-
-        // landing
-        // Get land point. Were going down last frame, and now reached an almost null velocity
-        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(m_Rb.velocity.y) < lowVelocity))
-        {   
-            if (timeInAir >= highTimeLanding)
-            {
-                landingFeedback.PlayFeedbacks();
-            }
-            else if (timeInAir >= middleTimeLanding)
-            {
-                landingFeedback.PlayFeedbacks();
-            }
-            else if (timeInAir >= lowTimeLanding)
-            {
-            }
-            else if (timeInAir >= veryLowTimeLanding)
-            {
-            }
-                
-            landing = false;
-            timeInAir = 0;
-        }
-        velocityLastFrame = m_Rb.velocity.y;
-        
-        // Count the time the player is landing
-        if (landing)
-        {
-            timeInAir += Time.fixedDeltaTime;
-        }
+        OnLand();
     }
 
     // Functions
+    private void HandleDrag()
+    {
+        if (state == EMoveState.walking || isDoubleJumping)
+            m_Rb.drag = groundDrag;
+        else
+            m_Rb.drag = 0;
+    }
     private void MyInput()
     {
+        // Take input directions
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        
+        // coyote time
+        if (isGrounded) coyoteTimeCounter = coyoteTime;
+        else coyoteTimeCounter -= Time.deltaTime;
 
         // when to jump
-        if (Input.GetKey(jumpKey))
+        if (Input.GetKeyDown(jumpKey))
         {
             // Jump on ground
-            if (readyToJump && isGrounded)
+            /// <<summary>
+            /// Only can jump when is grounded or in coyote time
+            /// </summary>
+            if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
             {
+                coyoteTimeCounter = 0f;
                 readyToJump = false;
 
                 Jump();
@@ -153,7 +139,16 @@ public class PlayerMovementSystem : MonoBehaviour
             }
 
             // Double Jump in air
-            else if (readyToJump && landing && currentDoubleJumps > 0)
+            /// <summary>
+            /// Only can jump when is jump cooldown is ready to prevent the double jump spam
+            /// 
+            /// There is a counter of double jumps in air the player can make to change if it's necessary
+            /// 
+            /// Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in coyoteTime 
+            /// because it mustn't count
+            /// 
+            /// </summary> 
+            else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
             {
                 isDoubleJumping = true;
                 
@@ -166,6 +161,7 @@ public class PlayerMovementSystem : MonoBehaviour
                 Invoke(nameof(ResetDoubleJump), jumpCooldown);
             }
         }
+
     }
 
     private void MovePlayer()
@@ -187,7 +183,40 @@ public class PlayerMovementSystem : MonoBehaviour
             m_Rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
+    private void OnLand()
+    {
+        // Landing
+        // Get land point. Were going down last frame, and now reached an almost null velocity
+        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(m_Rb.velocity.y) < lowVelocity))
+        {
+            // Different operations for different fall length landing 
+            if (timeInAir >= highTimeLanding)
+            {
+                landingFeedback.PlayFeedbacks();
+            }
+            else if (timeInAir >= middleTimeLanding)
+            {
+                landingFeedback.PlayFeedbacks();
+            }
+            else if (timeInAir >= lowTimeLanding)
+            {
+            }
+            else if (timeInAir >= veryLowTimeLanding)
+            {
+            }
 
+            // Reset landing
+            landing = false;
+            timeInAir = 0;
+        }
+        velocityLastFrame = m_Rb.velocity.y;
+
+        // Count the time the player is landing
+        if (landing)
+        {
+            timeInAir += Time.fixedDeltaTime;
+        }
+    }
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(m_Rb.velocity.x, 0f, m_Rb.velocity.z);
@@ -249,7 +278,7 @@ public class PlayerMovementSystem : MonoBehaviour
             landing = true;
             state = EMoveState.air;
         }
-
+        
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
         if (lastState == EMoveState.dashing) keepMomentum = true;
         
