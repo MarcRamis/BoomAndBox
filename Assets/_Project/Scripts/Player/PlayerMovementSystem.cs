@@ -9,11 +9,16 @@ public class PlayerMovementSystem : MonoBehaviour
     [Header("Movement")]
     private float moveSpeed;
     [SerializeField] private float walkSpeed;
+    [SerializeField] private float aimSpeed;
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashSpeedChangeFactor;
-
     [SerializeField] public float maxYSpeed;
     [SerializeField] private float groundDrag;
+    private float horizontalInput;
+    private float verticalInput;
+    private Vector3 moveDirection;
+    [HideInInspector] public bool isDashing;
+    [HideInInspector] public bool isAiming;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce;
@@ -22,6 +27,8 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private int doubleJumpCounter = 1;
     [HideInInspector] private bool readyToJump;
     [SerializeField] private float coyoteTime = 0.2f;
+    private int currentDoubleJumps;
+    private bool isDoubleJumping;
     private float coyoteTimeCounter;
 
     [Header("Land")]
@@ -29,9 +36,10 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private float lowTimeLanding = 0.5f;
     [SerializeField] private float middleTimeLanding = 1.0f;
     [SerializeField] private float highTimeLanding = 2.0f;
+    private float timeInAir;
     private bool landing;
     private float velocityLastFrame;
-
+    
     [Header("Inputs")]
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
 
@@ -39,7 +47,6 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private Transform orientation;
-    [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isGrounded;
     
     [Header("Feedback")]
@@ -52,23 +59,18 @@ public class PlayerMovementSystem : MonoBehaviour
 
     // Internal variables
     private Rigidbody m_Rb;
-    private float horizontalInput;
-    private float verticalInput;
-    private Vector3 moveDirection;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
-    private EMoveState lastState;
     private bool keepMomentum;
     private float speedChangeFactor;
+    private EMoveState lastState;
     private EMoveState state;
-    private float timeInAir;
-    private int currentDoubleJumps;
-    private bool isDoubleJumping;
     
     public enum EMoveState
     {
         walking,
         dashing,
+        aiming,
         air
     }
 
@@ -168,17 +170,17 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         if (state == EMoveState.dashing) return;
         
-        // calculate movement direction
+        // Calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        // on ground
+        // On ground
         if (isGrounded)
         {
             m_Rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         }
-
-        // in air
-        else if (!isGrounded)
+        
+        // In air
+        else
         {
             m_Rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
@@ -258,10 +260,17 @@ public class PlayerMovementSystem : MonoBehaviour
         if (isDashing)
         {
             state = EMoveState.dashing;
-            //desiredMoveSpeed = dashSpeed;
-            //speedChangeFactor = dashSpeedChangeFactor;
+            desiredMoveSpeed = dashSpeed;
+            speedChangeFactor = dashSpeedChangeFactor;
 
             timeInAir = 0;
+        }
+
+        // Mode - Aiming
+        else if (isAiming)
+        {
+            state = EMoveState.aiming;
+            desiredMoveSpeed = aimSpeed;
         }
         
         // Mode - Walking

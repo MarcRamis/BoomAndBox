@@ -12,10 +12,11 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private Transform toAttach;
     [SerializeField] public GameObject objectToThrow;
     [HideInInspector] public ThrowingObj toL;
-    
+    private PlayerMovementSystem pm;
+
     [Header("Inputs")]
     [SerializeField] private KeyCode throwKey = KeyCode.Mouse0;
-    [SerializeField] private KeyCode throwLargeKey = KeyCode.Mouse1;
+    [SerializeField] private KeyCode aimKey = KeyCode.Mouse1;
     [SerializeField] private KeyCode returnKey = KeyCode.LeftControl;
     
     [Header("Throw")]
@@ -38,10 +39,11 @@ public class ThrowingSystem : MonoBehaviour
     // Internal variables
     private float elapsedTime;
     private Vector3 startPosition;
-
+    
     // Start
     private void Start()
     {
+        pm = GetComponent<PlayerMovementSystem>();
         toL = objectToThrow.GetComponent<ThrowingObj>();
     }
 
@@ -51,9 +53,9 @@ public class ThrowingSystem : MonoBehaviour
         // Throw BOX CHARACTER 
         if (readyToThrow)
         {
-            if (Input.GetKey(throwLargeKey))
+            if (Input.GetKey(aimKey))
             {
-                // Falta feedback para cuando estás apuntando
+                pm.isAiming = true;
 
                 if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
                 {
@@ -61,10 +63,13 @@ public class ThrowingSystem : MonoBehaviour
                     toL.SetNewState(ThrowingObj.EThrowingState.THROW_LARGE);
                     // Do Throw
                     Throw(cam.transform.forward, throwLargeForce);
+
+                    pm.isAiming = false;
                 }
             }
             else
             {
+                pm.isAiming = false;
                 if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
                 {
                     // change state

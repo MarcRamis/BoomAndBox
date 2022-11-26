@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 
+
+public enum ECompanionState
+{
+
+}
+
 public class ThrowingObj : MonoBehaviour
 {
     [Header("References")]
@@ -26,7 +32,7 @@ public class ThrowingObj : MonoBehaviour
         RETAINED,
         COMEBACK
     }
-    public EThrowingState m_State = EThrowingState.ATTACHED;
+    [SerializeField] public EThrowingState m_State = EThrowingState.ATTACHED;
     private Rigidbody m_Rb;
     private Collider m_Collider;
 
