@@ -17,6 +17,7 @@ public class Platform : MonoBehaviour
     [SerializeField] private Transform endPosition;
     [SerializeField] private float moveTime;
     [SerializeField] private AnimationCurve moveCurveSmooth;
+    private Vector3 currentPos;
     private float elapsedTime;
     private bool reachDestination;
 
@@ -40,26 +41,32 @@ public class Platform : MonoBehaviour
     {
         if (isMovable)
         {
-            elapsedTime += Time.fixedDeltaTime;
-            float percentageComplete = elapsedTime / moveTime;
-
-            if (reachDestination)
-            {
-                transform.position = Vector3.Lerp(endPosition.position, startPosition.position, moveCurveSmooth.Evaluate(percentageComplete));
-            }
-            else
-            {
-                transform.position = Vector3.Lerp(startPosition.position, endPosition.position, moveCurveSmooth.Evaluate(percentageComplete));
-            }
-            
-            if (percentageComplete >= 1.0f)
-            {
-                reachDestination = !reachDestination;
-                percentageComplete = 0.0f;
-                elapsedTime = 0.0f;
-            }
-
+            MovePlatform();
         }
+    }
+
+    private void MovePlatform()
+    {
+        elapsedTime += Time.fixedDeltaTime;
+        float percentageComplete = elapsedTime / moveTime;
+
+        if (reachDestination)
+        {
+            currentPos = Vector3.Lerp(endPosition.position, startPosition.position, moveCurveSmooth.Evaluate(percentageComplete));
+        }
+        else
+        {
+            currentPos = Vector3.Lerp(startPosition.position, endPosition.position, moveCurveSmooth.Evaluate(percentageComplete));
+        }
+        GetComponent<Rigidbody>().MovePosition(currentPos);
+
+        if (percentageComplete >= 1.0f)
+        {
+            reachDestination = !reachDestination;
+            percentageComplete = 0.0f;
+            elapsedTime = 0.0f;
+        }
+
     }
 
     // Functions
