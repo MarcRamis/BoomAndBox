@@ -6,12 +6,12 @@ public class AIStateMachine
 {
     public IAIState[] states;
     public Agent agent;
-    public AiBehaviour currentState;
+    public EAIState currentState;
 
     public AIStateMachine(Agent agent)
     {
         this.agent = agent;
-        int numStates = System.Enum.GetNames(typeof(AiBehaviour)).Length;
+        int numStates = System.Enum.GetNames(typeof(EAIState)).Length;
         states = new IAIState[numStates];
     }
 
@@ -21,7 +21,7 @@ public class AIStateMachine
         states[index] = state;
     }
 
-    public IAIState GetState(AiBehaviour stateID)
+    public IAIState GetState(EAIState stateID)
     {
         int index = (int)stateID;
         return states[index];
@@ -32,7 +32,7 @@ public class AIStateMachine
         GetState(currentState)?.Update(agent);
     }
 
-    public void ChangeState(AiBehaviour newState)
+    public void ChangeState(EAIState newState)
     {
         GetState(currentState)?.Exit(agent);
         currentState = newState;

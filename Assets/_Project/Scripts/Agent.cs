@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class Agent : MonoBehaviour
 {
     [Header("Agent Settings")]
-    [SerializeField] protected AiBehaviour initialState;
-    protected AIStateMachine stateMachine;
-    
-    protected void Start()
+    [SerializeField] public EAIState initialState;
+    [HideInInspector] public AIStateMachine stateMachine;
+    [HideInInspector] public NavMeshAgent navMesh;
+    [SerializeField] public AIAgentConfig config;
+
+    protected void Awake()
     {
+        navMesh = GetComponent<NavMeshAgent>();
         stateMachine = new AIStateMachine(this);
+        stateMachine.RegisterState(new AIChasePlayerState());
+        stateMachine.RegisterState(new AIIdleState());
+        stateMachine.RegisterState(new AIDronChargeState());
         stateMachine.ChangeState(initialState);
     }
     
     protected void FixedUpdate()
     {
         stateMachine.Update();
-        Debug.Log("a");
     }
 }

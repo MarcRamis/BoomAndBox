@@ -7402,6 +7402,7 @@ GameObject:
   - component: {fileID: 6449113727613805783}
   - component: {fileID: 6449113727613805782}
   - component: {fileID: 382268091516152964}
+  - component: {fileID: 8686463257513901598}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -7508,9 +7509,6 @@ MonoBehaviour:
   throwForce: 50
   throwLargeForce: 100
   throwCooldown: 0.25
-  comebackForce: 200
-  distanceToTargetForSlowReturn: 6
-  multiplierSlowSpeed: 0.1
   returnTime: 1
   returnCurveSmooth:
     serializedVersion: 2
@@ -7703,6 +7701,20 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727613805789}
   m_Enabled: 1
+--- !u!136 &8686463257513901598
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449113727613805789}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6449113727740359225
 GameObject:
   m_ObjectHideFlags: 0

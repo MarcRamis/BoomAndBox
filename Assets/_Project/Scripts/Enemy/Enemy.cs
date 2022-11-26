@@ -2,33 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EEnemyState
-{
-    IDLE,
-    CHASE_PLAYER,
-    PREPARING,
-    CHARGE
-}
-
-public abstract class Enemy : MonoBehaviour, IDamageable
+public abstract class Enemy : Agent, IDamageable
 {
     [Header("Settings")]
     [SerializeField] protected int health;
     public int Health { get; set; }
-    [SerializeField] protected EEnemyState enemyState;
-
     protected GameObject player; 
 
     // Awake
     void Awake()
     {
+        base.Awake();
         Init();
     }
 
     // Update
     void Update()
     {
-        Debug.Log("Enemy");
+    }
+    void FixedUpdate()
+    {
+        base.FixedUpdate();
     }
     
     public virtual void Init()

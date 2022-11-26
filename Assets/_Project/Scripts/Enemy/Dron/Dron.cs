@@ -41,12 +41,13 @@ public class Dron : Enemy
     private bool isPreparing;
 
     // Start
-    void Start()
+
+    private void Start()
     {
         m_Rb = GetComponent<Rigidbody>();
         followTarget = player;
         mMAutoRotate.OrbitCenterTransform = idleTarget.transform;
-        mMAutoRotate.enabled = true;
+        //mMAutoRotate.enabled = true;
     }
 
     // Update 
@@ -55,77 +56,55 @@ public class Dron : Enemy
     }
     private void FixedUpdate()
     {
-        if (enemyState != EEnemyState.PREPARING && enemyState != EEnemyState.CHARGE)
-        {
-            // start preparing for charge
-            if (Vector3.Distance(player.transform.position, transform.position) < distanceToStartCharging)
-            {
-                enemyState = EEnemyState.PREPARING;
-                isPreparing = true;
+        base.FixedUpdate();
 
-                // Prepare for charge
-                Invoke(nameof(DoCharge), timePreparing);
-            }
-
-            // chase player
-            else if (Vector3.Distance(player.transform.position, transform.position) < distanceToFollowPlayer && !isPreparing)
-            {
-                mMAutoRotate.enabled = false;
-                enemyState = EEnemyState.CHASE_PLAYER;
-                m_Rb.velocity = Seek(player.transform.position) * moveSpeed * Time.fixedDeltaTime;
-            }
-
-            // idle
-            else 
-            {
-                mMAutoRotate.enabled = true;
-                enemyState = EEnemyState.IDLE;
-            }
-        }
-        // preparing state
-        else if (enemyState == EEnemyState.PREPARING)
-        {
-            m_Rb.velocity = Vector3.zero;
-            preparingFeedback.PlayFeedbacks();
-        }
-
-        else
-        {
-            mMAutoRotate.enabled = true;
-            enemyState = EEnemyState.IDLE;
-        }
+        //if (enemyState != EEnemyState.PREPARING && enemyState != EEnemyState.CHARGE)
+        //{
+        //    // start preparing for charge
+        //    if (Vector3.Distance(player.transform.position, transform.position) < distanceToStartCharging)
+        //    {
+        //        enemyState = EEnemyState.PREPARING;
+        //        isPreparing = true;
+        //
+        //        // Prepare for charge
+        //        Invoke(nameof(DoCharge), timePreparing);
+        //    }
+        //
+        //    // chase player
+        //    else if (Vector3.Distance(player.transform.position, transform.position) < distanceToFollowPlayer && !isPreparing)
+        //    {
+        //        mMAutoRotate.enabled = false;
+        //        enemyState = EEnemyState.CHASE_PLAYER;
+        //        m_Rb.velocity = Seek(player.transform.position) * moveSpeed * Time.fixedDeltaTime;
+        //    }
+        //
+        //    // idle
+        //    else 
+        //    {
+        //        mMAutoRotate.enabled = true;
+        //        enemyState = EEnemyState.IDLE;
+        //    }
+        //}
+        //// preparing state
+        //else if (enemyState == EEnemyState.PREPARING)
+        //{
+        //    m_Rb.velocity = Vector3.zero;
+        //    preparingFeedback.PlayFeedbacks();
+        //}
+        //
+        //else
+        //{
+        //    mMAutoRotate.enabled = true;
+        //    enemyState = EEnemyState.IDLE;
+        //}
     }
 
-    private void ManageStates()
-    {
-        switch (enemyState)
-        {
-            case EEnemyState.IDLE:
-                
-                
-                
-                break;
-            case EEnemyState.CHASE_PLAYER:
-
-               
-
-                break;
-            case EEnemyState.PREPARING:
-
-                
-
-                break;
-            case EEnemyState.CHARGE:
-
-                break;
-        }
-    }
     
     private void DoCharge()
     {
         // cooldown?
 
-        enemyState = EEnemyState.CHARGE;
+        //enemyState = EEnemyState.CHARGE;
 
         Debug.Log("Charge");
         chargeFeedback.PlayFeedbacks();
@@ -146,7 +125,7 @@ public class Dron : Enemy
     
     private void ResetState()
     {
-        enemyState = EEnemyState.IDLE;
+        //enemyState = EEnemyState.IDLE;
         isPreparing = false;
     }
 
