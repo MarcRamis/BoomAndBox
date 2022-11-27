@@ -28,7 +28,6 @@ public class Dron : Enemy
     [Header("References")]
     [SerializeField] private GameObject idleTarget;
     private GameObject followTarget;
-    [SerializeField] private MMAutoRotate mMAutoRotate;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks preparingFeedback;
@@ -37,17 +36,16 @@ public class Dron : Enemy
     // Constant variables
 
     // Internal variables
-    private Rigidbody m_Rb;
+    //private Rigidbody m_Rb;
     private bool isPreparing;
 
     // Start
 
     private void Start()
     {
-        m_Rb = GetComponent<Rigidbody>();
+        base.Start();
+        //m_Rb = GetComponent<Rigidbody>();
         followTarget = player;
-        mMAutoRotate.OrbitCenterTransform = idleTarget.transform;
-        //mMAutoRotate.enabled = true;
     }
 
     // Update 
@@ -57,6 +55,8 @@ public class Dron : Enemy
     private void FixedUpdate()
     {
         base.FixedUpdate();
+
+        Debug.Log(stateMachine.currentState);
 
         //if (enemyState != EEnemyState.PREPARING && enemyState != EEnemyState.CHARGE)
         //{
@@ -68,7 +68,7 @@ public class Dron : Enemy
         //
         //        // Prepare for charge
         //        Invoke(nameof(DoCharge), timePreparing);
-        //    }
+        //    }maxIdleWalkRadius
         //
         //    // chase player
         //    else if (Vector3.Distance(player.transform.position, transform.position) < distanceToFollowPlayer && !isPreparing)
@@ -117,7 +117,7 @@ public class Dron : Enemy
         Vector3 direction = player.transform.position - transform.position;
         direction = direction.normalized;
         Vector3 forceToApply = direction * forceCharge;
-        m_Rb.AddForce(forceToApply, ForceMode.Impulse);
+        //m_Rb.AddForce(forceToApply, ForceMode.Impulse);
         
         // check new states
         Invoke(nameof(ResetState), cooldownCharge);
@@ -147,19 +147,8 @@ public class Dron : Enemy
         Gizmos.DrawWireSphere(transform.position, distanceToFollowPlayer);
     }
 
-    private Vector3 Seek(Vector3 _target)
+    private void OnTriggerEnter(Collider other)
     {
-        Vector3 direction = _target - transform.position;
-        direction = direction.normalized;
-
-        return direction;
-    }
-
-    private Vector3 Flee(Vector3 _target)
-    {
-        Vector3 direction = transform.position - _target;
-        direction = direction.normalized;
-
-        return direction;
+        //if (other.gameObject.tag == )
     }
 }

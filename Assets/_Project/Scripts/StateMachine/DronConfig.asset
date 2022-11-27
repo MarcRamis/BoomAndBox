@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 436d4d7d3921ee64cac42519882c9f55, type: 3}
   m_Name: DronConfig
   m_EditorClassIdentifier: 
-  maxTime: 0.1
+  maxTimeChase: 0.4
   maxDistance: 1
+  maxRandomWalkSightRadiusDistance: 10
+  maxRandomWalkRadius: 10
+  maxTimeRandomWalk: 2
+  maxPreparingSightRadiusDistance: 10

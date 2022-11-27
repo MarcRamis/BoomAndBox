@@ -65,6 +65,7 @@ public class CameraManager : MonoBehaviour
 
                 // Im doing this because the looking at values are the previous used in the camera mode,
                 // so i want the camera to be the same that the last camera
+                thirdPersonCameraAimLookingAt.transform.position = thirdPersonCameraLookingAt.transform.position;
                 thirdPersonCameraAimLookingAt.GetComponent<CinemachineFreeLook>().m_XAxis.Value = thirdPersonCameraLookingAt.GetComponent<CinemachineFreeLook>().m_XAxis.Value;
                 thirdPersonCameraAimLookingAt.GetComponent<CinemachineFreeLook>().m_YAxis.Value = thirdPersonCameraLookingAt.GetComponent<CinemachineFreeLook>().m_YAxis.Value;
 
@@ -75,6 +76,7 @@ public class CameraManager : MonoBehaviour
                 
             case ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET_AIM:
 
+                thirdPersonCameraLookingAt.transform.position = thirdPersonCameraAimLookingAt.transform.position;
                 thirdPersonCameraLookingAt.GetComponent<CinemachineFreeLook>().m_XAxis.Value = thirdPersonCameraAimLookingAt.GetComponent<CinemachineFreeLook>().m_XAxis.Value;
                 thirdPersonCameraLookingAt.GetComponent<CinemachineFreeLook>().m_YAxis.Value = thirdPersonCameraAimLookingAt.GetComponent<CinemachineFreeLook>().m_YAxis.Value;
 

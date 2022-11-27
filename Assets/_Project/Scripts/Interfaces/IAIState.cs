@@ -1,6 +1,6 @@
 ﻿public enum EAIState
 {
-    IDLE,
+    RANDOM_WALK,
     CHASE_PLAYER,
     CHARGE
 }

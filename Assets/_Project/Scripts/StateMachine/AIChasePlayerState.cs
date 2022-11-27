@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AIChasePlayerState : IAIState
 {
-    private GameObject player;
+    private Transform player;
     private float timer = 0.0f;
 
     public EAIState GetId()
@@ -15,7 +15,7 @@ public class AIChasePlayerState : IAIState
     public void Enter(Agent agent)
     {
         if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.FindGameObjectWithTag("Player").transform;
     }
     public void Update(Agent agent)
     {
@@ -33,12 +33,12 @@ public class AIChasePlayerState : IAIState
 
         if (timer < 0.0f)
         {
-            float sqDistance = (player.transform.position - agent.navMesh.destination).sqrMagnitude;
+            float sqDistance = (player.position - agent.navMesh.destination).sqrMagnitude;
             if (sqDistance > agent.config.maxDistance * agent.config.maxDistance)
             {
-                agent.navMesh.destination = player.transform.position;
+                agent.navMesh.destination = player.position;
             }
-            timer = agent.config.maxTime;
+            timer = agent.config.maxTimeChase;
         }
     }
 }

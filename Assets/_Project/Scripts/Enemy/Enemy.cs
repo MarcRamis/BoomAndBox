@@ -10,17 +10,22 @@ public abstract class Enemy : Agent, IDamageable
     protected GameObject player; 
 
     // Awake
-    void Awake()
+    protected void Awake()
     {
         base.Awake();
         Init();
     }
+    protected void Start()
+    {
+        base.Start();
+    }
 
     // Update
-    void Update()
+    protected void Update()
     {
+        base.Update();
     }
-    void FixedUpdate()
+    protected void FixedUpdate()
     {
         base.FixedUpdate();
     }
@@ -40,9 +45,9 @@ public abstract class Enemy : Agent, IDamageable
             OnDeath();
         }
     }
-
+    
     public virtual void OnDeath()
     {
-
+        Debug.Log("Die");
     }
 }

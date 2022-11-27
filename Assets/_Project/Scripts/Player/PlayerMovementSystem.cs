@@ -107,7 +107,7 @@ public class PlayerMovementSystem : MonoBehaviour
     // Functions
     private void HandleDrag()
     {
-        if (state == EMoveState.walking || isDoubleJumping)
+        if (state == EMoveState.walking || (state == EMoveState.aiming && isGrounded) || isDoubleJumping)
             m_Rb.drag = groundDrag;
         else
             m_Rb.drag = 0;

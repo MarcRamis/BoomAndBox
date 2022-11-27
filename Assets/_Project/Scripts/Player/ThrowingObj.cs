@@ -81,7 +81,7 @@ public class ThrowingObj : MonoBehaviour
                 m_Rb.interpolation = RigidbodyInterpolation.None;
                 m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 
-                m_Collider.isTrigger = false;
+                m_Collider.isTrigger = true;
 
                 break;
             case EThrowingState.THROW:
@@ -137,6 +137,9 @@ public class ThrowingObj : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag == "Enemy")
+            collision.gameObject.GetComponent<IDamageable>().Damage(1);
+
         m_State = EThrowingState.COMEBACK;
     }
     public bool CanDash()

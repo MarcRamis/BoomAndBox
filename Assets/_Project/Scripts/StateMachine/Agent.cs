@@ -14,11 +14,18 @@ public abstract class Agent : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         stateMachine = new AIStateMachine(this);
         stateMachine.RegisterState(new AIChasePlayerState());
-        stateMachine.RegisterState(new AIIdleState());
+        stateMachine.RegisterState(new AIRandomWalkState());
         stateMachine.RegisterState(new AIDronChargeState());
         stateMachine.ChangeState(initialState);
     }
-    
+    protected void Start()
+    {
+    }
+    protected void Update()
+    {
+
+    }
+
     protected void FixedUpdate()
     {
         stateMachine.Update();
