@@ -382,7 +382,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585447317}
-  m_LocalRotation: {x: 0.02885185, y: 0.09350446, z: -0.0027107962, w: 0.99519706}
+  m_LocalRotation: {x: 0.028851848, y: 0.09350449, z: -0.0027107974, w: 0.99519706}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -925,7 +925,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1312522813}
-  m_LocalRotation: {x: 0.0057598, y: 0.0935422, z: -0.00054116634, w: 0.99559855}
+  m_LocalRotation: {x: 0.0057597975, y: 0.09354217, z: -0.0005411659, w: 0.99559855}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7804,7 +7804,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727418759626}
-  m_LocalRotation: {x: 0.028851843, y: 0.09350444, z: -0.0027107957, w: 0.99519706}
+  m_LocalRotation: {x: 0.028851843, y: 0.0935045, z: -0.0027107978, w: 0.99519706}
   m_LocalPosition: {x: -0.18, y: 15.55, z: -14.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8285,11 +8285,11 @@ MonoBehaviour:
   objectToThrow: {fileID: 5335073555746238997}
   toL: {fileID: 0}
   throwKey: 323
-  aimKey: 324
+  throwLargeKey: 324
   returnKey: 306
   throwForce: 50
   throwLargeForce: 100
-  throwCooldown: 0.25
+  throwCooldown: 0.1
   returnTime: 1
   returnCurveSmooth:
     serializedVersion: 2
@@ -10012,37 +10012,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7390341569393603921, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
   m_PrefabInstance: {fileID: 3208315150353794884}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3515147436873141554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5335073555746238997}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f009572b4d918346b24337ef83f88c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Rotating: 1
-  RotationSpace: 0
-  UpdateMode: 2
-  RotationSpeed: {x: 100, y: 0, z: 0}
-  Orbiting: 1
-  AdditiveOrbitRotation: 0
-  OrbitCenterTransform: {fileID: 6449113727373662095}
-  OrbitCenterOffset: {x: 0, y: 0.84, z: 0}
-  OrbitRotationAxis: {x: -0.21, y: 1, z: 0}
-  OrbitRotationSpeed: 1000
-  OrbitRadius: 1.8
-  OrbitCorrectionSpeed: 10
-  DrawGizmos: 1
-  OrbitPlaneColor: {r: 54, g: 169, b: 225, a: 0.02}
-  OrbitLineColor: {r: 225, g: 225, b: 225, a: 0.1}
-  _orbitCenter: {x: -0.18, y: 14.6, z: -10.22}
-  _worldRotationAxis: {x: -0.20044677, y: 1, z: 0.0626186}
-  _snappedPosition: {x: 0.80389047, y: 14.777562, z: -9.9061}
-  _radius: {x: 1.6900438, y: 0.30500054, z: 0.5391908}
 --- !u!1001 &7458877777660471767
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class ThrowingSystem : MonoBehaviour
 
     [Header("Inputs")]
     [SerializeField] private KeyCode throwKey = KeyCode.Mouse0;
-    [SerializeField] private KeyCode aimKey = KeyCode.Mouse1;
+    [SerializeField] private KeyCode throwLargeKey = KeyCode.Mouse1;
     [SerializeField] private KeyCode returnKey = KeyCode.LeftControl;
     
     [Header("Throw")]
@@ -53,43 +53,36 @@ public class ThrowingSystem : MonoBehaviour
         // Throw BOX CHARACTER 
         if (readyToThrow)
         {
-            if (Input.GetKey(aimKey))
+
+            // Throw large
+            if (Input.GetKeyDown(throwLargeKey))
             {
-                pm.isAiming = true;
-
-                if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
-                {
-                    // change state
-                    toL.SetNewState(ThrowingObj.EThrowingState.THROW_LARGE);
-                    // Do Throw
-                    Throw(cam.transform.forward, throwLargeForce);
-
-                    pm.isAiming = false;
-                }
+                // change state
+                toL.SetNewState(ThrowingObj.EThrowingState.THROW_LARGE);
+                // Do Throw
+                Throw(cam.transform.forward, throwLargeForce);
             }
-            else
-            {
-                pm.isAiming = false;
-                if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
-                {
-                    // change state
-                    toL.SetNewState(ThrowingObj.EThrowingState.THROW);
-                    // Do Throw
-                    Throw(cam.transform.forward, throwForce);
-                }
-                else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.THROW)
-                {
-                    toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
-                }
 
-                else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
-                {
-                    toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
-                }
+            // Throw short -- dash
+            if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
+            {
+                // change state
+                toL.SetNewState(ThrowingObj.EThrowingState.THROW);
+                // Do Throw
+                Throw(cam.transform.forward, throwForce);
+            }
+            else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.THROW)
+            {
+                toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
+            }
+
+            else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
+            {
+                toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
             }
         }
 
-        // Comeback to BOOM CHARACTER
+        // Comeback
         if (Input.GetKeyDown(returnKey) && toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
         {
             toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
