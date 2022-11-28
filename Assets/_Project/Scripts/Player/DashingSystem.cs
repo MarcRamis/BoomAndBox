@@ -161,12 +161,10 @@ public class DashingSystem : MonoBehaviour
         GetComponent<TrailRenderer>().emitting = false;
         speedPs.SetActive(false);
     }
-
     private void SelectTarget()
     {
         m_Target = tr.objectToThrow.transform;
     }
-
     private void DoEffects()
     {
         // start effects

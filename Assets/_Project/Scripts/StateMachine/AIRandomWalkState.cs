@@ -9,6 +9,7 @@ public class AIRandomWalkState : IAIState
 
     public void Enter(Agent agent)
     {
+        agent.navMesh.speed = agent.config.idleSpeed;
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player").transform;
 

@@ -14,11 +14,25 @@ public class AIChasePlayerState : IAIState
 
     public void Enter(Agent agent)
     {
+        agent.navMesh.speed = agent.config.chaseSpeed;
+
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player").transform;
     }
     public void Update(Agent agent)
     {
+        if (IsPlayerFarAway(agent))
+        {
+            agent.stateMachine.ChangeState(EAIState.RANDOM_WALK);
+            return;
+        }
+        
+        if (IsPlayerNear(agent))
+        {
+            agent.stateMachine.ChangeState(EAIState.CHARGE);
+            return;
+        }
+
         CheckPathWithTime(agent);
     }
 
@@ -40,5 +54,15 @@ public class AIChasePlayerState : IAIState
             }
             timer = agent.config.maxTimeChase;
         }
+    }
+
+    private bool IsPlayerFarAway(Agent agent)
+    {
+        return Vector3.Distance(player.transform.position, agent.transform.position) > agent.config.maxDistanceToIdleState;
+    }
+
+    private bool IsPlayerNear(Agent agent)
+    {
+        return Vector3.Distance(player.transform.position, agent.transform.position) < agent.config.maxDistanceToChargeState;
     }
 }

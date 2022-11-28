@@ -53,7 +53,6 @@ public class ThrowingSystem : MonoBehaviour
         // Throw BOX CHARACTER 
         if (readyToThrow)
         {
-
             // Throw large
             if (Input.GetKeyDown(throwLargeKey))
             {

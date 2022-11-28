@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 
-
 public enum ECompanionState
 {
 
@@ -135,13 +134,16 @@ public class ThrowingObj : MonoBehaviour
         m_Rb.AddForce(Vector3.forward * 5, ForceMode.Impulse);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Enemy")
-            collision.gameObject.GetComponent<IDamageable>().Damage(1);
+        if (other.gameObject.tag == "Enemy" && m_State != EThrowingState.ATTACHED)
+            other.gameObject.GetComponent<IDamageable>().Damage(1);
 
-        m_State = EThrowingState.COMEBACK;
+
+        if (m_State != EThrowingState.ATTACHED)
+            m_State = EThrowingState.COMEBACK;
     }
+
     public bool CanDash()
     {
         return m_State != ThrowingObj.EThrowingState.ATTACHED
