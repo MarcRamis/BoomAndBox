@@ -22,5 +22,5 @@ MonoBehaviour:
   maxTimeRandomWalk: 2
   idleSpeed: 2
   chargeForce: 300
-  timePreparingToCharge: 1.2
+  timePreparingToCharge: 1
   maxDistanceToChaseState: 20

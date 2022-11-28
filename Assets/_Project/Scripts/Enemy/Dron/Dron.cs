@@ -10,15 +10,15 @@ public class Dron : Enemy
     /// <summary>
     /// How the Dron works!
     /// 
-    /// IDLE -> CHASE PLAYER -> IDLE
+    /// 
     /// </summary>
-
+    
     // References
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks damageFeedback;
     [SerializeField] private MMFeedbacks dieFeedback;
-    [SerializeField] private MMFeedbacks hitPlayerFeedback;
-    [SerializeField] public GameObject chargePrefab;
+    [SerializeField] public MMFeedbacks preparingForChargeFeedback;
+    [SerializeField] public MMFeedbacks chargeFeedback;
     [SerializeField] public GameObject explosionPrefab;
     [SerializeField] public GameObject model;
 
@@ -28,17 +28,17 @@ public class Dron : Enemy
 
     // Start
 
-    private void Start()
+    private new void Start()
     {
         base.Start();
     }
 
     // Update 
-    void Update()
+    private new void Update()
     {
         base.Update();
     }
-    private void FixedUpdate()
+    private new void FixedUpdate()
     {
         base.FixedUpdate();
     }
@@ -46,7 +46,6 @@ public class Dron : Enemy
     public override void Damage(int damageAmount)
     {
         base.Damage(damageAmount);
-
         damageFeedback.PlayFeedbacks();
     }
 
@@ -61,9 +60,8 @@ public class Dron : Enemy
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && rigidbody.velocity.magnitude > 0.1f)
         {
-            hitPlayerFeedback.PlayFeedbacks();
             collision.gameObject.GetComponent<IDamageable>().Damage(1);
         }
     }

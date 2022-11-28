@@ -5,7 +5,11 @@ using MoreMountains.Feedbacks;
 
 public enum ECompanionState
 {
-
+    ATTACHED,
+    THROW,
+    THROW_LARGE,
+    RETAINED,
+    COMEBACK
 }
 
 public class ThrowingObj : MonoBehaviour
@@ -19,7 +23,7 @@ public class ThrowingObj : MonoBehaviour
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
-    
+
     // Internal Variables
     [HideInInspector] public Vector3 startThrowingPosition;
     

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -8,6 +9,15 @@ public class Player : MonoBehaviour, IDamageable
     
     [Header("Settings")]
     [SerializeField] private int health;
+
+    [Header("Feedback")]
+    [SerializeField] private MMFeedbacks receiveDamageFeedback;
+
+    // Internal variables
+    private bool justReceivedDamage = false;
+
+    // Constant variables
+    private const float justReceivedDamageTimer = 0.25f;
 
     // Start
     void Start()
@@ -21,9 +31,23 @@ public class Player : MonoBehaviour, IDamageable
         
     }
 
+    // Functions
     public void Damage(int damageAmount)
     {
-        Health -= damageAmount;
+        if (!justReceivedDamage)
+        {
+            // Apply operations
+            Health -= damageAmount;
+            receiveDamageFeedback.PlayFeedbacks();
+            justReceivedDamage = true;
+
+            // Reset timer to receive damage
+            Invoke(nameof(ResetJustReceivedDamage), justReceivedDamageTimer);
+        }
+    }
+    private void ResetJustReceivedDamage()
+    {
+        justReceivedDamage = false;
     }
 
 }

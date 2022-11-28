@@ -15,26 +15,32 @@ public abstract class Enemy : Agent, IDamageable
     [HideInInspector] public bool isGrounded;
     private const float gravityAddition = 1.0f;
 
+    // Internal variables
+    private bool justReceivedDamage = false;
+
+    // Constant variables
+    private const float justReceivedDamageTimer = 0.25f;
+
     // Awake
-    protected void Awake()
+    protected new void Awake()
     {
         base.Awake();
         Init();
     }
-    protected void Start()
+    protected new void Start()
     {
         base.Start();
     }
 
     // Update
-    protected void Update()
+    protected new void Update()
     {
         base.Update();
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
         HandleGravity();
     }
-    protected void FixedUpdate()
+    protected new void FixedUpdate()
     {
         base.FixedUpdate();
     }
@@ -47,12 +53,23 @@ public abstract class Enemy : Agent, IDamageable
 
     public virtual void Damage(int damageAmount)
     {
-        Health -= damageAmount;
+        if (!justReceivedDamage)
+        {
+            Health -= damageAmount;
+
+            justReceivedDamage = true;
+            Invoke(nameof(ResetJustReceivedDamage), justReceivedDamageTimer);
+        }
         
         if (Health <= 0)
         {
             OnDeath();
         }
+    }
+
+    private void ResetJustReceivedDamage()
+    {
+        justReceivedDamage = false;
     }
     
     public virtual void OnDeath()

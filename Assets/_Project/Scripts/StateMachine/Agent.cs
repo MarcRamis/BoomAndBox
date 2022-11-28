@@ -8,7 +8,7 @@ public abstract class Agent : MonoBehaviour
     [HideInInspector] public AIStateMachine stateMachine;
     [HideInInspector] public NavMeshAgent navMesh;
     [SerializeField] public AIAgentConfig config;
-    [SerializeField] public Rigidbody rigidbody;
+    [SerializeField] public new Rigidbody rigidbody;
 
     protected void Awake()
     {
