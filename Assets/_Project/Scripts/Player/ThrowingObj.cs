@@ -145,6 +145,9 @@ public class ThrowingObj : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag == "Enemy" && m_State != EThrowingState.ATTACHED)
+            collision.gameObject.GetComponent<IDamageable>().Damage(1);
+
         if (m_State != EThrowingState.ATTACHED)
             m_State = EThrowingState.COMEBACK;
     }
