@@ -13,13 +13,13 @@ public abstract class Enemy : Agent, IDamageable
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask whatIsGround;
     [HideInInspector] public bool isGrounded;
-    private const float gravityAddition = 1.0f;
 
     // Internal variables
     private bool justReceivedDamage = false;
 
     // Constant variables
-    private const float justReceivedDamageTimer = 0.25f;
+    private const float justReceivedDamageTimer = 0.15f;
+    private const float gravityAddition = 2.0f;
 
     // Awake
     protected new void Awake()

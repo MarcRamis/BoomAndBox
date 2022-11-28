@@ -16,15 +16,16 @@ public class BoxChildCharacter : MonoBehaviour
     {
         if (other.transform.tag == "Player")
         {
-            other.transform.SetParent(transform.parent);
+            player.transform.parent.SetParent(transform);
         }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.transform.tag == "Player")
         {
-            other.transform.SetParent(null);
+            player.transform.parent.SetParent(null);
         }
     }
 }
