@@ -382,7 +382,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585447317}
-  m_LocalRotation: {x: 0.02885189, y: 0.09350446, z: -0.0027107997, w: 0.99519706}
+  m_LocalRotation: {x: 0.028851891, y: 0.09350449, z: -0.002710801, w: 0.99519706}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -774,6 +774,37 @@ MonoBehaviour:
   MaxPitch: 1
   SfxAudioMixerGroup: {fileID: 0}
   Priority: 128
+--- !u!1 &906650391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 906650392}
+  m_Layer: 8
+  m_Name: Ground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &906650392
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906650391}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.861, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6449113727613805787}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1298832150
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,7 +956,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1312522813}
-  m_LocalRotation: {x: 0.0057598427, y: 0.09354218, z: -0.0005411702, w: 0.99559855}
+  m_LocalRotation: {x: 0.0057598418, y: 0.09354216, z: -0.00054116995, w: 0.99559855}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7982,7 +8013,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727418759626}
-  m_LocalRotation: {x: 0.02885188, y: 0.09350444, z: -0.002710799, w: 0.99519706}
+  m_LocalRotation: {x: 0.028851883, y: 0.0935045, z: -0.0027108015, w: 0.99519706}
   m_LocalPosition: {x: -1, y: 2.53, z: -5.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8389,6 +8420,7 @@ Transform:
   - {fileID: 624070224}
   - {fileID: 541924059}
   - {fileID: 1565508939}
+  - {fileID: 906650392}
   m_Father: {fileID: 6449113727402268853}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 17.349, z: 0}
@@ -8452,11 +8484,12 @@ MonoBehaviour:
   middleTimeLanding: 1.35
   highTimeLanding: 3
   jumpKey: 32
-  playerHeight: 2
+  groundRadius: 0.2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
   orientation: {fileID: 6449113727587546354}
+  groundTransform: {fileID: 906650392}
   isGrounded: 0
   jumpFeedback: {fileID: 1066584040459466906}
   doubleJumpFeedback: {fileID: 624070227}

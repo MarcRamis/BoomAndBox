@@ -44,9 +44,10 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
-    [SerializeField] private float playerHeight;
+    [SerializeField] private float groundRadius;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private Transform orientation;
+    [SerializeField] private Transform groundTransform;
     [HideInInspector] public bool isGrounded;
     
     [Header("Feedback")]
@@ -87,7 +88,7 @@ public class PlayerMovementSystem : MonoBehaviour
     private void Update()
     {
         // Ground check
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        CheckGround();
 
         MyInput();
         SpeedControl();
@@ -95,6 +96,12 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // Handle drag
         HandleDrag();
+    }
+    
+    private void CheckGround()
+    {
+        var hitColliders = Physics.OverlapSphere(groundTransform.position, groundRadius, whatIsGround);
+        isGrounded = hitColliders.Length > 0;
     }
 
     // Fixed update
@@ -330,5 +337,11 @@ public class PlayerMovementSystem : MonoBehaviour
         moveSpeed = desiredMoveSpeed;
         speedChangeFactor = 1f;
         keepMomentum = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(groundTransform.position, groundRadius);
     }
 }
