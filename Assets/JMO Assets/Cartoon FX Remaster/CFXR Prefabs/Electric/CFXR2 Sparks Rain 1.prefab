@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 763799897560185546}
   - component: {fileID: 9000458058102257021}
   m_Layer: 0
-  m_Name: CFXR2 Sparks Rain
+  m_Name: CFXR2 Sparks Rain 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

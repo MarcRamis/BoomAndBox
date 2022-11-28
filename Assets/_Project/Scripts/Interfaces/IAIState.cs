@@ -1,13 +1,13 @@
-﻿public enum AiBehaviour
+﻿public enum EAIState
 {
-    ORBIT,
+    RANDOM_WALK,
     CHASE_PLAYER,
-    DRON_CHARGE
+    CHARGE
 }
 
 public interface IAIState
 {
-    AiBehaviour GetId();
+    EAIState GetId();
 
     void Enter(Agent agent);
     void Update(Agent agent);

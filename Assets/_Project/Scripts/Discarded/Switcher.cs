@@ -18,7 +18,7 @@ public class Switcher : MonoBehaviour
     //[SerializeField] private Platform.EPlatformState firstGroupPlaftormsSwapState;
     //[SerializeField] private Platform.EPlatformState secondGroupPlatformsSwapState;
 
-    private bool isActivated = false;
+    //private bool isActivated = false;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks hitFeedback;

@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 
+public enum ECompanionState
+{
+    ATTACHED,
+    THROW,
+    THROW_LARGE,
+    RETAINED,
+    COMEBACK
+}
+
 public class ThrowingObj : MonoBehaviour
 {
     [Header("References")]
@@ -14,7 +23,7 @@ public class ThrowingObj : MonoBehaviour
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
-    
+
     // Internal Variables
     [HideInInspector] public Vector3 startThrowingPosition;
     
@@ -26,7 +35,7 @@ public class ThrowingObj : MonoBehaviour
         RETAINED,
         COMEBACK
     }
-    public EThrowingState m_State = EThrowingState.ATTACHED;
+    [SerializeField] public EThrowingState m_State = EThrowingState.ATTACHED;
     private Rigidbody m_Rb;
     private Collider m_Collider;
 
@@ -75,7 +84,7 @@ public class ThrowingObj : MonoBehaviour
                 m_Rb.interpolation = RigidbodyInterpolation.None;
                 m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 
-                m_Collider.isTrigger = false;
+                m_Collider.isTrigger = true;
 
                 break;
             case EThrowingState.THROW:
@@ -129,10 +138,16 @@ public class ThrowingObj : MonoBehaviour
         m_Rb.AddForce(Vector3.forward * 5, ForceMode.Impulse);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        m_State = EThrowingState.COMEBACK;
+        if (other.gameObject.tag == "Enemy" && m_State != EThrowingState.ATTACHED)
+            other.gameObject.GetComponent<IDamageable>().Damage(1);
+
+
+        if (m_State != EThrowingState.ATTACHED)
+            m_State = EThrowingState.COMEBACK;
     }
+
     public bool CanDash()
     {
         return m_State != ThrowingObj.EThrowingState.ATTACHED
