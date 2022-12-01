@@ -312,6 +312,4 @@ MonoBehaviour:
   secoundGroupPlatforms:
   - {fileID: 0}
   - {fileID: 0}
-  firstGroupPlaftormsSwapState: 0
-  secondGroupPlatformsSwapState: 1
   hitFeedback: {fileID: 1473453941}
