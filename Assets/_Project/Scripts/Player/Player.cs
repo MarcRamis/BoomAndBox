@@ -15,6 +15,7 @@ public class Player : MonoBehaviour, IDamageable
 
     // Internal variables
     private bool justReceivedDamage = false;
+    private bool godMode = false;
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
@@ -34,7 +35,7 @@ public class Player : MonoBehaviour, IDamageable
     // Functions
     public void Damage(int damageAmount)
     {
-        if (!justReceivedDamage)
+        if (!justReceivedDamage && !godMode)
         {
             // Apply operations
             Health -= damageAmount;
@@ -49,5 +50,16 @@ public class Player : MonoBehaviour, IDamageable
     {
         justReceivedDamage = false;
     }
-
+    public void SwitchGodMode()
+    {
+        godMode = !godMode;
+        if(godMode)
+        {
+            Debug.Log("Invencibility ON");
+        }
+        else
+        {
+            Debug.Log("Invencibility OFF");
+        }
+    }
 }

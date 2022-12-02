@@ -231,11 +231,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b088ca87b0320c74cb0c2f358982de32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_State: 0
-  maxCounterToBeThrowed: 1
   player: {fileID: 0}
-  positionToRelocate: {fileID: 0}
-  dashing_Collider: {fileID: 6295221075636438544}
+  maxDistanceToReturn: 0
+  maxLargeDistanceToReturn: 0
+  comebackingFeedback: {fileID: 0}
+  startThrowingPosition: {x: 0, y: 0, z: 0}
+  m_State: 0
 --- !u!1 &8501075797460776861
 GameObject:
   m_ObjectHideFlags: 0
