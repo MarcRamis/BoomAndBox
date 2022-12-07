@@ -111,7 +111,7 @@ MonoBehaviour:
   rigidbody: {fileID: 8393787382673253117}
   health: 5
   groundTransform: {fileID: 440301099160599262}
-  groundRadius: 0.1
+  groundRadius: 0.2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
