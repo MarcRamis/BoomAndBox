@@ -68,12 +68,13 @@ public class DashingSystem : MonoBehaviour
                 if (Input.GetKeyDown(dashKey))
                 {
                     DoDash();
+                    tr.toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
                 }
                 // if retained instant dash
-                else if (tr.toL.m_State == ThrowingObj.EThrowingState.RETAINED)
-                {
-                    DoDash();
-                }
+                //else if (tr.toL.m_State == ThrowingObj.EThrowingState.RETAINED)
+                //{
+                //    DoDash();
+                //}
                 // it could dash in throw large mode if the distance is enough close like the throw mode
                 //else if ()
                 //{

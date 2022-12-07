@@ -20,13 +20,17 @@ public class ThrowingObj : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
     [SerializeField] private float maxLargeDistanceToReturn;
+    [SerializeField] private float timeRetained;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
+    [SerializeField] private Color throwDashColor;
+    [SerializeField] private Color throwLargeColor;
 
     // Internal Variables
     [HideInInspector] public Vector3 startThrowingPosition;
-    
+    [HideInInspector] private TrailRenderer trailRenderer;
+
     public enum EThrowingState
     {
         ATTACHED,
@@ -50,6 +54,7 @@ public class ThrowingObj : MonoBehaviour
     {
         m_Rb = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();
+        trailRenderer = GetComponent<TrailRenderer>();
     }
 
     // Update
@@ -64,7 +69,10 @@ public class ThrowingObj : MonoBehaviour
         if (Vector3.Distance(player.transform.position, transform.position) > maxDistanceToReturn && m_State != EThrowingState.THROW_LARGE)
         {
             if (m_State != EThrowingState.RETAINED && m_State != EThrowingState.COMEBACK)
+            {
                 SetNewState(EThrowingState.RETAINED);
+                Invoke(nameof(ResetRetainedState), timeRetained);
+            }
         }
         else if(Vector3.Distance(player.transform.position, transform.position) > maxLargeDistanceToReturn && m_State == EThrowingState.THROW_LARGE)
         {
@@ -73,6 +81,11 @@ public class ThrowingObj : MonoBehaviour
     }
     
     // Functions
+    private void ResetRetainedState()
+    {
+        SetNewState(EThrowingState.COMEBACK);
+    }
+
     public void StateHandler()
     {
         switch (m_State)
@@ -86,6 +99,9 @@ public class ThrowingObj : MonoBehaviour
 
                 m_Collider.isTrigger = true;
 
+                trailRenderer.endColor = throwDashColor;
+                trailRenderer.startColor = throwDashColor;
+
                 break;
             case EThrowingState.THROW:
 
@@ -95,6 +111,9 @@ public class ThrowingObj : MonoBehaviour
                 m_Rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 m_Collider.isTrigger = false;
 
+                trailRenderer.endColor = throwDashColor;
+                trailRenderer.startColor = throwDashColor;
+
                 break;
             case EThrowingState.THROW_LARGE:
 
@@ -103,6 +122,9 @@ public class ThrowingObj : MonoBehaviour
                 m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
                 m_Rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 m_Collider.isTrigger = false;
+
+                trailRenderer.endColor = throwLargeColor;
+                trailRenderer.startColor = throwLargeColor;
 
                 break;
             case EThrowingState.RETAINED:
@@ -115,6 +137,9 @@ public class ThrowingObj : MonoBehaviour
 
                 m_Collider.isTrigger = false;
 
+                trailRenderer.endColor = throwDashColor;
+                trailRenderer.startColor = throwDashColor;
+
                 break;
             case EThrowingState.COMEBACK:
 
@@ -123,6 +148,9 @@ public class ThrowingObj : MonoBehaviour
                 m_Rb.interpolation = RigidbodyInterpolation.Extrapolate;
                 m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
                 m_Collider.isTrigger = true;
+
+                trailRenderer.endColor = throwDashColor;
+                trailRenderer.startColor = throwDashColor;
 
                 break;
         }

@@ -10567,7 +10567,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728576391527}
-  m_LocalRotation: {x: 0.11869935, y: -0.48291656, z: 0.06626426, w: 0.86504984}
+  m_LocalRotation: {x: 0.11869936, y: -0.48291656, z: 0.06626426, w: 0.86504984}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10911,8 +10911,40 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 59622705555108669}
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: timeRetained
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: dashingCollider
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: throwDashColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: throwDashColor.b
+      value: 0.22352941
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: throwDashColor.g
+      value: 0.972549
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: throwDashColor.r
+      value: 0.96862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: throwLargeColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: throwLargeColor.g
+      value: 0.19297364
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: throwLargeColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: positionToRelocate
@@ -10924,7 +10956,7 @@ PrefabInstance:
       objectReference: {fileID: 2080720006}
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: maxDistanceToReturn
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: maxLargeDistanceToReturn
