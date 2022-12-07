@@ -10,7 +10,8 @@ public abstract class Enemy : Agent, IDamageable
     protected GameObject player;
 
     [Header("Ground Check")]
-    [SerializeField] private float playerHeight;
+    [SerializeField] private Transform groundTransform;
+    [SerializeField] private float groundRadius;
     [SerializeField] private LayerMask whatIsGround;
     [HideInInspector] public bool isGrounded;
 
@@ -31,20 +32,26 @@ public abstract class Enemy : Agent, IDamageable
     {
         base.Start();
     }
-
+    
     // Update
     protected new void Update()
     {
         base.Update();
 
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        CheckGround();
         HandleGravity();
     }
     protected new void FixedUpdate()
     {
         base.FixedUpdate();
     }
-    
+
+    private void CheckGround()
+    {
+        var hitColliders = Physics.OverlapSphere(groundTransform.position, groundRadius, whatIsGround);
+        isGrounded = hitColliders.Length > 0;
+    }
+
     public virtual void Init()
     {
         Health = health;
