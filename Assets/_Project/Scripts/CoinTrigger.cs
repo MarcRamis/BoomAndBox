@@ -6,7 +6,7 @@ public class CoinTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if(other.transform.tag == "Player")
+        if(other.transform.tag == "Player" || other.transform.tag == "Companion")
         {
             EventsSystem.current.CoinCollected();
             Destroy(gameObject);
