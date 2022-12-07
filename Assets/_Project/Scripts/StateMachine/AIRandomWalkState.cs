@@ -24,15 +24,14 @@ public class AIRandomWalkState : IAIState
     {
         return EAIState.RANDOM_WALK;
     }
-
+    
     public void Update(Agent agent)
     {
-        FollowRandomPath(agent);
+        if (agent.navMesh.isOnNavMesh)
+            FollowRandomPath(agent);
         
         if (IsPlayerNear(agent))
-        {
             agent.stateMachine.ChangeState(EAIState.CHASE_PLAYER);
-        }
     }
 
     private void FollowRandomPath(Agent agent)

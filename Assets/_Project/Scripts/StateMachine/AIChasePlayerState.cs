@@ -33,7 +33,8 @@ public class AIChasePlayerState : IAIState
             return;
         }
 
-        CheckPathWithTime(agent);
+        if (agent.navMesh.isOnNavMesh)
+            CheckPathWithTime(agent);
     }
 
     public void Exit(Agent agent)

@@ -18,7 +18,6 @@ public class AIDronChargeState : IAIState
         if (agent.gameObject.GetComponent<Dron>().preparingForChargeFeedback != null)
             agent.gameObject.GetComponent<Dron>().preparingForChargeFeedback.PlayFeedbacks();
 
-
         timerLoop = agent.config.timePreparingToCharge;
         
         DesactivatePhysiscs(agent);
@@ -32,7 +31,8 @@ public class AIDronChargeState : IAIState
         if (agent.gameObject.GetComponent<Dron>().chargeFeedback != null)
             agent.gameObject.GetComponent<Dron>().chargeFeedback.StopFeedbacks();
 
-        ActivatePhysics(agent);
+        if (agent.navMesh.isOnNavMesh)
+            ActivatePhysics(agent);
     }
 
     public EAIState GetId()
@@ -100,7 +100,7 @@ public class AIDronChargeState : IAIState
         agent.rigidbody.isKinematic = false;
         agent.navMesh.enabled = false;
     }
-
+    
     private void ActivatePhysics(Agent agent)
     {
         isCharging = false;
