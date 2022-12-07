@@ -50,4 +50,10 @@ public class MoveablePlatform : MonoBehaviour
 
 
     }
+
+    public void ChangeMoveableState()
+    {
+        isMovable = !isMovable;
+    }
+
 }
