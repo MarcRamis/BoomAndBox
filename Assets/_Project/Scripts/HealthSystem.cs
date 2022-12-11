@@ -16,13 +16,13 @@ public class HealthSystem : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-        healthUI = player.GetComponent<Player>().Health / 2;
+        healthUI = player.GetComponent<Player>().Health;
     }
 
     // Update is called once per frame
     void Update()
     {
-        healthUI = player.GetComponent<Player>().Health / 2;
+        healthUI = player.GetComponent<Player>().Health;
         for(int i = 0; i < hearts.Length; i++)
         {
             if(i < healthUI)

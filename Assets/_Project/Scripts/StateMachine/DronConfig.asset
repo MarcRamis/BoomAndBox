@@ -17,7 +17,7 @@ MonoBehaviour:
   maxDistanceToIdleState: 30
   maxDistanceToChargeState: 8
   chaseSpeed: 5
-  maxRandomWalkSightRadiusDistance: 10
+  maxRandomWalkSightRadiusDistance: 20
   maxRandomWalkRadius: 10
   maxTimeRandomWalk: 2
   idleSpeed: 2

@@ -25,7 +25,7 @@ public class Dron : Enemy
     // Constant variables
 
     // Internal variables
-
+    [SerializeField] private LayerMask fallingMask;
     // Start
 
     private new void Start()
@@ -37,6 +37,11 @@ public class Dron : Enemy
     private new void Update()
     {
         base.Update();
+
+        if(stateMachine.currentState == EAIState.CHASE_PLAYER || stateMachine.currentState == EAIState.RANDOM_WALK)
+        {
+            FallingCheck();
+        }   
     }
     private new void FixedUpdate()
     {
@@ -65,4 +70,21 @@ public class Dron : Enemy
             collision.gameObject.GetComponent<IDamageable>().Damage(1);
         }
     }
+    private void DesactivatePhysiscs(Agent agent)
+    {
+        agent.rigidbody.isKinematic = false;
+        agent.navMesh.enabled = false;
+        agent.transform.rotation = Quaternion.identity;
+    }
+
+    private void FallingCheck()
+    {
+        RaycastHit hit;
+
+        if (!Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, fallingMask))
+        {
+            DesactivatePhysiscs(this);
+        }
+    }
+
 }

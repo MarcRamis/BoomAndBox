@@ -122,6 +122,9 @@ MonoBehaviour:
   chargeFeedback: {fileID: 8393787384323788723}
   explosionPrefab: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
   model: {fileID: 8393787384362079515}
+  fallingMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!195 &8393787382673253088
 NavMeshAgent:
   m_ObjectHideFlags: 0

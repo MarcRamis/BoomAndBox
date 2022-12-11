@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -44,6 +45,13 @@ public class Player : MonoBehaviour, IDamageable
 
             // Reset timer to receive damage
             Invoke(nameof(ResetJustReceivedDamage), justReceivedDamageTimer);
+
+            if(Health <= 0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+
+
         }
     }
     private void ResetJustReceivedDamage()

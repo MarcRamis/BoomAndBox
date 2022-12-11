@@ -31,8 +31,7 @@ public class AIDronChargeState : IAIState
         if (agent.gameObject.GetComponent<Dron>().chargeFeedback != null)
             agent.gameObject.GetComponent<Dron>().chargeFeedback.StopFeedbacks();
 
-        if (agent.navMesh.isOnNavMesh)
-            ActivatePhysics(agent);
+        ActivatePhysics(agent);
     }
 
     public EAIState GetId()
@@ -87,6 +86,7 @@ public class AIDronChargeState : IAIState
         Vector3 forceToApply = direction * agent.config.chargeForce;
         
         agent.rigidbody.AddForce(forceToApply, ForceMode.VelocityChange);
+        agent.transform.rotation = Quaternion.identity;
     }
 
     private bool IsPlayerFarAway(Agent agent)
@@ -99,6 +99,7 @@ public class AIDronChargeState : IAIState
         isCharging = true;
         agent.rigidbody.isKinematic = false;
         agent.navMesh.enabled = false;
+        agent.transform.rotation = Quaternion.identity;
     }
     
     private void ActivatePhysics(Agent agent)
@@ -107,5 +108,6 @@ public class AIDronChargeState : IAIState
         agent.rigidbody.isKinematic = true;
         agent.navMesh.enabled = true;
         agent.navMesh.angularSpeed = 10000;
+        agent.transform.rotation = Quaternion.identity;
     }
 }

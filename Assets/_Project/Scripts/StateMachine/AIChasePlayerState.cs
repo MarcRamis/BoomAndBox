@@ -66,4 +66,11 @@ public class AIChasePlayerState : IAIState
     {
         return Vector3.Distance(player.transform.position, agent.transform.position) < agent.config.maxDistanceToChargeState;
     }
+    private void ActivatePhysics(Agent agent)
+    {
+        agent.rigidbody.isKinematic = true;
+        agent.navMesh.enabled = true;
+        agent.navMesh.angularSpeed = 10000;
+        agent.transform.rotation = Quaternion.identity;
+    }
 }

@@ -71,4 +71,12 @@ public class AIRandomWalkState : IAIState
         
         return finalPosition;
     }
+    private void ActivatePhysics(Agent agent)
+    {
+        agent.rigidbody.isKinematic = true;
+        agent.navMesh.enabled = true;
+        agent.navMesh.angularSpeed = 10000;
+        agent.transform.rotation = Quaternion.identity;
+    }
+
 }
