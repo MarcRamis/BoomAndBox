@@ -45,27 +45,27 @@ public class CameraManager : MonoBehaviour
     private void FixedUpdate()
     {
         //Rotate the Follow Target transform based on the input
-        followCameraTarget.rotation *= Quaternion.AngleAxis(playerMovement._look.x * rotationSpeed, Vector3.up);
-        followCameraTarget.rotation *= Quaternion.AngleAxis(playerMovement._look.y * rotationSpeed, Vector3.right);
-
-        var angles = followCameraTarget.localEulerAngles;
-        angles.z = 0;
-
-        var angle = followCameraTarget.localEulerAngles.x;
-
-
-        //Clamp the Up/Down rotation
-        if (angle > 180 && angle < 340)
-        {
-            angles.x = 340;
-        }
-        else if (angle < 180 && angle > 40)
-        {
-            angles.x = 40;
-        }
-        followCameraTarget.localEulerAngles = angles;
-
-        nextRotation = Quaternion.Lerp(followCameraTarget.rotation, nextRotation, Time.deltaTime * rotationLerp);
+        //followCameraTarget.rotation *= Quaternion.AngleAxis(playerMovement._look.x * rotationSpeed, Vector3.up);
+        //followCameraTarget.rotation *= Quaternion.AngleAxis(playerMovement._look.y * rotationSpeed, Vector3.right);
+        //
+        //var angles = followCameraTarget.localEulerAngles;
+        //angles.z = 0;
+        //
+        //var angle = followCameraTarget.localEulerAngles.x;
+        //
+        //
+        ////Clamp the Up/Down rotation
+        //if (angle > 180 && angle < 340)
+        //{
+        //    angles.x = 340;
+        //}
+        //else if (angle < 180 && angle > 40)
+        //{
+        //    angles.x = 40;
+        //}
+        //followCameraTarget.localEulerAngles = angles;
+        //
+        //nextRotation = Quaternion.Lerp(followCameraTarget.rotation, nextRotation, Time.deltaTime * rotationLerp);
     }
     private void HandleCamera()
     {
