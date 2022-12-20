@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using MoreMountains.Feedbacks;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerMovementSystem : MonoBehaviour
 {
     [Header("Movement")]
@@ -42,6 +44,8 @@ public class PlayerMovementSystem : MonoBehaviour
     
     [Header("Inputs")]
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
+    [SerializeField] private float modelRotationSpeed;
+    /*[HideInInspector]*/ public Vector2 _look;
 
     [Header("Ground Check")]
     [SerializeField] private float groundRadius;
@@ -49,7 +53,11 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] private Transform groundTransform;
     [HideInInspector] public bool isGrounded;
-    
+
+    [Header("References")]
+    [SerializeField] private Transform model;
+    [SerializeField] private Camera mainCamera;
+
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks jumpFeedback;
     [SerializeField] private MMFeedbacks doubleJumpFeedback;
@@ -75,6 +83,11 @@ public class PlayerMovementSystem : MonoBehaviour
         air
     }
 
+    public void OnLook(InputValue value)
+    {
+        _look = value.Get<Vector2>();
+    }
+
     private void Start()
     {
         m_Rb = GetComponent<Rigidbody>();
@@ -96,6 +109,8 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // Handle drag
         HandleDrag();
+        
+        Debug.Log(_look);
     }
     
     private void CheckGround()
@@ -124,7 +139,10 @@ public class PlayerMovementSystem : MonoBehaviour
         // Take input directions
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-        
+
+        // Rotate player
+        RotateModel();
+
         // coyote time
         if (isGrounded) coyoteTimeCounter = coyoteTime;
         else coyoteTimeCounter -= Time.deltaTime;
@@ -343,5 +361,17 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundTransform.position, groundRadius);
+    }
+
+    private void RotateModel()
+    {
+        // rotate orientation
+        Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
+        orientation.forward = viewDir.normalized;
+
+        Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        if (inputDir != Vector3.zero)
+            model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.deltaTime * modelRotationSpeed);
     }
 }
