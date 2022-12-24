@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using MoreMountains.Feedbacks;
+using System;
 
 public class ThrowingSystem : MonoBehaviour
 {
@@ -11,20 +12,15 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private Transform standPosition;
     [SerializeField] private Transform toAttach;
     [SerializeField] public GameObject objectToThrow;
-    [HideInInspector] public ThrowingObj toL;
+    [HideInInspector] public Companion companion;
     private PlayerMovementSystem pm;
-
-    [Header("Inputs")]
-    [SerializeField] private KeyCode throwKey = KeyCode.Mouse0;
-    [SerializeField] private KeyCode throwLargeKey = KeyCode.Mouse1;
-    [SerializeField] private KeyCode returnKey = KeyCode.LeftControl;
     
     [Header("Throw")]
     [SerializeField] private float throwForce;
     [SerializeField] private float throwLargeForce;
     [SerializeField] private float throwCooldown = 0.25f;
     private bool readyToThrow = true;
-
+    
     [Header("Return")]
     [SerializeField] private float returnTime;
     [SerializeField] private AnimationCurve returnCurveSmooth;
@@ -43,55 +39,64 @@ public class ThrowingSystem : MonoBehaviour
     // Start
     private void Start()
     {
+        // Get components
         pm = GetComponent<PlayerMovementSystem>();
-        toL = objectToThrow.GetComponent<ThrowingObj>();
+        companion = objectToThrow.GetComponent<Companion>();
+        
+        // Init Inputs
+        pm.myInputs.OnThrowPerformed += DoThrow;
+        pm.myInputs.OnReturnPerformed += DoReturn;
     }
 
-    // Update
-    private void Update()
+    private void DoThrow()
     {
         // Throw BOX CHARACTER 
         if (readyToThrow)
         {
             // Throw large
-            if (Input.GetKeyDown(throwLargeKey))
+            if (pm.isAiming)
             {
                 // change state
-                toL.SetNewState(ThrowingObj.EThrowingState.THROW_LARGE);
+                companion.SetNewState(ECompanionState.THROW_LARGE);
                 // Do Throw
                 Throw(cam.transform.forward, throwLargeForce);
             }
+            else
+            {
+                // Throw short -- dash
+                if (companion.state == ECompanionState.ATTACHED)
+                {
+                    // change state
+                    companion.SetNewState(ECompanionState.THROW);
+                    // Do Throw
+                    Throw(cam.transform.forward, throwForce);
+                }
+                else if (companion.state == ECompanionState.THROW)
+                {
+                    companion.SetNewState(ECompanionState.RETAINED);
+                }
 
-            // Throw short -- dash
-            if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.ATTACHED)
-            {
-                // change state
-                toL.SetNewState(ThrowingObj.EThrowingState.THROW);
-                // Do Throw
-                Throw(cam.transform.forward, throwForce);
-            }
-            else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.THROW)
-            {
-                toL.SetNewState(ThrowingObj.EThrowingState.RETAINED);
-            }
-
-            else if (Input.GetKeyDown(throwKey) && toL.m_State == ThrowingObj.EThrowingState.RETAINED)
-            {
-                toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
+                else if (companion.state == ECompanionState.RETAINED)
+                {
+                    companion.SetNewState(ECompanionState.COMEBACK);
+                }
             }
         }
+    }
 
+    private void DoReturn()
+    {
         // Comeback
-        if (Input.GetKeyDown(returnKey) && toL.m_State != ThrowingObj.EThrowingState.ATTACHED)
+        if (companion.state != ECompanionState.ATTACHED)
         {
-            toL.SetNewState(ThrowingObj.EThrowingState.COMEBACK);
+            companion.SetNewState(ECompanionState.COMEBACK);
         }
     }
 
     // Fixed Update
     private void FixedUpdate()
     {
-        if (toL.m_State != ThrowingObj.EThrowingState.COMEBACK) return;
+        if (companion.state != ECompanionState.COMEBACK) return;
 
         ComeBackInterp();
     }
@@ -108,7 +113,7 @@ public class ThrowingSystem : MonoBehaviour
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
 
         // Change preferences
-        toL.StateHandler();
+        companion.HandleState();
         
         // Add force
         Vector3 forceToAdd = forceDirection * force;
@@ -130,7 +135,7 @@ public class ThrowingSystem : MonoBehaviour
     private void ResetThrow()
     {
         // This is the reset of the BOX CHARACTER
-        toL.SetNewState(ThrowingObj.EThrowingState.ATTACHED);
+        companion.SetNewState(ECompanionState.ATTACHED);
         objectToThrow.transform.SetParent(toAttach);
         elapsedTime = 0;
         comebackFeedback.PlayFeedbacks();

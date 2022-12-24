@@ -5,6 +5,9 @@ using TMPro;
 using MoreMountains.Feedbacks;
 using UnityEngine.InputSystem;
 
+
+public enum EMoveState { WALKING, DASHING, AIMING, AIR }
+
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovementSystem : MonoBehaviour
 {
@@ -47,7 +50,7 @@ public class PlayerMovementSystem : MonoBehaviour
 
     //Inputs
     [HideInInspector] public Vector2 _look;
-    [HideInInspector] private PlayerInputController myInputs;
+    [HideInInspector] public PlayerInputController myInputs;
 
     [Header("Ground Check")]
     [SerializeField] private float groundRadius;
@@ -75,16 +78,9 @@ public class PlayerMovementSystem : MonoBehaviour
     private bool keepMomentum;
     private float speedChangeFactor;
     private EMoveState lastState;
-    private EMoveState state;
-
-    public enum EMoveState
-    {
-        walking,
-        dashing,
-        aiming,
-        air
-    }
     
+    [HideInInspector] public EMoveState movementState;
+
     public void OnLook(InputValue value)
     {
         _look = value.Get<Vector2>();
@@ -100,7 +96,8 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         // Initialize inputs
         myInputs.OnJumpPerformed += DoJump;
-        
+        myInputs.OnZoomPerformed += DoZoom;
+
         // Initalize properties
         m_Rb.freezeRotation = true;
         readyToJump = true;
@@ -115,12 +112,12 @@ public class PlayerMovementSystem : MonoBehaviour
 
         MyInput();
         SpeedControl();
-        StateHandler();
+        HandleMovementState();
 
         // Handle drag
         HandleDrag();
     }
-    
+
     private void CheckGround()
     {
         var hitColliders = Physics.OverlapSphere(groundTransform.position, groundRadius, whatIsGround);
@@ -137,7 +134,7 @@ public class PlayerMovementSystem : MonoBehaviour
     // Functions
     private void HandleDrag()
     {
-        if (state == EMoveState.walking || (state == EMoveState.aiming && isGrounded) || isDoubleJumping)
+        if (movementState == EMoveState.WALKING || (movementState == EMoveState.AIMING && isGrounded) || isDoubleJumping)
             m_Rb.drag = groundDrag;
         else
             m_Rb.drag = 0;
@@ -150,10 +147,15 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // Rotate player
         RotateModel();
-        
+
         // Coyote time
         if (isGrounded) coyoteTimeCounter = coyoteTime;
         else coyoteTimeCounter -= Time.deltaTime;
+    }
+
+    private void DoZoom()
+    {
+        isAiming = !isAiming;
     }
 
     private void DoJump()
@@ -199,7 +201,7 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (state == EMoveState.dashing) return;
+        if (movementState == EMoveState.DASHING) return;
         
         // Calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
@@ -284,12 +286,12 @@ public class PlayerMovementSystem : MonoBehaviour
         isDoubleJumping = false;
     }
 
-    private void StateHandler()
+    private void HandleMovementState()
     {
         // Mode - Dashing
         if (isDashing)
         {
-            state = EMoveState.dashing;
+            movementState = EMoveState.DASHING;
             desiredMoveSpeed = dashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
 
@@ -297,17 +299,17 @@ public class PlayerMovementSystem : MonoBehaviour
         }
 
         // Mode - Aiming
-        else if (isAiming)
-        {
-            state = EMoveState.aiming;
-            desiredMoveSpeed = aimSpeed;
-        }
+        //else if (isAiming)
+        //{
+        //    movementState = EMoveState.AIMING;
+        //    desiredMoveSpeed = aimSpeed;
+        //}
         
         // Mode - Walking
         else if (isGrounded)
         {
             currentDoubleJumps = doubleJumpCounter;
-            state = EMoveState.walking;
+            movementState = EMoveState.WALKING;
             desiredMoveSpeed = walkSpeed;
         }
 
@@ -315,11 +317,11 @@ public class PlayerMovementSystem : MonoBehaviour
         else
         {
             landing = true;
-            state = EMoveState.air;
+            movementState = EMoveState.AIR;
         }
         
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
-        if (lastState == EMoveState.dashing) keepMomentum = true;
+        if (lastState == EMoveState.DASHING) keepMomentum = true;
         
         if (desiredMoveSpeedHasChanged)
         {
@@ -336,7 +338,7 @@ public class PlayerMovementSystem : MonoBehaviour
         }
 
         lastDesiredMoveSpeed = desiredMoveSpeed;
-        lastState = state;
+        lastState = movementState;
     }
 
     private IEnumerator SmoothlyLerpMoveSpeed()
