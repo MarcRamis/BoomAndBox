@@ -9,18 +9,21 @@ using UnityEngine.InputSystem;
 public class PlayerMovementSystem : MonoBehaviour
 {
     [Header("Movement")]
-    private float moveSpeed;
+    [HideInInspector] private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float aimSpeed;
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashSpeedChangeFactor;
     [SerializeField] public float maxYSpeed;
     [SerializeField] private float groundDrag;
-    private float horizontalInput;
-    private float verticalInput;
-    private Vector3 moveDirection;
+    [HideInInspector] private float horizontalInput;
+    [HideInInspector] private float verticalInput;
+    [HideInInspector] private Vector3 moveDirection;
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isAiming;
+
+    [Header("Orientation")]
+    [SerializeField] private float modelRotationSpeed;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce;
@@ -41,11 +44,10 @@ public class PlayerMovementSystem : MonoBehaviour
     private float timeInAir;
     private bool landing;
     private float velocityLastFrame;
-    
-    [Header("Inputs")]
-    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
-    [SerializeField] private float modelRotationSpeed;
-    /*[HideInInspector]*/ public Vector2 _look;
+
+    //Inputs
+    [HideInInspector] public Vector2 _look;
+    [HideInInspector] private PlayerInputController myInputs;
 
     [Header("Ground Check")]
     [SerializeField] private float groundRadius;
@@ -74,7 +76,7 @@ public class PlayerMovementSystem : MonoBehaviour
     private float speedChangeFactor;
     private EMoveState lastState;
     private EMoveState state;
-    
+
     public enum EMoveState
     {
         walking,
@@ -82,17 +84,25 @@ public class PlayerMovementSystem : MonoBehaviour
         aiming,
         air
     }
-
+    
     public void OnLook(InputValue value)
     {
         _look = value.Get<Vector2>();
     }
 
-    private void Start()
+    private void Awake()
     {
         m_Rb = GetComponent<Rigidbody>();
-        m_Rb.freezeRotation = true;
+        myInputs = GetComponent<PlayerInputController>();
+    }
 
+    private void Start()
+    {
+        // Initialize inputs
+        myInputs.OnJumpPerformed += DoJump;
+        
+        // Initalize properties
+        m_Rb.freezeRotation = true;
         readyToJump = true;
         currentDoubleJumps = doubleJumpCounter;
     }
@@ -109,8 +119,6 @@ public class PlayerMovementSystem : MonoBehaviour
 
         // Handle drag
         HandleDrag();
-        
-        Debug.Log(_look);
     }
     
     private void CheckGround()
@@ -137,58 +145,56 @@ public class PlayerMovementSystem : MonoBehaviour
     private void MyInput()
     {
         // Take input directions
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = myInputs.moveDirection.x;
+        verticalInput = myInputs.moveDirection.y;
 
         // Rotate player
         RotateModel();
-
-        // coyote time
+        
+        // Coyote time
         if (isGrounded) coyoteTimeCounter = coyoteTime;
         else coyoteTimeCounter -= Time.deltaTime;
+    }
 
-        // when to jump
-        if (Input.GetKeyDown(jumpKey))
+    private void DoJump()
+    {
+        // Jump on ground
+        /// <<summary>
+        /// Only can jump when is grounded or in coyote time
+        /// </summary>
+        if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
         {
-            // Jump on ground
-            /// <<summary>
-            /// Only can jump when is grounded or in coyote time
-            /// </summary>
-            if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
-            {
-                coyoteTimeCounter = 0f;
-                readyToJump = false;
+            coyoteTimeCounter = 0f;
+            readyToJump = false; 
 
-                Jump();
-                jumpFeedback.PlayFeedbacks();
+            ApplyJumpForce();
+            jumpFeedback.PlayFeedbacks();
 
-                Invoke(nameof(ResetJump), jumpCooldown);
-            }
-
-            // Double Jump in air
-            /// <summary>
-            /// Only can jump when is jump cooldown is ready to prevent the double jump spam
-            /// 
-            /// There is a counter of double jumps in air the player can make to change if it's necessary
-            /// 
-            /// Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in coyoteTime 
-            /// because it mustn't count
-            /// 
-            /// </summary> 
-            else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
-            {
-                isDoubleJumping = true;
-                
-                Jump();
-                doubleJumpFeedback.PlayFeedbacks();
-
-                currentDoubleJumps--;
-                timeInAir = 0;
-
-                Invoke(nameof(ResetDoubleJump), jumpCooldown);
-            }
+            Invoke(nameof(ResetJump), jumpCooldown);
         }
 
+        // Double Jump in air
+        /// <summary>
+        /// Only can jump when jump cooldown is ready to prevent the double jump spam
+        /// 
+        /// There is a counter of double jumps in air the player can make to change if it's necessary
+        /// 
+        /// Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in coyoteTime 
+        /// because it mustn't count
+        /// 
+        /// </summary> 
+        else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
+        {
+            isDoubleJumping = true;
+
+            ApplyJumpForce();
+            doubleJumpFeedback.PlayFeedbacks();
+
+            currentDoubleJumps--;
+            timeInAir = 0;
+
+            Invoke(nameof(ResetDoubleJump), jumpCooldown);
+        }
     }
 
     private void MovePlayer()
@@ -263,11 +269,10 @@ public class PlayerMovementSystem : MonoBehaviour
         }
     }
     
-    private void Jump()
+    private void ApplyJumpForce()
     {
         // reset y velocity
         m_Rb.velocity = new Vector3(m_Rb.velocity.x, 0f, m_Rb.velocity.z);
-
         m_Rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
     private void ResetJump()
