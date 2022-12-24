@@ -35,8 +35,9 @@ public class DashingSystem : MonoBehaviour
         tr = GetComponent<ThrowingSystem>();
 
         speedPs.SetActive(false);
+
         // Set companion target to dash him
-        SelectTarget();
+        currentTarget = tr.objectToThrow.transform;
 
         // Initialize inputs
         pm.myInputs.OnDashPerformed += DoDash;
@@ -47,7 +48,7 @@ public class DashingSystem : MonoBehaviour
         if (!tr.companion.CanDash() && pm.isDashing)
             ResetDash();
     }
-
+    
     private void DoDash()
     {
         // Dash
@@ -113,7 +114,7 @@ public class DashingSystem : MonoBehaviour
     }
     private void SelectTarget()
     {
-        currentTarget = tr.objectToThrow.transform;
+        
     }
     private void DashFeedback()
     {

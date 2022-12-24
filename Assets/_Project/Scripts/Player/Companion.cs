@@ -16,30 +16,20 @@ public class Companion : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject player;
+    [HideInInspector] private Rigidbody m_Rb;
+    [HideInInspector] private Collider m_Collider;
 
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
     [SerializeField] private float maxLargeDistanceToReturn;
     [SerializeField] private float timeRetained;
+    [HideInInspector] public ECompanionState state = ECompanionState.ATTACHED;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
     [SerializeField] private Color throwDashColor;
     [SerializeField] private Color throwLargeColor;
-
-    // Internal Variables
-    [HideInInspector] public Vector3 startThrowingPosition;
     [HideInInspector] private TrailRenderer trailRenderer;
-
-    [SerializeField] public ECompanionState state = ECompanionState.ATTACHED;
-    private Rigidbody m_Rb;
-    private Collider m_Collider;
-
-    // Awake
-    private void Awake()
-    {
-        startThrowingPosition = transform.position;
-    }
 
     // Start
     private void Start()
@@ -177,5 +167,7 @@ public class Companion : MonoBehaviour
         return state != ECompanionState.ATTACHED
         && state != ECompanionState.COMEBACK
         && state != ECompanionState.THROW_LARGE;
-    }   
+    }
+    
+    public Vector3 GetPosition() { return transform.position; }
 }       
