@@ -8774,8 +8774,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727418759626}
-  m_LocalRotation: {x: 0.0031659203, y: 0.99371994, z: 0.1079906, w: -0.029132517}
-  m_LocalPosition: {x: 32.400444, y: 1.2308104, z: 12.023212}
+  m_LocalRotation: {x: 0.09083932, y: -0.45191178, z: 0.04632208, w: 0.8862157}
+  m_LocalPosition: {x: 36.389004, y: 2.53, z: -1.6812652}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8971,7 +8971,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727515996880}
-  m_LocalRotation: {x: 0.09083933, y: -0.45191184, z: 0.046322092, w: 0.8862157}
+  m_LocalRotation: {x: 0.09083933, y: -0.45191175, z: 0.046322078, w: 0.8862157}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9299,7 +9299,7 @@ MonoBehaviour:
   standPosition: {fileID: 6449113728488599142}
   toAttach: {fileID: 6449113727587546354}
   objectToThrow: {fileID: 5335073555746238997}
-  toL: {fileID: 0}
+  companion: {fileID: 0}
   throwForce: 50
   throwLargeForce: 100
   throwCooldown: 0.25
@@ -9342,9 +9342,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56ef357c94b38143a1fbd5db15c2ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orientation: {fileID: 6449113727418759625}
-  dashDistance: 21.89
-  dashDuration: 0.25
   dashInterpTime: 1
   dashInterpCurveSmooth:
     serializedVersion: 2
@@ -9370,13 +9367,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disableGravity: 1
-  dashingLayers:
-    serializedVersion: 2
-    m_Bits: 1536
-  dashCd: 0.5
+  orientation: {fileID: 6449113727418759625}
   speedPs: {fileID: 1511670004}
-  m_Target: {fileID: 0}
   dashFeedback: {fileID: 3389904813254570375}
 --- !u!96 &6449113727613805782
 TrailRenderer:
@@ -9513,7 +9505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: e1970995b3a79b2458a9db967bdf9137, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -9589,6 +9581,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d2cf5447-e614-4535-a32a-c52928c9fcc9
     m_ActionName: Player/Return[/DualShock4GamepadHID/buttonNorth,/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4a483015-2b8e-4b80-98af-84a42f2e7fbb
+    m_ActionName: Player/Zoom[/Keyboard/q,/DualShock4GamepadHID/rightShoulder]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -10649,7 +10645,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728492538123}
-  m_LocalRotation: {x: -0.09105623, y: -0.4847839, z: -0.050832402, w: 0.86839473}
+  m_LocalRotation: {x: -0.09105623, y: -0.4847839, z: -0.0508324, w: 0.86839473}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10727,7 +10723,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728576391527}
-  m_LocalRotation: {x: 0.11869937, y: -0.4829166, z: 0.066264264, w: 0.8650498}
+  m_LocalRotation: {x: 0.11869936, y: -0.48291656, z: 0.06626426, w: 0.8650498}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
