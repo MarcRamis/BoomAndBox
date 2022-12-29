@@ -30,6 +30,11 @@ public class PlayerInputController : MonoBehaviour, PlayerInputActions.IPlayerAc
         inputs.Player.Enable();
     }
 
+    private void Update()
+    {
+        Debug.Log(lookDirection);
+    }
+
     private void OnDisable()
     {
         inputs.Player.Disable();
