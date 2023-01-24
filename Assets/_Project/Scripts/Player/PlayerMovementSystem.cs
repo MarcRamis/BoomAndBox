@@ -3,22 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using MoreMountains.Feedbacks;
+using UnityEngine.InputSystem;
 
+
+public enum EMoveState { WALKING, DASHING, AIMING, AIR }
+
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerMovementSystem : MonoBehaviour
 {
     [Header("Movement")]
-    private float moveSpeed;
+    [HideInInspector] private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float aimSpeed;
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashSpeedChangeFactor;
     [SerializeField] public float maxYSpeed;
     [SerializeField] private float groundDrag;
-    private float horizontalInput;
-    private float verticalInput;
-    private Vector3 moveDirection;
+    [HideInInspector] private float horizontalInput;
+    [HideInInspector] private float verticalInput;
+    [HideInInspector] private Vector3 moveDirection;
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isAiming;
+
+    [Header("Orientation")]
+    [SerializeField] private float modelRotationSpeed;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce;
@@ -39,9 +47,10 @@ public class PlayerMovementSystem : MonoBehaviour
     private float timeInAir;
     private bool landing;
     private float velocityLastFrame;
-    
-    [Header("Inputs")]
-    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
+
+    //Inputs
+    [HideInInspector] public Vector2 _look;
+    [HideInInspector] public PlayerInputController myInputs;
 
     [Header("Ground Check")]
     [SerializeField] private float groundRadius;
@@ -49,7 +58,11 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] private Transform groundTransform;
     [HideInInspector] public bool isGrounded;
-    
+
+    [Header("References")]
+    [SerializeField] private Transform model;
+    [SerializeField] private Camera mainCamera;
+
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks jumpFeedback;
     [SerializeField] private MMFeedbacks doubleJumpFeedback;
@@ -65,21 +78,28 @@ public class PlayerMovementSystem : MonoBehaviour
     private bool keepMomentum;
     private float speedChangeFactor;
     private EMoveState lastState;
-    private EMoveState state;
     
-    public enum EMoveState
+    [HideInInspector] public EMoveState movementState;
+
+    public void OnLook(InputValue value)
     {
-        walking,
-        dashing,
-        aiming,
-        air
+        _look = value.Get<Vector2>();
+    }
+
+    private void Awake()
+    {
+        m_Rb = GetComponent<Rigidbody>();
+        myInputs = GetComponent<PlayerInputController>();
     }
 
     private void Start()
     {
-        m_Rb = GetComponent<Rigidbody>();
-        m_Rb.freezeRotation = true;
+        // Initialize inputs
+        myInputs.OnJumpPerformed += DoJump;
+        myInputs.OnZoomPerformed += DoZoom;
 
+        // Initalize properties
+        m_Rb.freezeRotation = true;
         readyToJump = true;
         currentDoubleJumps = doubleJumpCounter;
     }
@@ -92,12 +112,12 @@ public class PlayerMovementSystem : MonoBehaviour
 
         MyInput();
         SpeedControl();
-        StateHandler();
+        HandleMovementState();
 
         // Handle drag
         HandleDrag();
     }
-    
+
     private void CheckGround()
     {
         var hitColliders = Physics.OverlapSphere(groundTransform.position, groundRadius, whatIsGround);
@@ -114,7 +134,7 @@ public class PlayerMovementSystem : MonoBehaviour
     // Functions
     private void HandleDrag()
     {
-        if (state == EMoveState.walking || (state == EMoveState.aiming && isGrounded) || isDoubleJumping)
+        if (movementState == EMoveState.WALKING || (movementState == EMoveState.AIMING && isGrounded) || isDoubleJumping)
             m_Rb.drag = groundDrag;
         else
             m_Rb.drag = 0;
@@ -122,60 +142,66 @@ public class PlayerMovementSystem : MonoBehaviour
     private void MyInput()
     {
         // Take input directions
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-        
-        // coyote time
+        horizontalInput = myInputs.moveDirection.x;
+        verticalInput = myInputs.moveDirection.y;
+
+        // Rotate player
+        RotateModel();
+
+        // Coyote time
         if (isGrounded) coyoteTimeCounter = coyoteTime;
         else coyoteTimeCounter -= Time.deltaTime;
+    }
 
-        // when to jump
-        if (Input.GetKeyDown(jumpKey))
+    private void DoZoom()
+    {
+        isAiming = !isAiming;
+    }
+
+    private void DoJump()
+    {
+        // Jump on ground
+        /// <<summary>
+        /// Only can jump when is grounded or in coyote time
+        /// </summary>
+        if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
         {
-            // Jump on ground
-            /// <<summary>
-            /// Only can jump when is grounded or in coyote time
-            /// </summary>
-            if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
-            {
-                coyoteTimeCounter = 0f;
-                readyToJump = false;
+            coyoteTimeCounter = 0f;
+            readyToJump = false; 
 
-                Jump();
-                jumpFeedback.PlayFeedbacks();
+            ApplyJumpForce();
+            jumpFeedback.PlayFeedbacks();
 
-                Invoke(nameof(ResetJump), jumpCooldown);
-            }
-
-            // Double Jump in air
-            /// <summary>
-            /// Only can jump when is jump cooldown is ready to prevent the double jump spam
-            /// 
-            /// There is a counter of double jumps in air the player can make to change if it's necessary
-            /// 
-            /// Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in coyoteTime 
-            /// because it mustn't count
-            /// 
-            /// </summary> 
-            else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
-            {
-                isDoubleJumping = true;
-                
-                Jump();
-                doubleJumpFeedback.PlayFeedbacks();
-
-                currentDoubleJumps--;
-                timeInAir = 0;
-
-                Invoke(nameof(ResetDoubleJump), jumpCooldown);
-            }
+            Invoke(nameof(ResetJump), jumpCooldown);
         }
 
+        // Double Jump in air
+        /// <summary>
+        /// Only can jump when jump cooldown is ready to prevent the double jump spam
+        /// 
+        /// There is a counter of double jumps in air the player can make to change if it's necessary
+        /// 
+        /// Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in coyoteTime 
+        /// because it mustn't count
+        /// 
+        /// </summary> 
+        else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
+        {
+            isDoubleJumping = true;
+
+            ApplyJumpForce();
+            doubleJumpFeedback.PlayFeedbacks();
+
+            currentDoubleJumps--;
+            timeInAir = 0;
+
+            Invoke(nameof(ResetDoubleJump), jumpCooldown);
+        }
     }
 
     private void MovePlayer()
     {
-        if (state == EMoveState.dashing) return;
+        if (movementState == EMoveState.DASHING) return;
         
         // Calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
@@ -245,11 +271,10 @@ public class PlayerMovementSystem : MonoBehaviour
         }
     }
     
-    private void Jump()
+    private void ApplyJumpForce()
     {
         // reset y velocity
         m_Rb.velocity = new Vector3(m_Rb.velocity.x, 0f, m_Rb.velocity.z);
-
         m_Rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
     private void ResetJump()
@@ -261,12 +286,12 @@ public class PlayerMovementSystem : MonoBehaviour
         isDoubleJumping = false;
     }
 
-    private void StateHandler()
+    private void HandleMovementState()
     {
         // Mode - Dashing
         if (isDashing)
         {
-            state = EMoveState.dashing;
+            movementState = EMoveState.DASHING;
             desiredMoveSpeed = dashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
 
@@ -274,17 +299,17 @@ public class PlayerMovementSystem : MonoBehaviour
         }
 
         // Mode - Aiming
-        else if (isAiming)
-        {
-            state = EMoveState.aiming;
-            desiredMoveSpeed = aimSpeed;
-        }
+        //else if (isAiming)
+        //{
+        //    movementState = EMoveState.AIMING;
+        //    desiredMoveSpeed = aimSpeed;
+        //}
         
         // Mode - Walking
         else if (isGrounded)
         {
             currentDoubleJumps = doubleJumpCounter;
-            state = EMoveState.walking;
+            movementState = EMoveState.WALKING;
             desiredMoveSpeed = walkSpeed;
         }
 
@@ -292,11 +317,11 @@ public class PlayerMovementSystem : MonoBehaviour
         else
         {
             landing = true;
-            state = EMoveState.air;
+            movementState = EMoveState.AIR;
         }
         
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
-        if (lastState == EMoveState.dashing) keepMomentum = true;
+        if (lastState == EMoveState.DASHING) keepMomentum = true;
         
         if (desiredMoveSpeedHasChanged)
         {
@@ -313,7 +338,7 @@ public class PlayerMovementSystem : MonoBehaviour
         }
 
         lastDesiredMoveSpeed = desiredMoveSpeed;
-        lastState = state;
+        lastState = movementState;
     }
 
     private IEnumerator SmoothlyLerpMoveSpeed()
@@ -343,5 +368,17 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundTransform.position, groundRadius);
+    }
+
+    private void RotateModel()
+    {
+        // rotate orientation
+        Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
+        orientation.forward = viewDir.normalized;
+
+        Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        if (inputDir != Vector3.zero)
+            model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.deltaTime * modelRotationSpeed);
     }
 }

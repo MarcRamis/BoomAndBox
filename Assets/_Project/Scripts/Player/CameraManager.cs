@@ -13,19 +13,19 @@ public enum ECameraStyle
 public class CameraManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform orientation;
-    [SerializeField] private GameObject player;
-    [SerializeField] private Transform playerObj;
-    [SerializeField] private Transform combatLookAt;
-    
+    [SerializeField] private PlayerMovementSystem playerMovement;
+    [SerializeField] private Transform followCameraTarget;
     // Reference camera in game
     [SerializeField] private GameObject thirdPersonCameraLookingAt;
     [SerializeField] private GameObject thirdPersonCameraAimLookingAt;
-
-    [Header("Settings")]
-    [SerializeField] private float rotationObjSpeed;
-    private ECameraStyle currentStyle;
+    [SerializeField] private GameObject thirdPersonCameraLookingAt_VirtualCamera;
     
+    [Header("Settings")]
+    [SerializeField] private float rotationSpeed = 2.5f;
+    [SerializeField] private float rotationLerp = 0.5f;
+    [HideInInspector] private ECameraStyle currentStyle;
+    [HideInInspector] private Quaternion nextRotation;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -33,7 +33,8 @@ public class CameraManager : MonoBehaviour
     }
     private void Update()
     {
-        if (player.GetComponent<PlayerMovementSystem>().isAiming)
+        // Esto debería ser un dispatch del player
+        if (playerMovement.isAiming)
             currentStyle = ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET_AIM;
         else
             currentStyle = ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET;
@@ -43,21 +44,44 @@ public class CameraManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // rotate orientation
-        Vector3 viewDir = player.transform.position - new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
-        orientation.forward = viewDir.normalized;
-        
-        if (currentStyle == ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET || currentStyle == ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET_AIM)
-        {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
-            Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
-            if (inputDir != Vector3.zero)
-                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationObjSpeed);
-        }
+        //Rotate the Follow Target transform based on the input
+        //followCameraTarget.rotation *= Quaternion.AngleAxis(playerMovement._look.x * rotationSpeed, Vector3.up);
+        //followCameraTarget.rotation *= Quaternion.AngleAxis(playerMovement._look.y * rotationSpeed, Vector3.right);
+        //
+        //var angles = followCameraTarget.localEulerAngles;
+        //angles.z = 0;
+        //
+        //var angle = followCameraTarget.localEulerAngles.x;
+        //
+        //
+        ////Clamp the Up/Down rotation
+        //if (angle > 180 && angle < 340)
+        //{
+        //    angles.x = 340;
+        //}
+        //else if (angle < 180 && angle > 40)
+        //{
+        //    angles.x = 40;
+        //}
+        //followCameraTarget.localEulerAngles = angles;
+        //
+        //nextRotation = Quaternion.Lerp(followCameraTarget.rotation, nextRotation, Time.deltaTime * rotationLerp);
     }
     private void HandleCamera()
+    {
+        switch (currentStyle)
+        {
+            case ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET:
+
+                break;
+
+            case ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET_AIM:
+
+                break;
+        }
+    }
+
+    private void HandleCamera2()
     {
         switch (currentStyle)
         {

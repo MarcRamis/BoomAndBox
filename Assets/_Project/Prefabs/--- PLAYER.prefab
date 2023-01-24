@@ -8060,6 +8060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Feedbacks:
   - {fileID: 433165117}
+  - {fileID: 256346966}
   InitializationMode: 2
   SafeMode: 3
   Direction: 0
@@ -8773,8 +8774,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727418759626}
-  m_LocalRotation: {x: 0.090839304, y: -0.45191172, z: 0.04632207, w: 0.88621575}
-  m_LocalPosition: {x: 36.389004, y: 2.53, z: -1.6812654}
+  m_LocalRotation: {x: 0.09083932, y: -0.45191178, z: 0.04632208, w: 0.8862157}
+  m_LocalPosition: {x: 36.389004, y: 2.53, z: -1.6812652}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8871,13 +8872,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79988018654f234898eaf8186f240dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orientation: {fileID: 6449113727587546354}
-  player: {fileID: 6449113727613805789}
-  playerObj: {fileID: 6449113727373662095}
-  combatLookAt: {fileID: 6449113728308633490}
+  playerMovement: {fileID: 6449113727613805786}
+  followCameraTarget: {fileID: 6449113728086580957}
   thirdPersonCameraLookingAt: {fileID: 6449113728186437665}
   thirdPersonCameraAimLookingAt: {fileID: 81290820}
-  rotationObjSpeed: 10
+  thirdPersonCameraLookingAt_VirtualCamera: {fileID: 0}
+  rotationSpeed: 1.5
+  rotationLerp: 0.5
 --- !u!114 &870304865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8970,7 +8971,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727515996880}
-  m_LocalRotation: {x: 0.09083931, y: -0.45191172, z: 0.04632207, w: 0.88621575}
+  m_LocalRotation: {x: 0.09083933, y: -0.45191175, z: 0.046322078, w: 0.8862157}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9153,11 +9154,13 @@ GameObject:
   - component: {fileID: 6449113727613805787}
   - component: {fileID: 6449113727613805788}
   - component: {fileID: 4239078511182192372}
+  - component: {fileID: 1082410534}
   - component: {fileID: 6449113727613805786}
   - component: {fileID: 6449113727613805784}
   - component: {fileID: 6449113727613805783}
   - component: {fileID: 6449113727613805782}
   - component: {fileID: 8686463257513901598}
+  - component: {fileID: 5656359316286894176}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -9221,6 +9224,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   receiveDamageFeedback: {fileID: 1565508940}
+--- !u!114 &1082410534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449113727613805789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9cd97c968b789409c1b69231d95c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveDirection: {x: 0, y: 0}
+  lookDirection: {x: 0, y: 0}
 --- !u!114 &6449113727613805786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9241,6 +9258,7 @@ MonoBehaviour:
   groundDrag: 4
   isDashing: 0
   isAiming: 0
+  modelRotationSpeed: 10
   jumpForce: 16.5
   jumpCooldown: 0.25
   airMultiplier: 0.15
@@ -9250,7 +9268,8 @@ MonoBehaviour:
   lowTimeLanding: 0.5
   middleTimeLanding: 1.35
   highTimeLanding: 3
-  jumpKey: 32
+  _look: {x: 0, y: 0}
+  myInputs: {fileID: 0}
   groundRadius: 0.2
   whatIsGround:
     serializedVersion: 2
@@ -9258,9 +9277,12 @@ MonoBehaviour:
   orientation: {fileID: 6449113727587546354}
   groundTransform: {fileID: 906650392}
   isGrounded: 0
+  model: {fileID: 6449113727373662095}
+  mainCamera: {fileID: 6449113727418759624}
   jumpFeedback: {fileID: 1066584040459466906}
   doubleJumpFeedback: {fileID: 624070227}
   landingFeedback: {fileID: 1868072849}
+  movementState: 0
 --- !u!114 &6449113727613805784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9277,10 +9299,7 @@ MonoBehaviour:
   standPosition: {fileID: 6449113728488599142}
   toAttach: {fileID: 6449113727587546354}
   objectToThrow: {fileID: 5335073555746238997}
-  toL: {fileID: 0}
-  throwKey: 323
-  throwLargeKey: 324
-  returnKey: 306
+  companion: {fileID: 0}
   throwForce: 50
   throwLargeForce: 100
   throwCooldown: 0.25
@@ -9323,9 +9342,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56ef357c94b38143a1fbd5db15c2ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orientation: {fileID: 6449113727418759625}
-  dashDistance: 21.89
-  dashDuration: 0.25
   dashInterpTime: 1
   dashInterpCurveSmooth:
     serializedVersion: 2
@@ -9351,14 +9367,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disableGravity: 1
-  dashingLayers:
-    serializedVersion: 2
-    m_Bits: 1536
-  dashCd: 0.5
-  dashKey: 304
+  orientation: {fileID: 6449113727418759625}
   speedPs: {fileID: 1511670004}
-  m_Target: {fileID: 0}
   dashFeedback: {fileID: 3389904813254570375}
 --- !u!96 &6449113727613805782
 TrailRenderer:
@@ -9482,6 +9492,104 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5656359316286894176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449113727613805789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e1970995b3a79b2458a9db967bdf9137, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0661f404-d60c-44ec-b95e-fb372ce8f1fd
+    m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 90bb51e3-a8cc-4007-a558-420b31ddc3f7
+    m_ActionName: Player/Look[/XInputControllerWindows/rightStick,/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: baa55fc5-4f87-4178-ada6-20c4f7c8c31d
+    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 47d82337-cb48-46c7-bdbd-e1b9197fd34e
+    m_ActionName: UI/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a294e58a-6fe5-4f91-a26b-39d33f6729fa
+    m_ActionName: UI/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2f80bbd2-13be-41a2-80d8-339cf5db2f68
+    m_ActionName: UI/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8ad880b4-7853-459c-91c3-2c123eff31c6
+    m_ActionName: UI/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c0b24956-8f3c-4241-bb2f-c8fdeca278b2
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a3cf5147-7296-4fe0-a2c9-2163a216618c
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f16b6674-c9de-4455-b3da-7c34c124d36f
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 36960064-6778-4267-8ec2-c37006184832
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0d7ec5e8-e365-48e6-ae3c-f07fe793db2a
+    m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 32218a68-87b0-4270-820a-77eb08ef03df
+    m_ActionName: Player/Jump[/Keyboard/space,/DualShock4GamepadHID/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f50d0d9f-c316-4d34-9e94-214b3b9c2e2a
+    m_ActionName: Player/Throw[/Mouse/leftButton,/DualShock4GamepadHID/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ecfa9550-0dde-4b95-a916-7e840a71daa9
+    m_ActionName: Player/Dash[/Keyboard/leftShift,/DualShock4GamepadHID/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d2cf5447-e614-4535-a32a-c52928c9fcc9
+    m_ActionName: Player/Return[/DualShock4GamepadHID/buttonNorth,/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4a483015-2b8e-4b80-98af-84a42f2e7fbb
+    m_ActionName: Player/Zoom[/Keyboard/q,/DualShock4GamepadHID/rightShoulder]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Gamepad
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &6449113727740359225
 GameObject:
   m_ObjectHideFlags: 0
@@ -9618,9 +9726,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 4
   m_FollowOffset: {x: 0, y: 1.51, z: -4.7}
-  m_XDamping: 0
-  m_YDamping: 0
-  m_ZDamping: 0
+  m_XDamping: 0.5
+  m_YDamping: 0.5
+  m_ZDamping: 0.5
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -9745,9 +9853,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 4
   m_FollowOffset: {x: 0, y: 1.51, z: -4.7}
-  m_XDamping: 0
-  m_YDamping: 0
-  m_ZDamping: 0
+  m_XDamping: 0.5
+  m_YDamping: 0.5
+  m_ZDamping: 0.5
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -10089,9 +10197,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 4
   m_FollowOffset: {x: 0, y: 1.51, z: -4.7}
-  m_XDamping: 0
-  m_YDamping: 0
-  m_ZDamping: 0
+  m_XDamping: 0.5
+  m_YDamping: 0.5
+  m_ZDamping: 0.5
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -10251,6 +10359,8 @@ GameObject:
   - component: {fileID: 6449113728186437663}
   - component: {fileID: 6449113728186437664}
   - component: {fileID: 479148814}
+  - component: {fileID: 1378702202}
+  - component: {fileID: 2017493686880349198}
   m_Layer: 0
   m_Name: Camera_ThirdPerson
   m_TagString: Untagged
@@ -10266,7 +10376,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728186437665}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 36.389004, y: 2.53, z: -1.6812654}
+  m_LocalPosition: {x: 36.389004, y: 2.53, z: -1.6812652}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10317,7 +10427,7 @@ MonoBehaviour:
   m_YAxis:
     Value: 0.5
     m_SpeedMode: 0
-    m_MaxSpeed: 10
+    m_MaxSpeed: 2
     m_AccelTime: 0.2
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -10341,7 +10451,7 @@ MonoBehaviour:
   m_XAxis:
     Value: -69.04
     m_SpeedMode: 0
-    m_MaxSpeed: 800
+    m_MaxSpeed: 300
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -10402,7 +10512,53 @@ MonoBehaviour:
     m_AmplitudeGain: 1
     m_FrequencyGain: 1
     m_Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
+    m_NoiseOffsets: {x: 133.04294, y: 639.91547, z: 934.70386}
+--- !u!114 &1378702202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449113728186437665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 65
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 0
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0.5
+  m_DampingWhenOccluded: 1
+  m_OptimalTargetDistance: 0
+--- !u!114 &2017493686880349198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449113728186437665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerIndex: -1
+  AutoEnableInputs: 1
+  XYAxis: {fileID: 4525117067191390835, guid: e1970995b3a79b2458a9db967bdf9137, type: 3}
+  ZAxis: {fileID: 0}
 --- !u!1 &6449113728308633491
 GameObject:
   m_ObjectHideFlags: 0
@@ -10489,7 +10645,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728492538123}
-  m_LocalRotation: {x: -0.09105622, y: -0.4847839, z: -0.0508324, w: 0.86839473}
+  m_LocalRotation: {x: -0.09105623, y: -0.4847839, z: -0.0508324, w: 0.86839473}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10567,7 +10723,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113728576391527}
-  m_LocalRotation: {x: 0.11869936, y: -0.48291656, z: 0.06626426, w: 0.86504984}
+  m_LocalRotation: {x: 0.11869936, y: -0.48291656, z: 0.06626426, w: 0.8650498}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
