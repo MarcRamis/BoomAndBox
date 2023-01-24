@@ -30,6 +30,8 @@ float _ShnIntense;
 float _ShnRange;
 float _ShnSmooth;
 
+float4 _SWColor;
+
 float Toon (float dot, fixed atten)
 {
 	float offset = clamp(_Offset, -1, 1);

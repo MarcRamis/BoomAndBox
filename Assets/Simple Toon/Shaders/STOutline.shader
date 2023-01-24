@@ -34,6 +34,9 @@ Shader "Simple Toon/SToon Outline"
         _ShnIntense ("Intensity", Range(0,1)) = 0
         _ShnRange ("Range", Range(0,1)) = 0.15
         _ShnSmooth ("Smoothness", Range(0,1)) = 0
+        
+        [Header(Shadow)][Space(5)]  //outline
+        _SWColor("Color", COLOR) = (0,0,0,1)
     }
 
     SubShader
@@ -88,7 +91,7 @@ Shader "Simple Toon/SToon Outline"
                 _Steps = _Segmented ? _Steps : 1;
                 _StpSmooth = _Segmented ? _StpSmooth : 1;
 
-				_DarkColor = fixed4(0,0,0,1);
+                _DarkColor = _SWColor;
 				_MaxAtten = 1.0;
 
 				float3 normal = normalize(i.worldNormal);
@@ -172,7 +175,7 @@ Shader "Simple Toon/SToon Outline"
                 _Steps = _Segmented ? _Steps : 1;
                 _StpSmooth = _Segmented ? _StpSmooth : 1;
 
-				_DarkColor = fixed4(0,0,0,1);
+                _DarkColor = fixed4(1,1,1,1);
 				_MaxAtten = 1.0;
 
 				float3 normal = normalize(i.worldNormal);
