@@ -79,8 +79,8 @@ Material:
     - _MinLight: 0.276
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Offset: 0.02
-    - _OtlWidth: 3.84
+    - _Offset: -0.01
+    - _OtlWidth: 1.16
     - _Parallax: 0.02
     - _PostAtten: 0
     - _RimIntense: 0.316
@@ -101,8 +101,8 @@ Material:
     - _SpcTolerc: 0.05
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Steps: 2.9
-    - _StpSmooth: 0
+    - _Steps: 2
+    - _StpSmooth: 0.117
     - _UVSec: 0
     - _X1: 0.15
     - _X2: 0.15
