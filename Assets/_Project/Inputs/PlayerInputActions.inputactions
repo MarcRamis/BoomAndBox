@@ -216,7 +216,7 @@
                 {
                     "name": "",
                     "id": "ae2e1a83-b467-44c4-aa1a-0f8ca3dc6d70",
-                    "path": "<Mouse>/delta",
+                    "path": "<Pointer>/delta",
                     "interactions": "",
                     "processors": "NormalizeVector2",
                     "groups": "Keyboard&Mouse;Touch",

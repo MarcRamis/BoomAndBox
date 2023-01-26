@@ -4,8 +4,6 @@ using UnityEngine;
 using TMPro;
 using MoreMountains.Feedbacks;
 using UnityEngine.InputSystem;
-
-
 public enum EMoveState { WALKING, DASHING, AIMING, AIR }
 
 [RequireComponent(typeof(PlayerInput))]
