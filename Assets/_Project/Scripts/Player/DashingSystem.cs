@@ -102,7 +102,7 @@ public class DashingSystem : MonoBehaviour
         elapsedTime = 0;
         m_Rb.useGravity = true;
         m_Rb.isKinematic = false;
-        m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
+        m_Rb.interpolation = RigidbodyInterpolation.None;
 
         // set modes
         pm.isDashing = false;

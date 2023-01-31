@@ -5,8 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/PlatformLevel-Prototype.unity
     guid: 7c1855edce6246845968eecd3158039b
+  - enabled: 1
+    path: Assets/_Project/Scenes/ThirdPerson.unity
+    guid: 2fa1d606e34c0d544bbaa8162a5db2a7
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 2f320289889f91644b91d6b504c67f85, type: 2}

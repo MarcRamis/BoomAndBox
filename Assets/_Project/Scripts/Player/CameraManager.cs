@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using Cinemachine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem;
 
 public enum ECameraStyle
 {
@@ -15,22 +16,57 @@ public class CameraManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerMovementSystem playerMovement;
     [SerializeField] private Transform followCameraTarget;
+
+    [SerializeField] private Transform lookAtTarget;
+
     // Reference camera in game
     [SerializeField] private GameObject thirdPersonCameraLookingAt;
     [SerializeField] private GameObject thirdPersonCameraAimLookingAt;
-    [SerializeField] private GameObject thirdPersonCameraLookingAt_VirtualCamera;
-    
+    [SerializeField] private CinemachineFreeLook m_camera;
+
     [Header("Settings")]
-    [SerializeField] private float rotationSpeed = 2.5f;
-    [SerializeField] private float rotationLerp = 0.5f;
+    [SerializeField] private Vector2 speedWMouse = new Vector2(0.003f, 0.2f);
+    [SerializeField] private Vector2 speedWController = new Vector2(0.05f, 3f);
     [HideInInspector] private ECameraStyle currentStyle;
-    [HideInInspector] private Quaternion nextRotation;
+
+    bool x = false;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        m_camera.LookAt = lookAtTarget;
+
+        InputSystem.onDeviceChange += InputDeviceChanged;
     }
+
+    private void InputDeviceChanged(InputDevice device, InputDeviceChange change)
+    {
+        switch (change)
+        {
+            //New device added
+            case InputDeviceChange.Added:
+
+                break;
+
+            //Device disconnected
+            case InputDeviceChange.Disconnected:
+                Debug.Log("Device disconnected");
+                break;
+
+            //Familiar device connected
+            case InputDeviceChange.Reconnected:
+                Debug.Log("Device reconnected");
+
+                break;
+
+            //Else
+            default:
+                break;
+        }
+    }
+
     private void Update()
     {
         // Esto debería ser un dispatch del player
@@ -40,33 +76,14 @@ public class CameraManager : MonoBehaviour
             currentStyle = ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET;
 
         HandleCamera();
+
+        //ar x = PlayerInput.currentControlScheme;
     }
 
     private void FixedUpdate()
     {
-        //Rotate the Follow Target transform based on the input
-        //followCameraTarget.rotation *= Quaternion.AngleAxis(playerMovement._look.x * rotationSpeed, Vector3.up);
-        //followCameraTarget.rotation *= Quaternion.AngleAxis(playerMovement._look.y * rotationSpeed, Vector3.right);
-        //
-        //var angles = followCameraTarget.localEulerAngles;
-        //angles.z = 0;
-        //
-        //var angle = followCameraTarget.localEulerAngles.x;
-        //
-        //
-        ////Clamp the Up/Down rotation
-        //if (angle > 180 && angle < 340)
-        //{
-        //    angles.x = 340;
-        //}
-        //else if (angle < 180 && angle > 40)
-        //{
-        //    angles.x = 40;
-        //}
-        //followCameraTarget.localEulerAngles = angles;
-        //
-        //nextRotation = Quaternion.Lerp(followCameraTarget.rotation, nextRotation, Time.deltaTime * rotationLerp);
     }
+
     private void HandleCamera()
     {
         switch (currentStyle)

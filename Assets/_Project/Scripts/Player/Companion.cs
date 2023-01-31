@@ -67,7 +67,6 @@ public class Companion : MonoBehaviour
     {
         SetNewState(ECompanionState.COMEBACK);
     }
-
     public void HandleState()
     {
         switch (state)

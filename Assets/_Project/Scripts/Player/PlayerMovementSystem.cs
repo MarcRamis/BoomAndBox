@@ -107,7 +107,7 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         // Ground check
         CheckGround();
-
+        
         MyInput();
         SpeedControl();
         HandleMovementState();
@@ -127,6 +127,8 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         MovePlayer();
         OnLand();
+        // Rotate player
+        RotateModel();
     }
 
     // Functions
@@ -143,8 +145,7 @@ public class PlayerMovementSystem : MonoBehaviour
         horizontalInput = myInputs.moveDirection.x;
         verticalInput = myInputs.moveDirection.y;
 
-        // Rotate player
-        RotateModel();
+
 
         // Coyote time
         if (isGrounded) coyoteTimeCounter = coyoteTime;
@@ -377,6 +378,6 @@ public class PlayerMovementSystem : MonoBehaviour
         Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         if (inputDir != Vector3.zero)
-            model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.deltaTime * modelRotationSpeed);
+            model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
     }
 }
