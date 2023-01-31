@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/PlatformLevel-Prototype.unity
     guid: 7c1855edce6246845968eecd3158039b
-  - enabled: 0
+  - enabled: 1
     path: Assets/_Project/Scenes/ThirdPerson.unity
     guid: 2fa1d606e34c0d544bbaa8162a5db2a7
   m_configObjects:
