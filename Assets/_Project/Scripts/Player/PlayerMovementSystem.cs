@@ -9,6 +9,11 @@ public enum EMoveState { WALKING, DASHING, AIMING, AIR }
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovementSystem : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private Transform model;
+    [SerializeField] private Camera mainCamera;
+    [HideInInspector] private Rigidbody playerRb;
+    
     [Header("Movement")]
     [HideInInspector] private float moveSpeed;
     [SerializeField] private float walkSpeed;
@@ -22,7 +27,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [HideInInspector] private Vector3 moveDirection;
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isAiming;
-
+    
     [Header("Orientation")]
     [SerializeField] private float modelRotationSpeed;
 
@@ -31,20 +36,22 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private float jumpCooldown;
     [SerializeField] private float airMultiplier;
     [SerializeField] private int doubleJumpCounter = 1;
-    [HideInInspector] private bool readyToJump;
+    [HideInInspector] public bool readyToJump;
     [SerializeField] private float coyoteTime = 0.2f;
-    private int currentDoubleJumps;
-    private bool isDoubleJumping;
-    private float coyoteTimeCounter;
+    [HideInInspector] public int currentDoubleJumps;
+    [HideInInspector] public bool isDoubleJumping;
+    [HideInInspector] private float coyoteTimeCounter;
 
     [Header("Land")]
     [SerializeField] private float veryLowTimeLanding = 0.2f;
     [SerializeField] private float lowTimeLanding = 0.5f;
     [SerializeField] private float middleTimeLanding = 1.0f;
     [SerializeField] private float highTimeLanding = 2.0f;
-    private float timeInAir;
-    private bool landing;
-    private float velocityLastFrame;
+    [HideInInspector] private float timeInAir;
+    // Using a variable to know when it pressed the input jump because i want to know if is falling or not
+    [HideInInspector] public bool isFalling;
+    [HideInInspector] private bool landing;
+    [HideInInspector] private float velocityLastFrame;
 
     //Inputs
     [HideInInspector] public Vector2 _look;
@@ -57,36 +64,28 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform groundTransform;
     [HideInInspector] public bool isGrounded;
 
-    [Header("References")]
-    [SerializeField] private Transform model;
-    [SerializeField] private Camera mainCamera;
-
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks jumpFeedback;
     [SerializeField] private MMFeedbacks doubleJumpFeedback;
     [SerializeField] private MMFeedbacks landingFeedback;
 
     // Constants variables
-    private const float lowVelocity = 0.1f;
+    [HideInInspector] private const float lowVelocity = 0.1f;
 
-    // Internal variables
-    private Rigidbody m_Rb;
-    private float desiredMoveSpeed;
-    private float lastDesiredMoveSpeed;
-    private bool keepMomentum;
-    private float speedChangeFactor;
-    private EMoveState lastState;
+    // Internal needed variables
+    [HideInInspector] private float desiredMoveSpeed;
+    [HideInInspector] private float lastDesiredMoveSpeed;
+    [HideInInspector] private bool keepMomentum;
+    [HideInInspector] private float speedChangeFactor;
+
+    [HideInInspector] private float lastFramePosition;
     
+    [HideInInspector] private EMoveState lastState;
     [HideInInspector] public EMoveState movementState;
-
-    public void OnLook(InputValue value)
-    {
-        _look = value.Get<Vector2>();
-    }
 
     private void Awake()
     {
-        m_Rb = GetComponent<Rigidbody>();
+        playerRb = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
     }
 
@@ -97,15 +96,15 @@ public class PlayerMovementSystem : MonoBehaviour
         myInputs.OnZoomPerformed += DoZoom;
 
         // Initalize properties
-        m_Rb.freezeRotation = true;
+        playerRb.freezeRotation = true;
         readyToJump = true;
         currentDoubleJumps = doubleJumpCounter;
     }
 
     // Update
+
     private void Update()
     {
-        // Ground check
         CheckGround();
         
         MyInput();
@@ -116,36 +115,31 @@ public class PlayerMovementSystem : MonoBehaviour
         HandleDrag();
     }
 
-    private void CheckGround()
-    {
-        var hitColliders = Physics.OverlapSphere(groundTransform.position, groundRadius, whatIsGround);
-        isGrounded = hitColliders.Length > 0;
-    }
-
     // Fixed update
+
     private void FixedUpdate()
     {
+        CheckFalling();
+
         MovePlayer();
-        OnLand();
-        // Rotate player
         RotateModel();
+
+        OnLand();
     }
 
     // Functions
     private void HandleDrag()
     {
         if (movementState == EMoveState.WALKING || (movementState == EMoveState.AIMING && isGrounded) || isDoubleJumping)
-            m_Rb.drag = groundDrag;
+            playerRb.drag = groundDrag;
         else
-            m_Rb.drag = 0;
+            playerRb.drag = 0;
     }
     private void MyInput()
     {
         // Take input directions
         horizontalInput = myInputs.moveDirection.x;
         verticalInput = myInputs.moveDirection.y;
-
-
 
         // Coyote time
         if (isGrounded) coyoteTimeCounter = coyoteTime;
@@ -166,7 +160,7 @@ public class PlayerMovementSystem : MonoBehaviour
         if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
         {
             coyoteTimeCounter = 0f;
-            readyToJump = false; 
+            readyToJump = false;
 
             ApplyJumpForce();
             jumpFeedback.PlayFeedbacks();
@@ -208,20 +202,20 @@ public class PlayerMovementSystem : MonoBehaviour
         // On ground
         if (isGrounded)
         {
-            m_Rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            playerRb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         }
         
         // In air
         else
         {
-            m_Rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            playerRb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
     private void OnLand()
     {
         // Landing
         // Get land point. Were going down last frame, and now reached an almost null velocity
-        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(m_Rb.velocity.y) < lowVelocity))
+        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(playerRb.velocity.y) < lowVelocity))
         {
             // Different operations for different fall length landing 
             if (timeInAir >= highTimeLanding)
@@ -243,7 +237,8 @@ public class PlayerMovementSystem : MonoBehaviour
             landing = false;
             timeInAir = 0;
         }
-        velocityLastFrame = m_Rb.velocity.y;
+        
+        velocityLastFrame = playerRb.velocity.y;
 
         // Count the time the player is landing
         if (landing)
@@ -251,38 +246,31 @@ public class PlayerMovementSystem : MonoBehaviour
             timeInAir += Time.fixedDeltaTime;
         }
     }
+
     private void SpeedControl()
     {
-        Vector3 flatVel = new Vector3(m_Rb.velocity.x, 0f, m_Rb.velocity.z);
+        Vector3 flatVel = new Vector3(playerRb.velocity.x, 0f, playerRb.velocity.z);
 
         // limit velocity if needed
         if (flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            m_Rb.velocity = new Vector3(limitedVel.x, m_Rb.velocity.y, limitedVel.z);
+            playerRb.velocity = new Vector3(limitedVel.x, playerRb.velocity.y, limitedVel.z);
         }
 
         // Esto a lo mejor tengo que caparlo a partir de la altura del jugador
         // limit y vel
-        if (maxYSpeed != 0 && m_Rb.velocity.y > maxYSpeed)
+        if (maxYSpeed != 0 && playerRb.velocity.y > maxYSpeed)
         {
-            m_Rb.velocity = new Vector3(m_Rb.velocity.x, maxYSpeed, m_Rb.velocity.z);
+            playerRb.velocity = new Vector3(playerRb.velocity.x, maxYSpeed, playerRb.velocity.z);
         }
     }
     
     private void ApplyJumpForce()
     {
         // reset y velocity
-        m_Rb.velocity = new Vector3(m_Rb.velocity.x, 0f, m_Rb.velocity.z);
-        m_Rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-    private void ResetJump()
-    {
-        readyToJump = true;
-    }
-    private void ResetDoubleJump()
-    {
-        isDoubleJumping = false;
+        playerRb.velocity = new Vector3(playerRb.velocity.x, 0f, playerRb.velocity.z);
+        playerRb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
     private void HandleMovementState()
@@ -363,12 +351,6 @@ public class PlayerMovementSystem : MonoBehaviour
         keepMomentum = false;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(groundTransform.position, groundRadius);
-    }
-
     private void RotateModel()
     {
         // rotate orientation
@@ -379,5 +361,49 @@ public class PlayerMovementSystem : MonoBehaviour
 
         if (inputDir != Vector3.zero)
             model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
+    }
+
+
+    // CHECK FUNCTIONS
+
+    private void CheckGround()
+    {
+        var hitColliders = Physics.OverlapSphere(groundTransform.position, groundRadius, whatIsGround);
+        isGrounded = hitColliders.Length > 0;
+    }
+
+    private void CheckFalling()
+    {
+        float currentVel = playerRb.velocity.y;
+        if (lastFramePosition < currentVel)
+        {
+            isFalling = true;
+        }
+        else
+        {
+            isFalling = false;
+        }
+    }
+
+
+
+    // COOLDOWN RESETS
+
+    private void ResetJump()
+    {
+        readyToJump = true;
+    }
+    private void ResetDoubleJump()
+    {
+        isDoubleJumping = false;
+    }
+
+
+
+    // GIZMOS -- EDITOR SETTINGS
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(groundTransform.position, groundRadius);
     }
 }
