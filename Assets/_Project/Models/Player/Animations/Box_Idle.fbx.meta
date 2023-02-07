@@ -30,7 +30,17 @@ ModelImporter:
       that will be discarded.\n\t'RightForearm' has translation animation that will
       be discarded.\n\t'RightHandiMiddle1' has translation animation that will be
       discarded.\n\t'RightHandPinky1' has translation animation that will be discarded.\n"
-    animationRetargetingWarnings: 
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftUpperArm
+      average position error 2.5 mm and maximum position error 9.7 mm at time 0:10
+      (6.9%) Frame 10\n\tLeftLowerArm average position error 2.6 mm and maximum position
+      error 9.8 mm at time 0:22 (15.3%) Frame 22\n\tLeftHand average position error
+      2.5 mm and maximum position error 9.7 mm at time 0:22 (15.3%) Frame 22\n\tRightUpperArm
+      average position error 2.5 mm and maximum position error 9.7 mm at time 0:10
+      (6.9%) Frame 10\n\tRightLowerArm average position error 2.6 mm and maximum
+      position error 9.8 mm at time 0:10 (6.9%) Frame 10\n\tRightHand average position
+      error 2.5 mm and maximum position error 9.7 mm at time 3: 4 (65.3%) Frame 94\n\tHead
+      average position error 2.5 mm and maximum position error 9.7 mm at time 0:10
+      (6.9%) Frame 10\n"
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -57,8 +67,8 @@ ModelImporter:
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0

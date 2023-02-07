@@ -1289,13 +1289,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906650391}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.861, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6449113727613805787}
-  m_RootOrder: 10
+  m_Father: {fileID: 6449113727373662095}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1016362676
 GameObject:
@@ -8705,6 +8705,7 @@ Transform:
   - {fileID: 6449113728172587319}
   - {fileID: 6449113727922680754}
   - {fileID: 6449113727567551895}
+  - {fileID: 906650392}
   m_Father: {fileID: 6449113727613805787}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.064}
@@ -8888,11 +8889,7 @@ MonoBehaviour:
   playerMovement: {fileID: 6449113727613805786}
   followCameraTarget: {fileID: 6449113728086580957}
   lookAtTarget: {fileID: 6449113728308633490}
-  thirdPersonCameraLookingAt: {fileID: 0}
-  thirdPersonCameraAimLookingAt: {fileID: 0}
   m_camera: {fileID: 357477418}
-  speedWMouse: {x: 0.003, y: 0.2}
-  speedWController: {x: 0.05, y: 3}
 --- !u!114 &870304865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9161,7 +9158,6 @@ Transform:
   - {fileID: 624070224}
   - {fileID: 541924059}
   - {fileID: 1565508939}
-  - {fileID: 906650392}
   m_Father: {fileID: 6449113727402268853}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9221,8 +9217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8de7c8767ab24047b6302eff9943455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  rigidbody2D: {fileID: 0}
+  playerAnimator: {fileID: 0}
 --- !u!114 &6449113727613805786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9235,6 +9230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642dea59948ad3846b1df50d04c75d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 6449113727373662095}
+  mainCamera: {fileID: 6449113727418759624}
   walkSpeed: 9
   aimSpeed: 10
   dashSpeed: 18
@@ -9248,11 +9245,15 @@ MonoBehaviour:
   jumpCooldown: 0.25
   airMultiplier: 0.15
   doubleJumpCounter: 1
+  readyToJump: 0
   coyoteTime: 0.2
+  currentDoubleJumps: 0
+  isDoubleJumping: 0
   veryLowTimeLanding: 0.2
   lowTimeLanding: 0.5
   middleTimeLanding: 1.35
   highTimeLanding: 3
+  isFalling: 0
   _look: {x: 0, y: 0}
   myInputs: {fileID: 0}
   groundRadius: 0.2
@@ -9262,11 +9263,12 @@ MonoBehaviour:
   orientation: {fileID: 6449113727587546354}
   groundTransform: {fileID: 906650392}
   isGrounded: 0
-  model: {fileID: 6449113727373662095}
-  mainCamera: {fileID: 6449113727418759624}
   jumpFeedback: {fileID: 1066584040459466906}
   doubleJumpFeedback: {fileID: 624070227}
   landingFeedback: {fileID: 1868072849}
+  landingFeedbackShort: {fileID: 0}
+  trailLeftShoe: {fileID: 0}
+  trailRightShoe: {fileID: 0}
   movementState: 0
 --- !u!114 &6449113727613805784
 MonoBehaviour:

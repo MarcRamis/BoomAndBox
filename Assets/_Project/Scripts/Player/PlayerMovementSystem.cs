@@ -68,6 +68,9 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private MMFeedbacks jumpFeedback;
     [SerializeField] private MMFeedbacks doubleJumpFeedback;
     [SerializeField] private MMFeedbacks landingFeedback;
+    [SerializeField] private MMFeedbacks landingFeedbackShort;
+    [SerializeField] private TrailRenderer trailLeftShoe;
+    [SerializeField] private TrailRenderer trailRightShoe;
 
     // Constants variables
     [HideInInspector] private const float lowVelocity = 0.1f;
@@ -228,9 +231,11 @@ public class PlayerMovementSystem : MonoBehaviour
             }
             else if (timeInAir >= lowTimeLanding)
             {
+                landingFeedbackShort.PlayFeedbacks();
             }
             else if (timeInAir >= veryLowTimeLanding)
             {
+                landingFeedbackShort.PlayFeedbacks();
             }
 
             // Reset landing
@@ -353,14 +358,26 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void RotateModel()
     {
-        // rotate orientation
+        // Rotate Orientation
         Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
         orientation.forward = viewDir.normalized;
-
+        
         Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
+        
         if (inputDir != Vector3.zero)
+        {
             model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
+
+            //RaycastHit hit;
+            //if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
+            //{
+            //    Vector3 surfaceNormal = new Vector3(0, hit.normal.y, 0);
+            //    Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
+            //    model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.deltaTime);
+            //}
+            //Debug.DrawRay(groundTransform.position, groundTransform.TransformDirection(-Vector3.up) * 1.0f, Color.yellow);
+        }
+            
     }
 
 
