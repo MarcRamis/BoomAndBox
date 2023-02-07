@@ -28,6 +28,7 @@ public class ThrowingSystem : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackFeedback;
     [SerializeField] private MMFeedbacks throwingFeedback;
+    [SerializeField] private MMFeedbacks exclamationFeedback;
 
     // Constant variables
     private const float targetNearDistance = 0.2f;
@@ -35,7 +36,7 @@ public class ThrowingSystem : MonoBehaviour
     // Internal variables
     private float elapsedTime;
     private Vector3 startPosition;
-    
+
     // Start
     private void Start()
     {
@@ -46,6 +47,8 @@ public class ThrowingSystem : MonoBehaviour
         // Init Inputs
         pm.myInputs.OnThrowPerformed += DoThrow;
         pm.myInputs.OnReturnPerformed += DoReturn;
+
+        standPosition.position = companion.transform.position;
     }
 
     private void DoThrow()
@@ -146,5 +149,6 @@ public class ThrowingSystem : MonoBehaviour
     private void ResetThrowCooldown()
     {
         readyToThrow = true;
+        exclamationFeedback.PlayFeedbacks();
     }
 }

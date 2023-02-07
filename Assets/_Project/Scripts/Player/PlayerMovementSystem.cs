@@ -69,9 +69,9 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private MMFeedbacks doubleJumpFeedback;
     [SerializeField] private MMFeedbacks landingFeedback;
     [SerializeField] private MMFeedbacks landingFeedbackShort;
-    [SerializeField] private TrailRenderer trailLeftShoe;
-    [SerializeField] private TrailRenderer trailRightShoe;
-
+    [SerializeField] public TrailRenderer trailLeftShoe;
+    [SerializeField] public TrailRenderer trailRightShoe;
+    
     // Constants variables
     [HideInInspector] private const float lowVelocity = 0.1f;
 
@@ -90,6 +90,8 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
+        
+        TrailJumpFeedbackReset();
     }
 
     private void Start()
@@ -167,6 +169,7 @@ public class PlayerMovementSystem : MonoBehaviour
 
             ApplyJumpForce();
             jumpFeedback.PlayFeedbacks();
+            TrailJumpFeedback();
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
@@ -187,6 +190,7 @@ public class PlayerMovementSystem : MonoBehaviour
 
             ApplyJumpForce();
             doubleJumpFeedback.PlayFeedbacks();
+            TrailJumpFeedback();
 
             currentDoubleJumps--;
             timeInAir = 0;
@@ -409,10 +413,12 @@ public class PlayerMovementSystem : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+        TrailJumpFeedbackReset();
     }
     private void ResetDoubleJump()
     {
         isDoubleJumping = false;
+        TrailJumpFeedbackReset();
     }
 
 
@@ -422,5 +428,31 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundTransform.position, groundRadius);
+    }
+    
+    // FEEDBACK
+    
+    public void TrailJumpFeedback()
+    {
+        trailLeftShoe.emitting = true;
+        trailRightShoe.emitting = true;
+
+        trailLeftShoe.widthMultiplier = 0.30f;
+        trailRightShoe.widthMultiplier = 0.30f;
+
+        trailLeftShoe.time = 0.3f;
+        trailRightShoe.time = 0.3f;
+    }
+
+    public void TrailJumpFeedbackReset()
+    {
+        trailLeftShoe.emitting = true;
+        trailRightShoe.emitting = true;
+
+        trailLeftShoe.widthMultiplier = 0.10f;
+        trailRightShoe.widthMultiplier = 0.10f;
+
+        trailLeftShoe.time = 0.04f;
+        trailRightShoe.time = 0.04f;
     }
 }

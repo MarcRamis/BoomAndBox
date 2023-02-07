@@ -81,7 +81,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human:
@@ -447,7 +447,7 @@ ModelImporter:
     - name: neck
       parentName: spine2
       position: {x: 8.881784e-18, y: 0.081966475, z: -0.0000000036316006}
-      rotation: {x: 0.052474618, y: -0, z: -0, w: 0.9986223}
+      rotation: {x: 0.052474618, y: 0, z: -0, w: 0.9986223}
       scale: {x: 1, y: 1, z: 1}
     - name: head
       parentName: neck
@@ -517,7 +517,7 @@ ModelImporter:
     - name: LeftEyebrow
       parentName: head
       position: {x: -0.08846906, y: 0.14483422, z: 0.1125168}
-      rotation: {x: 0.004310215, y: -0, z: -0, w: 0.9999907}
+      rotation: {x: 0.004310215, y: 0, z: -0, w: 0.9999907}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftEyebrow1
       parentName: LeftEyebrow
@@ -542,7 +542,7 @@ ModelImporter:
     - name: RightEyebrow
       parentName: head
       position: {x: 0.0884691, y: 0.14483394, z: 0.112516955}
-      rotation: {x: 0.9999907, y: 0, z: 0, w: -0.004310215}
+      rotation: {x: 0.9999907, y: -0, z: 0, w: -0.004310215}
       scale: {x: 1, y: 1, z: 1}
     - name: RightEyebrow1
       parentName: RightEyebrow
@@ -567,7 +567,7 @@ ModelImporter:
     - name: Button3
       parentName: head
       position: {x: 1.3322676e-17, y: 0.14013983, z: 0.0900994}
-      rotation: {x: 0.004310215, y: -0, z: -0, w: 0.9999907}
+      rotation: {x: 0.004310215, y: 0, z: -0, w: 0.9999907}
       scale: {x: 1, y: 1, z: 1}
     - name: Button3_End
       parentName: Button3
@@ -577,7 +577,7 @@ ModelImporter:
     - name: Button4
       parentName: head
       position: {x: -0.024154361, y: 0.14013983, z: 0.0900994}
-      rotation: {x: 0.004310215, y: -0, z: -0, w: 0.9999907}
+      rotation: {x: 0.004310215, y: 0, z: -0, w: 0.9999907}
       scale: {x: 1, y: 1, z: 1}
     - name: Button4_End
       parentName: Button4
@@ -587,7 +587,7 @@ ModelImporter:
     - name: Button5
       parentName: head
       position: {x: -0.046951737, y: 0.14013983, z: 0.0900994}
-      rotation: {x: 0.004310215, y: -0, z: -0, w: 0.9999907}
+      rotation: {x: 0.004310215, y: 0, z: -0, w: 0.9999907}
       scale: {x: 1, y: 1, z: 1}
     - name: Button5_End
       parentName: Button5
@@ -597,7 +597,7 @@ ModelImporter:
     - name: Button
       parentName: head
       position: {x: 0.046589874, y: 0.14013983, z: 0.0900994}
-      rotation: {x: 0.004310215, y: -0, z: -0, w: 0.9999907}
+      rotation: {x: 0.004310215, y: 0, z: -0, w: 0.9999907}
       scale: {x: 1, y: 1, z: 1}
     - name: Button_End
       parentName: Button
@@ -607,7 +607,7 @@ ModelImporter:
     - name: Button2
       parentName: head
       position: {x: 0.025149485, y: 0.14013983, z: 0.0900994}
-      rotation: {x: 0.004310215, y: -0, z: -0, w: 0.9999907}
+      rotation: {x: 0.004310215, y: 0, z: -0, w: 0.9999907}
       scale: {x: 1, y: 1, z: 1}
     - name: Button2_End
       parentName: Button2
@@ -617,7 +617,7 @@ ModelImporter:
     - name: LeftEye
       parentName: head
       position: {x: -0.090586945, y: 0.016312031, z: 0.097200304}
-      rotation: {x: 0.004310215, y: -0, z: -0, w: 0.9999907}
+      rotation: {x: 0.004310215, y: 0, z: -0, w: 0.9999907}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftEye_End
       parentName: LeftEye
@@ -627,7 +627,7 @@ ModelImporter:
     - name: RightEye
       parentName: head
       position: {x: 0.090587, y: 0.016312195, z: 0.09720029}
-      rotation: {x: 0.9999907, y: 0, z: 0, w: -0.004310215}
+      rotation: {x: 0.9999907, y: -0, z: 0, w: -0.004310215}
       scale: {x: 1, y: 1, z: 1}
     - name: RightEye_End
       parentName: RightEye
@@ -667,7 +667,7 @@ ModelImporter:
     - name: LeftHandIndex_End
       parentName: LeftHandIndex2
       position: {x: -0.04334836, y: -0.0015658749, z: 2.220446e-18}
-      rotation: {x: 0, y: -0, z: -0.38268346, w: 0.92387956}
+      rotation: {x: 0, y: 0, z: -0.38268346, w: 0.92387956}
       scale: {x: 0.99999803, y: 0.99999803, z: 0.99999774}
     - name: LeftHandiMiddle1
       parentName: LeftHand
@@ -682,7 +682,7 @@ ModelImporter:
     - name: LeftHandiMiddle_End
       parentName: LeftHandiMiddle2
       position: {x: -0.04334836, y: -0.0015658749, z: 0}
-      rotation: {x: 0, y: -0, z: -0.38268346, w: 0.92387956}
+      rotation: {x: 0, y: 0, z: -0.38268346, w: 0.92387956}
       scale: {x: 0.99999803, y: 0.99999803, z: 0.99999774}
     - name: LeftHandPinky1
       parentName: LeftHand
@@ -697,7 +697,7 @@ ModelImporter:
     - name: LeftHandPinky_End
       parentName: LeftHandPinky2
       position: {x: -0.04334836, y: -0.0015658749, z: -1.7763568e-17}
-      rotation: {x: 0, y: -0, z: -0.38268346, w: 0.92387956}
+      rotation: {x: 0, y: 0, z: -0.38268346, w: 0.92387956}
       scale: {x: 0.99999803, y: 0.99999803, z: 0.99999774}
     - name: LeftHandThumb1
       parentName: LeftHand
@@ -707,7 +707,7 @@ ModelImporter:
     - name: LeftHandThumb2
       parentName: LeftHandThumb1
       position: {x: -2.842171e-16, y: -7.105427e-16, z: 0.037474133}
-      rotation: {x: 0, y: -0, z: -6.661338e-16, w: 1}
+      rotation: {x: 0, y: 0, z: -6.661338e-16, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftHandThumb_End
       parentName: LeftHandThumb2
@@ -717,7 +717,7 @@ ModelImporter:
     - name: Hoodie
       parentName: spine2
       position: {x: 8.881784e-18, y: 0.07997, z: -0.03536873}
-      rotation: {x: 0.056778405, y: -0, z: -0, w: 0.9983868}
+      rotation: {x: 0.056778405, y: 0, z: -0, w: 0.9983868}
       scale: {x: 1, y: 1, z: 1}
     - name: Hoodie1
       parentName: Hoodie
@@ -867,7 +867,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: Boom
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1

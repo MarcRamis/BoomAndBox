@@ -111,16 +111,16 @@ public class DashingSystem : MonoBehaviour
         // effects
         GetComponent<TrailRenderer>().emitting = false;
         speedPs.SetActive(false);
+        pm.TrailJumpFeedbackReset();
     }
-    private void SelectTarget()
-    {
-        
-    }
+    
     private void DashFeedback()
     {
         // start effects
         dashFeedback.PlayFeedbacks();
         speedPs.SetActive(true);
         GetComponent<TrailRenderer>().emitting = true;
+
+        pm.TrailJumpFeedback();
     }
 }
