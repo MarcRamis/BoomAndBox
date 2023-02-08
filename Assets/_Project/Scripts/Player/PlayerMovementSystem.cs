@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using MoreMountains.Feedbacks;
 using UnityEngine.InputSystem;
-public enum EMoveState { WALKING, DASHING, AIMING, AIR }
+public enum EMoveState { WALKING, DASHING, AIMING, SLIDING, AIR }
 public enum EAnimState { IDLE, RUNNING }
 
 [RequireComponent(typeof(PlayerInput))]
@@ -387,26 +387,26 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void RotateModel()
     {
+
         // Rotate Orientation
         Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
         orientation.forward = viewDir.normalized;
-        
+
         Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        
+
         if (inputDir != Vector3.zero)
         {
             model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
-
-            //RaycastHit hit;
-            //if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
-            //{
-            //    Vector3 surfaceNormal = new Vector3(0, hit.normal.y, 0);
-            //    Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
-            //    model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.deltaTime);
-            //}
-            //Debug.DrawRay(groundTransform.position, groundTransform.TransformDirection(-Vector3.up) * 1.0f, Color.yellow);
+        //
+        //    RaycastHit hit;
+        //    if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
+        //    {
+        //        Vector3 surfaceNormal = hit.normal;
+        //        Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
+        //
+        //        model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.deltaTime);
+        //    }
         }
-            
     }
 
 
@@ -431,7 +431,15 @@ public class PlayerMovementSystem : MonoBehaviour
         }
     }
 
+    private void SlopeSliding()
+    {
+        if (isGrounded)
+        {
+            //var sphereCastVerticalOffset = controller.height / - controller radius;
 
+            //if (Physics.SphereCast())
+        }
+    }
 
     // COOLDOWN RESETS
 
