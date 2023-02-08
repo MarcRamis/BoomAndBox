@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttachToPlayer : MonoBehaviour
 {
     private GameObject player;
+    private GameObject companion;
     
     public bool attachToOrientation = false;
     public bool attachToCompanion = false;
@@ -12,6 +13,7 @@ public class AttachToPlayer : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        companion = GameObject.FindGameObjectWithTag("Companion");
         if (!attachToOrientation) transform.parent = player.transform;
     }
     private void Update()
@@ -22,7 +24,7 @@ public class AttachToPlayer : MonoBehaviour
         }
         if (attachToCompanion)
         {
-            transform.parent = player.transform.GetChild(1).GetChild(1);
+            transform.parent = companion.transform;
         }
     }
 }

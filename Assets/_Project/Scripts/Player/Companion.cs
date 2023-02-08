@@ -5,6 +5,7 @@ using MoreMountains.Feedbacks;
 
 public enum ECompanionState
 {
+    NOCOMPANION,
     ATTACHED,
     THROW,
     THROW_LARGE,
@@ -16,8 +17,10 @@ public class Companion : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject player;
+    [SerializeField] private Transform modelCompanion;
     [HideInInspector] private Rigidbody m_Rb;
     [HideInInspector] private Collider m_Collider;
+    [SerializeField] private GameObject prefabHitExplosion;
 
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
@@ -29,14 +32,21 @@ public class Companion : MonoBehaviour
     [SerializeField] private MMFeedbacks comebackingFeedback;
     [SerializeField] private Color throwDashColor;
     [SerializeField] private Color throwLargeColor;
-    [HideInInspector] private TrailRenderer trailRenderer;
+    [SerializeField] private TrailRenderer trailRenderer;
+
+    private Vector3 initialScale;
+    private Quaternion initialRotation;
+
+
 
     // Start
     private void Start()
     {
         m_Rb = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();
-        trailRenderer = GetComponent<TrailRenderer>();
+
+        initialScale = transform.localScale;
+        initialRotation = transform.localRotation;
     }
 
     // Update
@@ -121,6 +131,8 @@ public class Companion : MonoBehaviour
                 trailRenderer.endColor = throwDashColor;
                 trailRenderer.startColor = throwDashColor;
 
+                ResetInitialProperties(false);
+
                 break;
             case ECompanionState.COMEBACK:
 
@@ -155,7 +167,11 @@ public class Companion : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Enemy" && state != ECompanionState.ATTACHED)
+        {
             collision.gameObject.GetComponent<IDamageable>().Damage(1);
+        }
+
+        Instantiate(prefabHitExplosion, collision.GetContact(0).point, prefabHitExplosion.transform.rotation);
 
         if (state != ECompanionState.ATTACHED)
             state = ECompanionState.COMEBACK;
@@ -169,4 +185,19 @@ public class Companion : MonoBehaviour
     }
     
     public Vector3 GetPosition() { return transform.position; }
+
+    public void ResetInitialProperties(bool changeRotation)
+    {
+        transform.localScale = initialScale;
+        if (changeRotation) transform.localRotation = initialRotation;
+    }
+
+    public void RotateModel(Vector3 orientation)
+    {
+        //float rotX = Mathf.Clamp(orientation.x,-90,90);
+        //float rotY = Mathf.Clamp(orientation.y,-45,45);
+        //float rotZ = orientation.z;
+        
+        //modelCompanion.local = Vector3.Slerp(modelCompanion.forward, new Vector3(rotX, rotY, rotZ), Time.fixedDeltaTime * 50f);
+    }
 }       

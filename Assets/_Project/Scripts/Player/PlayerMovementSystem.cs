@@ -5,6 +5,7 @@ using TMPro;
 using MoreMountains.Feedbacks;
 using UnityEngine.InputSystem;
 public enum EMoveState { WALKING, DASHING, AIMING, AIR }
+public enum EAnimState { IDLE, RUNNING }
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovementSystem : MonoBehaviour
@@ -13,10 +14,11 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform model;
     [SerializeField] private Camera mainCamera;
     [HideInInspector] private Rigidbody playerRb;
+    [SerializeField] private CapsuleCollider playerCollider;
     
     [Header("Movement")]
-    [HideInInspector] private float moveSpeed;
     [SerializeField] private float walkSpeed;
+    [HideInInspector] private float moveSpeed;
     [SerializeField] private float aimSpeed;
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashSpeedChangeFactor;
@@ -85,7 +87,8 @@ public class PlayerMovementSystem : MonoBehaviour
     
     [HideInInspector] private EMoveState lastState;
     [HideInInspector] public EMoveState movementState;
-
+    [HideInInspector] public EAnimState animState;
+    
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -115,6 +118,7 @@ public class PlayerMovementSystem : MonoBehaviour
         MyInput();
         SpeedControl();
         HandleMovementState();
+        HandleAnimState();
 
         // Handle drag
         HandleDrag();
@@ -231,7 +235,7 @@ public class PlayerMovementSystem : MonoBehaviour
             }
             else if (timeInAir >= middleTimeLanding)
             {
-                landingFeedback.PlayFeedbacks();
+                landingFeedbackShort.PlayFeedbacks();
             }
             else if (timeInAir >= lowTimeLanding)
             {
@@ -304,8 +308,17 @@ public class PlayerMovementSystem : MonoBehaviour
         // Mode - Walking
         else if (isGrounded)
         {
-            currentDoubleJumps = doubleJumpCounter;
+            if (playerRb.velocity.magnitude > 0.1f)
+            {
+                animState = EAnimState.RUNNING;
+            }
+            else
+            {
+                animState = EAnimState.IDLE;
+            }
+
             movementState = EMoveState.WALKING;
+            currentDoubleJumps = doubleJumpCounter;
             desiredMoveSpeed = walkSpeed;
         }
 
@@ -336,7 +349,19 @@ public class PlayerMovementSystem : MonoBehaviour
         lastDesiredMoveSpeed = desiredMoveSpeed;
         lastState = movementState;
     }
-
+    
+    private void HandleAnimState()
+    {
+        switch (animState)
+        {
+            case EAnimState.IDLE:
+                //playerCollider.radius = 0.56f;
+                break;
+            case EAnimState.RUNNING:
+                //playerCollider.radius = 1.15f;
+                break;
+        }
+    }
     private IEnumerator SmoothlyLerpMoveSpeed()
     {
         // smoothly lerp movementSpeed to desired value

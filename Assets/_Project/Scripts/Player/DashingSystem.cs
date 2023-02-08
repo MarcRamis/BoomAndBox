@@ -88,7 +88,7 @@ public class DashingSystem : MonoBehaviour
 
         // make interpolation
         transform.position = Vector3.Lerp(startPosition, currentTarget.transform.position, dashInterpCurveSmooth.Evaluate(percentageComplete));
-
+        
         // Calculate distance
         if (Vector3.Distance(transform.position, currentTarget.transform.position) < targetNearDistance || percentageComplete >= dashInterpTime)
         {

@@ -99,6 +99,8 @@ public class ThrowingSystem : MonoBehaviour
     // Fixed Update
     private void FixedUpdate()
     {
+        companion.RotateModel(cam.forward);
+
         if (companion.state != ECompanionState.COMEBACK) return;
 
         ComeBackInterp();
@@ -140,6 +142,7 @@ public class ThrowingSystem : MonoBehaviour
         // This is the reset of the BOX CHARACTER
         companion.SetNewState(ECompanionState.ATTACHED);
         objectToThrow.transform.SetParent(toAttach);
+        companion.ResetInitialProperties(true);
         elapsedTime = 0;
         comebackFeedback.PlayFeedbacks();
 
