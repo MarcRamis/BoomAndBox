@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using Cinemachine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem;
 
 public enum ECameraStyle
 {
@@ -13,51 +14,91 @@ public enum ECameraStyle
 public class CameraManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform orientation;
-    [SerializeField] private GameObject player;
-    [SerializeField] private Transform playerObj;
-    [SerializeField] private Transform combatLookAt;
-    
+    [SerializeField] private PlayerMovementSystem playerMovement;
+    [SerializeField] private Transform followCameraTarget;
+
+    [SerializeField] private Transform lookAtTarget;
+
     // Reference camera in game
     [SerializeField] private GameObject thirdPersonCameraLookingAt;
     [SerializeField] private GameObject thirdPersonCameraAimLookingAt;
+    [SerializeField] private CinemachineFreeLook m_camera;
 
     [Header("Settings")]
-    [SerializeField] private float rotationObjSpeed;
-    private ECameraStyle currentStyle;
-    
+    [SerializeField] private Vector2 speedWMouse = new Vector2(0.003f, 0.2f);
+    [SerializeField] private Vector2 speedWController = new Vector2(0.05f, 3f);
+    [HideInInspector] private ECameraStyle currentStyle;
+
+    bool x = false;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        m_camera.LookAt = lookAtTarget;
+
+        InputSystem.onDeviceChange += InputDeviceChanged;
     }
+
+    private void InputDeviceChanged(InputDevice device, InputDeviceChange change)
+    {
+        switch (change)
+        {
+            //New device added
+            case InputDeviceChange.Added:
+
+                break;
+
+            //Device disconnected
+            case InputDeviceChange.Disconnected:
+                Debug.Log("Device disconnected");
+                break;
+
+            //Familiar device connected
+            case InputDeviceChange.Reconnected:
+                Debug.Log("Device reconnected");
+
+                break;
+
+            //Else
+            default:
+                break;
+        }
+    }
+
     private void Update()
     {
-        if (player.GetComponent<PlayerMovementSystem>().isAiming)
+        // Esto debería ser un dispatch del player
+        if (playerMovement.isAiming)
             currentStyle = ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET_AIM;
         else
             currentStyle = ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET;
 
         HandleCamera();
+
+        //ar x = PlayerInput.currentControlScheme;
     }
 
     private void FixedUpdate()
     {
-        // rotate orientation
-        Vector3 viewDir = player.transform.position - new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
-        orientation.forward = viewDir.normalized;
-        
-        if (currentStyle == ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET || currentStyle == ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET_AIM)
-        {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
-            Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+    }
 
-            if (inputDir != Vector3.zero)
-                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationObjSpeed);
+    private void HandleCamera()
+    {
+        switch (currentStyle)
+        {
+            case ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET:
+
+                break;
+
+            case ECameraStyle.THIRDPERSON_LOOKING_AT_TARGET_AIM:
+
+                break;
         }
     }
-    private void HandleCamera()
+
+    private void HandleCamera2()
     {
         switch (currentStyle)
         {

@@ -12,42 +12,24 @@ public enum ECompanionState
     COMEBACK
 }
 
-public class ThrowingObj : MonoBehaviour
+public class Companion : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject player;
+    [HideInInspector] private Rigidbody m_Rb;
+    [HideInInspector] private Collider m_Collider;
 
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
     [SerializeField] private float maxLargeDistanceToReturn;
     [SerializeField] private float timeRetained;
+    [HideInInspector] public ECompanionState state = ECompanionState.ATTACHED;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
     [SerializeField] private Color throwDashColor;
     [SerializeField] private Color throwLargeColor;
-
-    // Internal Variables
-    [HideInInspector] public Vector3 startThrowingPosition;
     [HideInInspector] private TrailRenderer trailRenderer;
-
-    public enum EThrowingState
-    {
-        ATTACHED,
-        THROW,
-        THROW_LARGE,
-        RETAINED,
-        COMEBACK
-    }
-    [SerializeField] public EThrowingState m_State = EThrowingState.ATTACHED;
-    private Rigidbody m_Rb;
-    private Collider m_Collider;
-
-    // Awake
-    private void Awake()
-    {
-        startThrowingPosition = transform.position;
-    }
 
     // Start
     private void Start()
@@ -60,37 +42,36 @@ public class ThrowingObj : MonoBehaviour
     // Update
     private void Update()
     {
-        StateHandler();
+        HandleState();
     }
 
     // Fixed Update
     private void FixedUpdate()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) > maxDistanceToReturn && m_State != EThrowingState.THROW_LARGE)
+        if (Vector3.Distance(player.transform.position, transform.position) > maxDistanceToReturn && state != ECompanionState.THROW_LARGE)
         {
-            if (m_State != EThrowingState.RETAINED && m_State != EThrowingState.COMEBACK)
+            if (state != ECompanionState.RETAINED && state != ECompanionState.COMEBACK)
             {
-                SetNewState(EThrowingState.RETAINED);
+                SetNewState(ECompanionState.RETAINED);
                 Invoke(nameof(ResetRetainedState), timeRetained);
             }
         }
-        else if(Vector3.Distance(player.transform.position, transform.position) > maxLargeDistanceToReturn && m_State == EThrowingState.THROW_LARGE)
+        else if(Vector3.Distance(player.transform.position, transform.position) > maxLargeDistanceToReturn && state == ECompanionState.THROW_LARGE)
         {
-            SetNewState(EThrowingState.COMEBACK);
+            SetNewState(ECompanionState.COMEBACK);
         }
     }
     
     // Functions
     private void ResetRetainedState()
     {
-        SetNewState(EThrowingState.COMEBACK);
+        SetNewState(ECompanionState.COMEBACK);
     }
-
-    public void StateHandler()
+    public void HandleState()
     {
-        switch (m_State)
+        switch (state)
         {
-            case EThrowingState.ATTACHED:
+            case ECompanionState.ATTACHED:
 
                 m_Rb.useGravity = false;
                 m_Rb.isKinematic = true;
@@ -103,7 +84,7 @@ public class ThrowingObj : MonoBehaviour
                 trailRenderer.startColor = throwDashColor;
 
                 break;
-            case EThrowingState.THROW:
+            case ECompanionState.THROW:
 
                 m_Rb.useGravity = false;
                 m_Rb.isKinematic = false;
@@ -115,7 +96,7 @@ public class ThrowingObj : MonoBehaviour
                 trailRenderer.startColor = throwDashColor;
 
                 break;
-            case EThrowingState.THROW_LARGE:
+            case ECompanionState.THROW_LARGE:
 
                 m_Rb.useGravity = false;
                 m_Rb.isKinematic = false;
@@ -127,7 +108,7 @@ public class ThrowingObj : MonoBehaviour
                 trailRenderer.startColor = throwLargeColor;
 
                 break;
-            case EThrowingState.RETAINED:
+            case ECompanionState.RETAINED:
 
                 m_Rb.useGravity = false;
                 m_Rb.isKinematic = false;
@@ -141,7 +122,7 @@ public class ThrowingObj : MonoBehaviour
                 trailRenderer.startColor = throwDashColor;
 
                 break;
-            case EThrowingState.COMEBACK:
+            case ECompanionState.COMEBACK:
 
                 m_Rb.useGravity = false;
                 m_Rb.isKinematic = true;
@@ -156,9 +137,9 @@ public class ThrowingObj : MonoBehaviour
         }
     }
 
-    public void SetNewState(EThrowingState newState)
+    public void SetNewState(ECompanionState newState)
     {
-        m_State = newState;
+        state = newState;
     }
 
     public void MakeImpulse()
@@ -168,22 +149,24 @@ public class ThrowingObj : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy" && m_State != EThrowingState.ATTACHED)
+        if (other.gameObject.tag == "Enemy" && state != ECompanionState.ATTACHED)
             other.gameObject.GetComponent<IDamageable>().Damage(1);
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Enemy" && m_State != EThrowingState.ATTACHED)
+        if (collision.gameObject.tag == "Enemy" && state != ECompanionState.ATTACHED)
             collision.gameObject.GetComponent<IDamageable>().Damage(1);
 
-        if (m_State != EThrowingState.ATTACHED)
-            m_State = EThrowingState.COMEBACK;
+        if (state != ECompanionState.ATTACHED)
+            state = ECompanionState.COMEBACK;
     }
 
     public bool CanDash()
     {
-        return m_State != ThrowingObj.EThrowingState.ATTACHED
-        && m_State != ThrowingObj.EThrowingState.COMEBACK
-        && m_State != ThrowingObj.EThrowingState.THROW_LARGE;
-    }   
+        return state != ECompanionState.ATTACHED
+        && state != ECompanionState.COMEBACK
+        && state != ECompanionState.THROW_LARGE;
+    }
+    
+    public Vector3 GetPosition() { return transform.position; }
 }       
