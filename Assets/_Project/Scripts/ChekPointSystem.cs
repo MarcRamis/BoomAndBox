@@ -15,6 +15,7 @@ public class ChekPointSystem : MonoBehaviour
     public void SetPlayerPosToSpawn()
     {
         player.transform.position = playerSpawn.position;
+        player.GetComponent<Player>().Damage(1);
     }
 
     public void SetSpawnPointPos(Transform newPos)
