@@ -26,7 +26,5 @@ public class AttachTo : MonoBehaviour
         {
             transform.parent = companion.transform;
         }
-
-        Debug.Log(transform.parent);
     }
 }

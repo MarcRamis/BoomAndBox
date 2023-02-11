@@ -22,6 +22,8 @@ public class PlayerCharacterAnimations : MonoBehaviour
         playerAnimator.SetFloat("Speed", playerRb.velocity.magnitude);
         playerAnimator.SetInteger("CurrentDoubleJumps", playerMovementSystem.currentDoubleJumps);
         playerAnimator.SetBool("isFalling", playerMovementSystem.isFalling);
+        playerAnimator.SetBool("isLanding", playerMovementSystem.landing);
+        playerAnimator.SetBool("JustHitGround", playerMovementSystem.justHitGround);
         playerAnimator.SetBool("isDoubleJump", playerMovementSystem.isDoubleJumping);
         
         // this variable works as the inverse because is setted to false when you press the input. 

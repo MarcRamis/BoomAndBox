@@ -29,6 +29,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [HideInInspector] private Vector3 moveDirection;
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isAiming;
+    [HideInInspector] public bool justHitGround;
     
     [Header("Stairs")]
     [SerializeField] private Transform stepOffsetHigher;
@@ -61,7 +62,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [HideInInspector] private float timeInAir;
     // Using a variable to know when it pressed the input jump because i want to know if is falling or not
     [HideInInspector] public bool isFalling;
-    [HideInInspector] private bool landing;
+    [HideInInspector] public bool landing;
     [HideInInspector] private float velocityLastFrame;
 
     //Inputs
@@ -257,17 +258,26 @@ public class PlayerMovementSystem : MonoBehaviour
             {
                 landingFeedbackShort.PlayFeedbacks();
             }
+            
+            justHitGround = true;
 
             // Reset landing
             landing = false;
             timeInAir = 0;
         }
         
+        if (isGrounded)
+        {
+            justHitGround = false;
+        }
+
         velocityLastFrame = playerRigidbody.velocity.y;
 
         // Count the time the player is landing
         if (landing)
         {
+            //justHitGround = false;
+
             timeInAir += Time.fixedDeltaTime;
         }
     }
@@ -474,17 +484,17 @@ public class PlayerMovementSystem : MonoBehaviour
         var hitColliders = Physics.OverlapSphere(groundTransform.position, groundRadius, whatIsGround);
         isGrounded = hitColliders.Length > 0;
     }
-
+    
     private void CheckFalling()
     {
         float currentVel = playerRigidbody.velocity.y;
         if (lastFramePosition < currentVel)
         {
-            isFalling = true;
+            isFalling = false;
         }
         else
         {
-            isFalling = false;
+            isFalling = true;
         }
     }
 
