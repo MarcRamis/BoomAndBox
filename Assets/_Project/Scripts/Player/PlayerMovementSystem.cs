@@ -35,7 +35,6 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform stepOffsetLower;
     [SerializeField] private float stepOffsetRayLengthUpper = 0.2f;
     [SerializeField] private float stepOffsetRayLengthLower = 0.1f;
-    [SerializeField] private float stepHeight = 0.3f;
     [SerializeField] private float stepSmooth = 0.1f;
 
     [Header("Orientation")]
@@ -401,10 +400,12 @@ public class PlayerMovementSystem : MonoBehaviour
     
     private void RotateModel()
     {
-        // Rotate Orientation
+        // Transform with full orientation
         Vector3 viewDirFullOrientation = transform.position - mainCamera.transform.position;
         fullOrientation.forward = viewDirFullOrientation.normalized;
-
+        
+        // Transform only with orientation on x, z. Needed to just rotate the player in the input direction
+        // but i use to move the player to the camera direction
         Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
         orientation.forward = viewDir.normalized;
 
@@ -416,13 +417,14 @@ public class PlayerMovementSystem : MonoBehaviour
             
             model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
         
+            // searching the normal because i want to make the model can rotate on slope surfaces
             RaycastHit hit;
             if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
             {
                 Vector3 surfaceNormal = hit.normal;
+
                 Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
-            
-                model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.deltaTime);
+                model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.fixedDeltaTime);
             }
         }
     }
@@ -504,8 +506,6 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundTransform.position, groundRadius);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(groundTransform.position + Vector3.forward, -Vector3.up * groundRadius);
     }
     
     // FEEDBACK
