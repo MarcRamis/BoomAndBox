@@ -17433,6 +17433,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 752305026}
     - target: {fileID: 5403513547559355750, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: throwLargeColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5403513547559355750, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: throwLargeColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5403513547559355750, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: throwLargeColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5403513547559355750, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: prefabHitExplosion
       value: 
       objectReference: {fileID: 100004, guid: fde497abc2338c24bb469d5cf60569d2, type: 3}
