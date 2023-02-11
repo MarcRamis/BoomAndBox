@@ -13,7 +13,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform model;
     [SerializeField] private Camera mainCamera;
-    [HideInInspector] private Rigidbody playerRb;
+    [HideInInspector] private Rigidbody playerRigidbody;
     [SerializeField] private CapsuleCollider playerCollider;
     
     [Header("Movement")]
@@ -30,7 +30,17 @@ public class PlayerMovementSystem : MonoBehaviour
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isAiming;
     
+    [Header("Stairs")]
+    [SerializeField] private Transform stepOffsetHigher;
+    [SerializeField] private Transform stepOffsetLower;
+    [SerializeField] private float stepOffsetRayLengthUpper = 0.2f;
+    [SerializeField] private float stepOffsetRayLengthLower = 0.1f;
+    [SerializeField] private float stepHeight = 0.3f;
+    [SerializeField] private float stepSmooth = 0.1f;
+
     [Header("Orientation")]
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform fullOrientation;
     [SerializeField] private float modelRotationSpeed;
 
     [Header("Jump")]
@@ -62,7 +72,6 @@ public class PlayerMovementSystem : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] private float groundRadius;
     [SerializeField] private LayerMask whatIsGround;
-    [SerializeField] private Transform orientation;
     [SerializeField] private Transform groundTransform;
     [HideInInspector] public bool isGrounded;
 
@@ -91,7 +100,7 @@ public class PlayerMovementSystem : MonoBehaviour
     
     private void Awake()
     {
-        playerRb = GetComponent<Rigidbody>();
+        playerRigidbody = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
         
         TrailJumpFeedbackReset();
@@ -104,9 +113,12 @@ public class PlayerMovementSystem : MonoBehaviour
         myInputs.OnZoomPerformed += DoZoom;
 
         // Initalize properties
-        playerRb.freezeRotation = true;
+        playerRigidbody.freezeRotation = true;
         readyToJump = true;
         currentDoubleJumps = doubleJumpCounter;
+
+        // this is setted here to stepoffset 
+        //stepOffsetHigher.transform.position = new Vector3(stepOffsetHigher.transform.position.x, stepHeight, stepOffsetHigher.transform.position.z);
     }
 
     // Update
@@ -132,7 +144,8 @@ public class PlayerMovementSystem : MonoBehaviour
 
         MovePlayer();
         RotateModel();
-
+        //StepOffset();
+        
         OnLand();
     }
 
@@ -140,9 +153,9 @@ public class PlayerMovementSystem : MonoBehaviour
     private void HandleDrag()
     {
         if (movementState == EMoveState.WALKING || (movementState == EMoveState.AIMING && isGrounded) || isDoubleJumping)
-            playerRb.drag = groundDrag;
+            playerRigidbody.drag = groundDrag;
         else
-            playerRb.drag = 0;
+            playerRigidbody.drag = 0;
     }
     private void MyInput()
     {
@@ -213,20 +226,20 @@ public class PlayerMovementSystem : MonoBehaviour
         // On ground
         if (isGrounded)
         {
-            playerRb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            playerRigidbody.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         }
         
         // In air
         else
         {
-            playerRb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            playerRigidbody.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
     private void OnLand()
     {
         // Landing
         // Get land point. Were going down last frame, and now reached an almost null velocity
-        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(playerRb.velocity.y) < lowVelocity))
+        if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(playerRigidbody.velocity.y) < lowVelocity))
         {
             // Different operations for different fall length landing 
             if (timeInAir >= highTimeLanding)
@@ -251,7 +264,7 @@ public class PlayerMovementSystem : MonoBehaviour
             timeInAir = 0;
         }
         
-        velocityLastFrame = playerRb.velocity.y;
+        velocityLastFrame = playerRigidbody.velocity.y;
 
         // Count the time the player is landing
         if (landing)
@@ -262,28 +275,28 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void SpeedControl()
     {
-        Vector3 flatVel = new Vector3(playerRb.velocity.x, 0f, playerRb.velocity.z);
+        Vector3 flatVel = new Vector3(playerRigidbody.velocity.x, 0f, playerRigidbody.velocity.z);
 
         // limit velocity if needed
         if (flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            playerRb.velocity = new Vector3(limitedVel.x, playerRb.velocity.y, limitedVel.z);
+            playerRigidbody.velocity = new Vector3(limitedVel.x, playerRigidbody.velocity.y, limitedVel.z);
         }
 
         // Esto a lo mejor tengo que caparlo a partir de la altura del jugador
         // limit y vel
-        if (maxYSpeed != 0 && playerRb.velocity.y > maxYSpeed)
+        if (maxYSpeed != 0 && playerRigidbody.velocity.y > maxYSpeed)
         {
-            playerRb.velocity = new Vector3(playerRb.velocity.x, maxYSpeed, playerRb.velocity.z);
+            playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, maxYSpeed, playerRigidbody.velocity.z);
         }
     }
     
     private void ApplyJumpForce()
     {
         // reset y velocity
-        playerRb.velocity = new Vector3(playerRb.velocity.x, 0f, playerRb.velocity.z);
-        playerRb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, 0f, playerRigidbody.velocity.z);
+        playerRigidbody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
     private void HandleMovementState()
@@ -308,7 +321,7 @@ public class PlayerMovementSystem : MonoBehaviour
         // Mode - Walking
         else if (isGrounded)
         {
-            if (playerRb.velocity.magnitude > 0.1f)
+            if (playerRigidbody.velocity.magnitude > 0.1f)
             {
                 animState = EAnimState.RUNNING;
             }
@@ -362,6 +375,7 @@ public class PlayerMovementSystem : MonoBehaviour
                 break;
         }
     }
+
     private IEnumerator SmoothlyLerpMoveSpeed()
     {
         // smoothly lerp movementSpeed to desired value
@@ -384,34 +398,73 @@ public class PlayerMovementSystem : MonoBehaviour
         speedChangeFactor = 1f;
         keepMomentum = false;
     }
-
+    
     private void RotateModel()
     {
-
         // Rotate Orientation
+        Vector3 viewDirFullOrientation = transform.position - mainCamera.transform.position;
+        fullOrientation.forward = viewDirFullOrientation.normalized;
+
         Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
         orientation.forward = viewDir.normalized;
 
         Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
+        
         if (inputDir != Vector3.zero)
         {
+            inputDir = Vector3.ClampMagnitude(inputDir, 1f);
+            
             model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
-        //
-        //    RaycastHit hit;
-        //    if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
-        //    {
-        //        Vector3 surfaceNormal = hit.normal;
-        //        Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
-        //
-        //        model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.deltaTime);
-        //    }
+        
+            RaycastHit hit;
+            if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
+            {
+                Vector3 surfaceNormal = hit.normal;
+                Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
+            
+                model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.deltaTime);
+            }
+        }
+    }
+
+    private void StepOffset()
+    {
+        if (isGrounded)
+        {
+            // Doing this for only going on upstairws that arent sloping
+            RaycastHit hitGroundNormal;
+            //Vector3 offsetPosition = groundTransform.transform + transform.position;
+
+            if (Physics.Raycast(groundTransform.position + (Vector3.forward * 0.5f), -Vector3.up, out hitGroundNormal, groundRadius))
+            {
+                if (hitGroundNormal.normal == Vector3.up)
+                {
+                    CheckStairsDirection(Vector3.forward);
+                    CheckStairsDirection(new Vector3(1.5f, 0, 1));
+                    CheckStairsDirection(new Vector3(-1.5f, 0, 1));
+                }
+            }
+
+            
+        }
+
+    }
+    private void CheckStairsDirection(Vector3 direction)
+    {
+        RaycastHit hitLower;
+        if (Physics.Raycast(stepOffsetLower.position, stepOffsetLower.TransformDirection(direction), out hitLower, stepOffsetRayLengthLower))
+        {
+            RaycastHit hitUpper;
+            if (!Physics.Raycast(stepOffsetHigher.position + Vector3.forward, stepOffsetHigher.TransformDirection(direction), out hitUpper, stepOffsetRayLengthUpper))
+            {
+                Vector3 forceStairs = new Vector3(0f, stepSmooth, 0f);
+                playerRigidbody.AddForce(forceStairs * 10f, ForceMode.Acceleration);
+            }
         }
     }
 
 
     // CHECK FUNCTIONS
-
     private void CheckGround()
     {
         var hitColliders = Physics.OverlapSphere(groundTransform.position, groundRadius, whatIsGround);
@@ -420,7 +473,7 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void CheckFalling()
     {
-        float currentVel = playerRb.velocity.y;
+        float currentVel = playerRigidbody.velocity.y;
         if (lastFramePosition < currentVel)
         {
             isFalling = true;
@@ -428,16 +481,6 @@ public class PlayerMovementSystem : MonoBehaviour
         else
         {
             isFalling = false;
-        }
-    }
-
-    private void SlopeSliding()
-    {
-        if (isGrounded)
-        {
-            //var sphereCastVerticalOffset = controller.height / - controller radius;
-
-            //if (Physics.SphereCast())
         }
     }
 
@@ -461,6 +504,8 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundTransform.position, groundRadius);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(groundTransform.position + Vector3.forward, -Vector3.up * groundRadius);
     }
     
     // FEEDBACK
