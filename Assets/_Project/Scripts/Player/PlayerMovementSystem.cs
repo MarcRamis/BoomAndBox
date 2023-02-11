@@ -423,6 +423,8 @@ public class PlayerMovementSystem : MonoBehaviour
             {
                 Vector3 surfaceNormal = hit.normal;
 
+                if (!isGrounded) surfaceNormal = Vector3.up;
+
                 Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
                 model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.fixedDeltaTime);
             }

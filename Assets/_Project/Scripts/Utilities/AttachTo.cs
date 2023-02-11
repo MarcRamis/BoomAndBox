@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttachToPlayer : MonoBehaviour
+public class AttachTo : MonoBehaviour
 {
     private GameObject player;
     private GameObject companion;
@@ -26,5 +26,7 @@ public class AttachToPlayer : MonoBehaviour
         {
             transform.parent = companion.transform;
         }
+
+        Debug.Log(transform.parent);
     }
 }
