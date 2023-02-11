@@ -175,7 +175,7 @@ Shader "Simple Toon/SToon Outline"
                 _Steps = _Segmented ? _Steps : 1;
                 _StpSmooth = _Segmented ? _StpSmooth : 1;
 
-                _DarkColor = _SWColor;
+                _DarkColor = fixed4(0, 0, 0, 1);
 				_MaxAtten = 1.0;
 
 				float3 normal = normalize(i.worldNormal);

@@ -88,7 +88,7 @@ public class DashingSystem : MonoBehaviour
 
         // make interpolation
         transform.position = Vector3.Lerp(startPosition, currentTarget.transform.position, dashInterpCurveSmooth.Evaluate(percentageComplete));
-
+        
         // Calculate distance
         if (Vector3.Distance(transform.position, currentTarget.transform.position) < targetNearDistance || percentageComplete >= dashInterpTime)
         {
@@ -111,16 +111,16 @@ public class DashingSystem : MonoBehaviour
         // effects
         GetComponent<TrailRenderer>().emitting = false;
         speedPs.SetActive(false);
+        pm.TrailJumpFeedbackReset();
     }
-    private void SelectTarget()
-    {
-        
-    }
+    
     private void DashFeedback()
     {
         // start effects
         dashFeedback.PlayFeedbacks();
         speedPs.SetActive(true);
         GetComponent<TrailRenderer>().emitting = true;
+
+        pm.TrailJumpFeedback();
     }
 }

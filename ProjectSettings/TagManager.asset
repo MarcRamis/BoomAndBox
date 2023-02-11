@@ -8,6 +8,7 @@ TagManager:
   - standPosition.position
   - Companion
   - Enemy
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - whatIsGround
   - Companion
   - Player
-  - Dashing_Obj
-  - Dashing_Obj_Coin
+  - 
+  - 
   - Enemy
   - 
   - 
