@@ -18128,6 +18128,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 18455965, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: m_BlendUpdateMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6449113727402268853, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -18175,6 +18179,10 @@ PrefabInstance:
     - target: {fileID: 6449113727402268854, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_Name
       value: --- PLAYER
+      objectReference: {fileID: 0}
+    - target: {fileID: 8663891436926828339, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: Feedbacks.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8663891436926828339, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: Feedbacks.Array.data[1]
