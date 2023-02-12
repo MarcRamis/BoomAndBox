@@ -237,6 +237,11 @@ public class PlayerMovementSystem : MonoBehaviour
     }
     private void OnLand()
     {
+        if (isGrounded)
+        {
+            justHitGround = false;
+        }
+
         // Landing
         // Get land point. Were going down last frame, and now reached an almost null velocity
         if (isGrounded && landing && (velocityLastFrame < 0) && (Mathf.Abs(playerRigidbody.velocity.y) < lowVelocity))
@@ -264,11 +269,6 @@ public class PlayerMovementSystem : MonoBehaviour
             // Reset landing
             landing = false;
             timeInAir = 0;
-        }
-        
-        if (isGrounded)
-        {
-            justHitGround = false;
         }
 
         velocityLastFrame = playerRigidbody.velocity.y;
@@ -422,9 +422,7 @@ public class PlayerMovementSystem : MonoBehaviour
         Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
         
         if (inputDir != Vector3.zero)
-        {
-            inputDir = Vector3.ClampMagnitude(inputDir, 1f);
-            
+        {   
             model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
         
             // searching the normal because i want to make the model can rotate on slope surfaces
@@ -488,14 +486,16 @@ public class PlayerMovementSystem : MonoBehaviour
     private void CheckFalling()
     {
         float currentVel = playerRigidbody.velocity.y;
-        if (lastFramePosition < currentVel)
-        {
-            isFalling = false;
-        }
-        else
+        if (lastFramePosition > currentVel)
         {
             isFalling = true;
         }
+        else
+        {
+            isFalling = false;
+        }
+
+        lastFramePosition = playerRigidbody.velocity.y;
     }
 
     // COOLDOWN RESETS

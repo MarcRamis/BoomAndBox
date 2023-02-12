@@ -25,6 +25,7 @@ public class PlayerCharacterAnimations : MonoBehaviour
         playerAnimator.SetBool("isLanding", playerMovementSystem.landing);
         playerAnimator.SetBool("JustHitGround", playerMovementSystem.justHitGround);
         playerAnimator.SetBool("isDoubleJump", playerMovementSystem.isDoubleJumping);
+        playerAnimator.SetBool("ReadyToJump", playerMovementSystem.readyToJump);
         
         // this variable works as the inverse because is setted to false when you press the input. 
         // I make it negative in order to get the current "input pressed"
