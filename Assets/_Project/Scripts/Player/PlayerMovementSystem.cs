@@ -321,11 +321,11 @@ public class PlayerMovementSystem : MonoBehaviour
         }
 
         // Mode - Aiming
-        //else if (isAiming)
-        //{
-        //    movementState = EMoveState.AIMING;
-        //    desiredMoveSpeed = aimSpeed;
-        //}
+        else if (isAiming)
+        {
+            movementState = EMoveState.AIMING;
+            desiredMoveSpeed = aimSpeed;
+        }
         
         // Mode - Walking
         else if (isGrounded)
