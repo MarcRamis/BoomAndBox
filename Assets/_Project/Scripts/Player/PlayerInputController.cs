@@ -17,6 +17,7 @@ public class PlayerInputController : MonoBehaviour, PlayerInputActions.IPlayerAc
     [HideInInspector] public Action OnReturnPerformed;
     [HideInInspector] public Action OnDashPerformed;
     [HideInInspector] public Action OnZoomPerformed;
+    [HideInInspector] public Action OnInteractPerformed;
 
     private void OnEnable()
     {
@@ -83,5 +84,13 @@ public class PlayerInputController : MonoBehaviour, PlayerInputActions.IPlayerAc
             return;
 
         OnZoomPerformed?.Invoke();
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+        
+        OnInteractPerformed?.Invoke();
     }
 }

@@ -48,10 +48,19 @@ public class DashingSystem : MonoBehaviour
         if (!tr.companion.CanDash() && pm.isDashing)
             ResetDash();
     }
-    
+
+    // Fixed Update
+    private void FixedUpdate()
+    {
+        // always this is true do the interpolation to the companion
+        if (pm.isDashing)
+        {
+            DashInterpo();
+        }
+    }
+
     private void DoDash()
     {
-        // Dash
         if (currentTarget != null)
         {
             // Can't dash when companion is in mode: comeback, attached
@@ -61,16 +70,6 @@ public class DashingSystem : MonoBehaviour
                 tr.companion.SetNewState(ECompanionState.RETAINED);
                 DashFeedback();
             }
-        }
-    }
-
-    // Fixed Update
-    private void FixedUpdate()
-    {
-        // always this is true do the interpolation to the companion
-        if (pm.isDashing)
-        {
-            DashInterpo();
         }
     }
 

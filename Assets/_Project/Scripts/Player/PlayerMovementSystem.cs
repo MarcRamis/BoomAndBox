@@ -40,7 +40,7 @@ public class PlayerMovementSystem : MonoBehaviour
 
     [Header("Orientation")]
     [SerializeField] private Transform orientation;
-    [SerializeField] private Transform fullOrientation;
+    [SerializeField] public Transform fullOrientation;
     [SerializeField] private float modelRotationSpeed;
 
     [Header("Jump")]
@@ -510,8 +510,6 @@ public class PlayerMovementSystem : MonoBehaviour
         isDoubleJumping = false;
         TrailJumpFeedbackReset();
     }
-
-
 
     // GIZMOS -- EDITOR SETTINGS
     private void OnDrawGizmos()

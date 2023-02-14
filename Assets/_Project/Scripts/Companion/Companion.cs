@@ -5,7 +5,7 @@ using MoreMountains.Feedbacks;
 
 public enum ECompanionState
 {
-    NOCOMPANION,
+    NONE,
     ATTACHED,
     THROW,
     THROW_LARGE,
@@ -26,7 +26,8 @@ public class Companion : MonoBehaviour
     [SerializeField] private float maxDistanceToReturn;
     [SerializeField] private float maxLargeDistanceToReturn;
     [SerializeField] private float timeRetained;
-    [HideInInspector] public ECompanionState state = ECompanionState.ATTACHED;
+    [SerializeField] private bool isLevelOnboarding;
+    [SerializeField] public ECompanionState state = ECompanionState.NONE;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
@@ -38,8 +39,6 @@ public class Companion : MonoBehaviour
     private Vector3 initialScale;
     private Quaternion initialRotation;
 
-
-
     // Start
     private void Start()
     {
@@ -48,6 +47,9 @@ public class Companion : MonoBehaviour
 
         initialScale = transform.localScale;
         initialRotation = transform.localRotation;
+        
+        if (isLevelOnboarding) gameObject.SetActive(false);
+        else gameObject.SetActive(true);
     }
 
     // Update
@@ -170,6 +172,33 @@ public class Companion : MonoBehaviour
         m_Rb.AddForce(Vector3.forward * 5, ForceMode.Impulse);
     }
 
+    public bool CanDash()
+    {
+        return state != ECompanionState.ATTACHED
+        && state != ECompanionState.COMEBACK
+        && state != ECompanionState.THROW_LARGE
+        && state != ECompanionState.NONE;
+    }
+
+    public Vector3 GetPosition() { return transform.position; }
+
+    public void ResetInitialProperties(bool changeRotation)
+    {
+        transform.localScale = initialScale;
+        if (changeRotation) transform.localRotation = initialRotation;
+    }
+
+    public void RotateModel(Vector3 orientation)
+    {
+        //float rotX = Mathf.Clamp(orientation.x,-90,90);
+        //float rotY = Mathf.Clamp(orientation.y,-45,45);
+        //float rotZ = orientation.z;
+
+        //modelCompanion.local = Vector3.Slerp(modelCompanion.forward, new Vector3(rotX, rotY, rotZ), Time.fixedDeltaTime * 50f);
+    }
+
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy" && state != ECompanionState.ATTACHED)
@@ -188,27 +217,5 @@ public class Companion : MonoBehaviour
             state = ECompanionState.COMEBACK;
     }
 
-    public bool CanDash()
-    {
-        return state != ECompanionState.ATTACHED
-        && state != ECompanionState.COMEBACK
-        && state != ECompanionState.THROW_LARGE;
-    }
-    
-    public Vector3 GetPosition() { return transform.position; }
 
-    public void ResetInitialProperties(bool changeRotation)
-    {
-        transform.localScale = initialScale;
-        if (changeRotation) transform.localRotation = initialRotation;
-    }
-
-    public void RotateModel(Vector3 orientation)
-    {
-        //float rotX = Mathf.Clamp(orientation.x,-90,90);
-        //float rotY = Mathf.Clamp(orientation.y,-45,45);
-        //float rotZ = orientation.z;
-        
-        //modelCompanion.local = Vector3.Slerp(modelCompanion.forward, new Vector3(rotX, rotY, rotZ), Time.fixedDeltaTime * 50f);
-    }
 }       

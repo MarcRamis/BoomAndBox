@@ -8,6 +8,11 @@ public class Player : MonoBehaviour, IDamageable
 {
     public int Health { get; set; }
     
+    [Header("References")]
+    [SerializeField] public IInteractuable currentInteraction;
+    [HideInInspector] PlayerMovementSystem pm;
+    [HideInInspector] private Collider collider;
+
     [Header("Settings")]
     [SerializeField] private int health;
 
@@ -24,13 +29,27 @@ public class Player : MonoBehaviour, IDamageable
     // Start
     void Start()
     {
+        pm = GetComponent<PlayerMovementSystem>();
         Health = health;
+        
+        pm.myInputs.OnInteractPerformed += DoInteract;
     }
 
     // Update
     void Update()
     {
-        
+    }
+
+    private void DoInteract()
+    {
+        if (currentInteraction != null)
+        {
+            currentInteraction.MakeInteraction();
+        }
+        else
+        {
+            Debug.Log("No interaction availabel");
+        }
     }
 
     // Functions
@@ -50,8 +69,6 @@ public class Player : MonoBehaviour, IDamageable
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
-
-
         }
     }
     private void ResetJustReceivedDamage()
@@ -68,6 +85,26 @@ public class Player : MonoBehaviour, IDamageable
         else
         {
             Debug.Log("Invencibility OFF");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IInteractuable interactuable = other.gameObject.GetComponent<IInteractuable>();
+        if (interactuable != null)
+        {
+            currentInteraction = interactuable;
+            interactuable.InteractStarts();
+        }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        IInteractuable interactuable = other.gameObject.GetComponent<IInteractuable>();
+        if (interactuable != null)
+        {
+            currentInteraction = null;
+            interactuable.InteractEnds();
         }
     }
 }

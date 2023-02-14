@@ -54,7 +54,7 @@ public class ThrowingSystem : MonoBehaviour
     private void DoThrow()
     {
         // Throw BOX CHARACTER 
-        if (readyToThrow)
+        if (readyToThrow && companion.state != ECompanionState.NONE)
         {
             // Throw large
             if (pm.isAiming)
