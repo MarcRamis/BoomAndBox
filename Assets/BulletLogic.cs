@@ -20,7 +20,12 @@ public class BulletLogic : MonoBehaviour
     {
         if(other.gameObject.transform.tag == "Player")
         {
-            other.gameObject.GetComponent<Player>().Damage(1);
+            Player script = other.gameObject.GetComponentInChildren<Player>();
+            if(script == null) 
+            {
+                script = other.gameObject.GetComponentInParent<Player>();
+            }
+            script.Damage(1);
         }
         Debug.Log(other.gameObject);
         if(!other.isTrigger)
