@@ -11,7 +11,6 @@ public class Player : MonoBehaviour, IDamageable
     [Header("References")]
     [SerializeField] public IInteractuable currentInteraction;
     [HideInInspector] PlayerMovementSystem pm;
-    [HideInInspector] private Collider collider;
 
     [Header("Settings")]
     [SerializeField] private int health;
@@ -34,7 +33,7 @@ public class Player : MonoBehaviour, IDamageable
         
         pm.myInputs.OnInteractPerformed += DoInteract;
     }
-
+    
     // Update
     void Update()
     {
@@ -45,10 +44,6 @@ public class Player : MonoBehaviour, IDamageable
         if (currentInteraction != null)
         {
             currentInteraction.MakeInteraction();
-        }
-        else
-        {
-            Debug.Log("No interaction availabel");
         }
     }
 
@@ -103,6 +98,7 @@ public class Player : MonoBehaviour, IDamageable
         IInteractuable interactuable = other.gameObject.GetComponent<IInteractuable>();
         if (interactuable != null)
         {
+
             currentInteraction = null;
             interactuable.InteractEnds();
         }

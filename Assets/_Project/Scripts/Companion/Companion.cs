@@ -216,6 +216,4 @@ public class Companion : MonoBehaviour
         if (state != ECompanionState.ATTACHED)
             state = ECompanionState.COMEBACK;
     }
-
-
 }       
