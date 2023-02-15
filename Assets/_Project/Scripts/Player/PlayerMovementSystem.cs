@@ -42,6 +42,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] public Transform fullOrientation;
     [SerializeField] private float modelRotationSpeed;
+    [SerializeField] private Transform lookAt;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce;
@@ -415,27 +416,38 @@ public class PlayerMovementSystem : MonoBehaviour
         fullOrientation.forward = viewDirFullOrientation.normalized;
         
         // Transform only with orientation on x, z. Needed to just rotate the player in the input direction
-        // but i use to move the player to the camera direction
-        Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
-        orientation.forward = viewDir.normalized;
+        // but i use it to move the player to the camera direction
 
-        Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        
-        if (inputDir != Vector3.zero)
-        {   
-            model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
-        
-            // searching the normal because i want to make the model can rotate on slope surfaces
-            RaycastHit hit;
-            if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
+        if (!isAiming)
+        {
+            Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
+            orientation.forward = viewDir.normalized;
+            
+            Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+            if (inputDir != Vector3.zero)
             {
-                Vector3 surfaceNormal = hit.normal;
+                model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
 
-                if (!isGrounded) surfaceNormal = Vector3.up;
+                // searching the normal because i want to make the model can rotate on slope surfaces
+                RaycastHit hit;
+                if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
+                {
+                    Vector3 surfaceNormal = hit.normal;
 
-                Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
-                model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.fixedDeltaTime);
+                    if (!isGrounded) surfaceNormal = Vector3.up;
+
+                    Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
+                    model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.fixedDeltaTime);
+                }
             }
+        }
+        else
+        {
+            Vector3 dirToCombatLookAt = lookAt.position - new Vector3(mainCamera.transform.position.x, lookAt.position.y, mainCamera.transform.position.z);
+            orientation.forward = dirToCombatLookAt.normalized;
+
+            model.forward = dirToCombatLookAt.normalized;
         }
     }
 
