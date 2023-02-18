@@ -64,7 +64,10 @@ public class ThrowingSystem : MonoBehaviour
             {
                 // change state
                 companion.SetNewState(ECompanionState.THROW_LARGE);
+
                 // Do Throw
+                //Vector3 dir = pm.lookAt.position - transform.position;
+                //dir.Normalize();
                 Throw(cam.transform.forward, throwLargeForce);
             }
             else

@@ -26,7 +26,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private float groundDrag;
     [HideInInspector] private float horizontalInput;
     [HideInInspector] private float verticalInput;
-    [HideInInspector] private Vector3 moveDirection;
+    [HideInInspector] public Vector3 moveDirection;
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isAiming;
     [HideInInspector] public bool justHitGround;
@@ -39,11 +39,11 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private float stepSmooth = 0.1f;
 
     [Header("Orientation")]
-    [SerializeField] private Transform orientation;
+    [SerializeField] public Transform orientation;
     [SerializeField] public Transform fullOrientation;
     [SerializeField] private float modelRotationSpeed;
     [SerializeField] private float modelRotationAimSpeed;
-    [SerializeField] private Transform lookAt;
+    [SerializeField] public Transform lookAt;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce;
