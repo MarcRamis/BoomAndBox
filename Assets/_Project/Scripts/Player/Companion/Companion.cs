@@ -30,14 +30,13 @@ public class Companion : MonoBehaviour
     [SerializeField] public ECompanionState state = ECompanionState.NONE;
     [SerializeField] private float amplitude = 0.5f;
     [SerializeField] private float upDownSpeed = 1f;
-    
+
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
-    [SerializeField] private MMFeedbacks noMovingFeedback;
     [SerializeField] private Color throwDashColor;
     [SerializeField] private Color throwLargeColor;
     [SerializeField] private TrailRenderer trailRenderer;
-    
+
     //Feedback
     [HideInInspector] private CompanionFeedbackController companionFeedbackController;
 
@@ -86,7 +85,7 @@ public class Companion : MonoBehaviour
             if (state != ECompanionState.RETAINED && state != ECompanionState.COMEBACK)
             {
                 SetNewState(ECompanionState.RETAINED);
-                startMoveSinPosition = transform.position;
+                //startMoveSinPosition = transform.position;
                 Invoke(nameof(ResetRetainedState), timeRetained);
             }
         }
@@ -100,7 +99,7 @@ public class Companion : MonoBehaviour
     private void ResetRetainedState()
     {
         SetNewState(ECompanionState.COMEBACK);
-        startMoveSinPosition = initialPosition;
+        //startMoveSinPosition = initialPosition;
     }
     public void HandleState()
     {
@@ -117,10 +116,6 @@ public class Companion : MonoBehaviour
 
                 trailRenderer.endColor = throwDashColor;
                 trailRenderer.startColor = throwDashColor;
-
-                noMovingFeedback.PlayFeedbacks();
-
-                noMovingFeedback.StopFeedbacks();
 
                 MoveUpDown();
 
@@ -148,8 +143,6 @@ public class Companion : MonoBehaviour
                 trailRenderer.endColor = throwLargeColor;
                 trailRenderer.startColor = throwLargeColor;
 
-                noMovingFeedback.StopFeedbacks();
-
                 break;
             case ECompanionState.RETAINED:
 
@@ -166,9 +159,7 @@ public class Companion : MonoBehaviour
 
                 ResetInitialProperties(false);
 
-                noMovingFeedback.PlayFeedbacks();
-
-                MoveUpDown();
+                //MoveUpDown();
 
                 break;
             case ECompanionState.COMEBACK:
@@ -181,8 +172,6 @@ public class Companion : MonoBehaviour
 
                 trailRenderer.endColor = throwDashColor;
                 trailRenderer.startColor = throwDashColor;
-
-                noMovingFeedback.StopFeedbacks();
 
                 break;
         }
