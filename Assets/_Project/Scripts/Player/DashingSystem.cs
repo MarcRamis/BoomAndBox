@@ -16,9 +16,13 @@ public class DashingSystem : MonoBehaviour
     [HideInInspector] private ThrowingSystem tr;
     [HideInInspector] private Transform currentTarget;
 
+    //Inputs
+    [HideInInspector] private PlayerInputController myInputs;
+
     [Header("Feedback")]
     [SerializeField] private GameObject speedPs;
     [SerializeField] private MMFeedbacks dashFeedback;
+    [HideInInspector] private PlayerFeedbackController playerFeedbackController;
 
     // Const variablaes
     private const float targetNearDistance = 0.2f;
@@ -27,12 +31,13 @@ public class DashingSystem : MonoBehaviour
     private Vector3 startPosition;
     private float elapsedTime;
     
-    // Start
-    private void Start()
+    private void Awake()
     {
         m_Rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovementSystem>();
         tr = GetComponent<ThrowingSystem>();
+        myInputs = GetComponent<PlayerInputController>();
+        playerFeedbackController = GetComponent<PlayerFeedbackController>();
 
         speedPs.SetActive(false);
 
@@ -40,8 +45,9 @@ public class DashingSystem : MonoBehaviour
         currentTarget = tr.objectToThrow.transform;
 
         // Initialize inputs
-        pm.myInputs.OnDashPerformed += DoDash;
+        myInputs.OnDashPerformed += DoDash;
     }
+
 
     private void Update()
     {
@@ -110,7 +116,7 @@ public class DashingSystem : MonoBehaviour
         // effects
         GetComponent<TrailRenderer>().emitting = false;
         speedPs.SetActive(false);
-        pm.TrailJumpFeedbackReset();
+        playerFeedbackController.StopDashFeedback();
     }
     
     private void DashFeedback()
@@ -119,7 +125,7 @@ public class DashingSystem : MonoBehaviour
         dashFeedback.PlayFeedbacks();
         speedPs.SetActive(true);
         GetComponent<TrailRenderer>().emitting = true;
-
-        pm.TrailJumpFeedback();
+        
+        playerFeedbackController.PlayDashFeedback();
     }
 }

@@ -79,13 +79,8 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform groundTransform;
     [HideInInspector] public bool isGrounded;
 
-    [Header("Feedback")]
-    [SerializeField] private MMFeedbacks jumpFeedback;
-    [SerializeField] private MMFeedbacks doubleJumpFeedback;
-    [SerializeField] private MMFeedbacks landingFeedback;
-    [SerializeField] private MMFeedbacks landingFeedbackShort;
-    [SerializeField] public TrailRenderer trailLeftShoe;
-    [SerializeField] public TrailRenderer trailRightShoe;
+    //Feedback
+    [HideInInspector] private PlayerFeedbackController playerFeedbackController;
     
     // Constants variables
     [HideInInspector] private const float lowVelocity = 0.1f;
@@ -104,34 +99,40 @@ public class PlayerMovementSystem : MonoBehaviour
     
     private void Awake()
     {
+        /* References into the scripts, variable initialization 
+         * Reference to components
+         * (Important) This method is executed although the script is disabled*/
+
         playerRigidbody = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
+        playerFeedbackController = GetComponent<PlayerFeedbackController>();
         
-        TrailJumpFeedbackReset();
-    }
-
-    private void Start()
-    {
         // Initialize inputs
         myInputs.OnJumpPerformed += DoJump;
         myInputs.OnZoomPerformed += DoZoom;
-
+        
         // Initalize properties
         playerRigidbody.freezeRotation = true;
         readyToJump = true;
         currentDoubleJumps = doubleJumpCounter;
-
-        // this is setted here to stepoffset 
-        //stepOffsetHigher.transform.position = new Vector3(stepOffsetHigher.transform.position.x, stepHeight, stepOffsetHigher.transform.position.z);
     }
 
-    // Update
+    private void Start()
+    {
+        /* Executed before the first frame and sonly if the script is enabled
+         * Here goes: delays, enemy movement, coroutines*/
+    }
 
     private void Update()
     {
+        /* Executed one time per frame. 
+         * It doesn't depends on the machine is working.
+         * Here goes inputs and variable updates. */
+
         CheckGround();
         
-        MyInput();
+        MyInputDirection();
+        StartCoyoteTime();
         SpeedControl();
         HandleMovementState();
         HandleAnimState();
@@ -140,10 +141,12 @@ public class PlayerMovementSystem : MonoBehaviour
         HandleDrag();
     }
 
-    // Fixed update
-
     private void FixedUpdate()
     {
+        /* Executed every x seconds (0.2 usually)
+         * It doesn't depends on the machine is being executed.
+         * Here goes: physics movement*/
+
         CheckFalling();
 
         MovePlayer();
@@ -151,6 +154,11 @@ public class PlayerMovementSystem : MonoBehaviour
         //StepOffset();
         
         OnLand();
+    }
+    private void LateUpdate()
+    {
+        /* Executed after all updates
+         * Ued to control the camera movement*/
     }
 
     // Functions
@@ -161,13 +169,14 @@ public class PlayerMovementSystem : MonoBehaviour
         else
             playerRigidbody.drag = 0;
     }
-    private void MyInput()
+    private void MyInputDirection()
     {
         // Take input directions
         horizontalInput = myInputs.moveDirection.x;
         verticalInput = myInputs.moveDirection.y;
-
-        // Coyote time
+    }
+    private void StartCoyoteTime()
+    {
         if (isGrounded) coyoteTimeCounter = coyoteTime;
         else coyoteTimeCounter -= Time.deltaTime;
     }
@@ -183,38 +192,30 @@ public class PlayerMovementSystem : MonoBehaviour
         if (!isAiming)
         {
             // Jump on ground
-            /// <<summary>
-            /// Only can jump when is grounded or in coyote time
-            /// </summary>
+            // Only can jump when is grounded or in coyote time
             if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
             {
                 coyoteTimeCounter = 0f;
                 readyToJump = false;
 
                 ApplyJumpForce();
-                jumpFeedback.PlayFeedbacks();
-                TrailJumpFeedback();
+                playerFeedbackController.PlayJumpFeedback();
 
                 Invoke(nameof(ResetJump), jumpCooldown);
             }
 
             // Double Jump in air
-            /// <summary>
-            /// Only can jump when jump cooldown is ready to prevent the double jump spam
-            /// 
-            /// There is a counter of double jumps in air the player can make to change if it's necessary
-            /// 
-            /// Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in coyoteTime 
-            /// because it mustn't count
-            /// 
-            /// </summary> 
+            /* Only can jump when jump cooldown is ready to prevent the double jump spam.
+             * There is a counter of double jumps in air the player can make to change if it's necessary.
+             
+             * Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in 
+               because it mustn't count.*/
             else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
             {
                 isDoubleJumping = true;
-
+                
                 ApplyJumpForce();
-                doubleJumpFeedback.PlayFeedbacks();
-                TrailJumpFeedback();
+                playerFeedbackController.PlayDoubleJumpFeedback();
 
                 currentDoubleJumps--;
                 timeInAir = 0;
@@ -259,19 +260,19 @@ public class PlayerMovementSystem : MonoBehaviour
             // Different operations for different fall length landing 
             if (timeInAir >= highTimeLanding)
             {
-                landingFeedback.PlayFeedbacks();
+                playerFeedbackController.PlayLandingLargeFeedback();
             }
             else if (timeInAir >= middleTimeLanding)
             {
-                landingFeedbackShort.PlayFeedbacks();
+                playerFeedbackController.PlayLandingShortFeedback();
             }
             else if (timeInAir >= lowTimeLanding)
             {
-                landingFeedbackShort.PlayFeedbacks();
+                playerFeedbackController.PlayLandingShortFeedback();
             }
             else if (timeInAir >= veryLowTimeLanding)
             {
-                landingFeedbackShort.PlayFeedbacks();
+                playerFeedbackController.PlayLandingShortFeedback();
             }
             
             justHitGround = true;
@@ -282,12 +283,10 @@ public class PlayerMovementSystem : MonoBehaviour
         }
 
         velocityLastFrame = playerRigidbody.velocity.y;
-
+        
         // Count the time the player is landing
         if (landing)
         {
-            //justHitGround = false;
-
             timeInAir += Time.fixedDeltaTime;
         }
     }
@@ -530,12 +529,12 @@ public class PlayerMovementSystem : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
-        TrailJumpFeedbackReset();
+        playerFeedbackController.StopJumpFeedback();
     }
     private void ResetDoubleJump()
     {
         isDoubleJumping = false;
-        TrailJumpFeedbackReset();
+        playerFeedbackController.StopDoubleJumpFeedback();
     }
 
     // GIZMOS -- EDITOR SETTINGS
@@ -546,28 +545,4 @@ public class PlayerMovementSystem : MonoBehaviour
     }
     
     // FEEDBACK
-    
-    public void TrailJumpFeedback()
-    {
-        trailLeftShoe.emitting = true;
-        trailRightShoe.emitting = true;
-
-        trailLeftShoe.widthMultiplier = 0.30f;
-        trailRightShoe.widthMultiplier = 0.30f;
-
-        trailLeftShoe.time = 0.3f;
-        trailRightShoe.time = 0.3f;
-    }
-
-    public void TrailJumpFeedbackReset()
-    {
-        trailLeftShoe.emitting = true;
-        trailRightShoe.emitting = true;
-
-        trailLeftShoe.widthMultiplier = 0.10f;
-        trailRightShoe.widthMultiplier = 0.10f;
-
-        trailLeftShoe.time = 0.04f;
-        trailRightShoe.time = 0.04f;
-    }
 }
