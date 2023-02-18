@@ -109,7 +109,7 @@ public class ThrowingSystem : MonoBehaviour
 
         if (companion.state != ECompanionState.COMEBACK) return;
 
-        ComeBackInterp();
+        InterpolateComeback();
     }
     
     // Functions
@@ -127,12 +127,9 @@ public class ThrowingSystem : MonoBehaviour
 
         // Change preferences
         companion.HandleState();
-        
-        // Add force
-        Vector3 forceToAdd = forceDirection * force;
-        projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
+        companion.ApplyThrow(forceDirection, force);
     }
-    private void ComeBackInterp()
+    private void InterpolateComeback()
     {
         startPosition = objectToThrow.transform.position;
         elapsedTime += Time.fixedDeltaTime;
