@@ -42,6 +42,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] public Transform fullOrientation;
     [SerializeField] private float modelRotationSpeed;
+    [SerializeField] private float modelRotationAimSpeed;
     [SerializeField] private Transform lookAt;
 
     [Header("Jump")]
@@ -65,9 +66,11 @@ public class PlayerMovementSystem : MonoBehaviour
     [HideInInspector] public bool isFalling;
     [HideInInspector] public bool landing;
     [HideInInspector] private float velocityLastFrame;
-
+    // this variable exists because setting to true fall instantly wasn't pretty satisfying
+    // Also it helps to "hide" partially a problem when u are grounded and sloping on a surface
+    [HideInInspector] private float timeToSetFall = 0.15f;
+    
     //Inputs
-    [HideInInspector] public Vector2 _look;
     [HideInInspector] public PlayerInputController myInputs;
 
     [Header("Ground Check")]
@@ -176,45 +179,51 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void DoJump()
     {
-        // Jump on ground
-        /// <<summary>
-        /// Only can jump when is grounded or in coyote time
-        /// </summary>
-        if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
+        // checking if the player is aiming because its weird if he jumps while aiming
+        if (!isAiming)
         {
-            coyoteTimeCounter = 0f;
-            readyToJump = false;
+            // Jump on ground
+            /// <<summary>
+            /// Only can jump when is grounded or in coyote time
+            /// </summary>
+            if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
+            {
+                coyoteTimeCounter = 0f;
+                readyToJump = false;
 
-            ApplyJumpForce();
-            jumpFeedback.PlayFeedbacks();
-            TrailJumpFeedback();
+                ApplyJumpForce();
+                jumpFeedback.PlayFeedbacks();
+                TrailJumpFeedback();
 
-            Invoke(nameof(ResetJump), jumpCooldown);
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
+
+            // Double Jump in air
+            /// <summary>
+            /// Only can jump when jump cooldown is ready to prevent the double jump spam
+            /// 
+            /// There is a counter of double jumps in air the player can make to change if it's necessary
+            /// 
+            /// Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in coyoteTime 
+            /// because it mustn't count
+            /// 
+            /// </summary> 
+            else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
+            {
+                isDoubleJumping = true;
+
+                ApplyJumpForce();
+                doubleJumpFeedback.PlayFeedbacks();
+                TrailJumpFeedback();
+
+                currentDoubleJumps--;
+                timeInAir = 0;
+
+                Invoke(nameof(ResetDoubleJump), jumpCooldown);
+            }
         }
 
-        // Double Jump in air
-        /// <summary>
-        /// Only can jump when jump cooldown is ready to prevent the double jump spam
-        /// 
-        /// There is a counter of double jumps in air the player can make to change if it's necessary
-        /// 
-        /// Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in coyoteTime 
-        /// because it mustn't count
-        /// 
-        /// </summary> 
-        else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
-        {
-            isDoubleJumping = true;
 
-            ApplyJumpForce();
-            doubleJumpFeedback.PlayFeedbacks();
-            TrailJumpFeedback();
-
-            currentDoubleJumps--;
-            timeInAir = 0;
-
-            Invoke(nameof(ResetDoubleJump), jumpCooldown);
-        }
     }
 
     private void MovePlayer()
@@ -411,43 +420,45 @@ public class PlayerMovementSystem : MonoBehaviour
     
     private void RotateModel()
     {
-        // Transform with full orientation
+        // Calculate the view direction from the player to the main camera
         Vector3 viewDirFullOrientation = transform.position - mainCamera.transform.position;
         fullOrientation.forward = viewDirFullOrientation.normalized;
         
-        // Transform only with orientation on x, z. Needed to just rotate the player in the input direction
-        // but i use it to move the player to the camera direction
-
         if (!isAiming)
         {
+            // Transform only with orientation on x, z. Needed to just rotate the player in the input direction
+           // but i use it to move the player to the camera direction
+
             Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
             orientation.forward = viewDir.normalized;
             
+            // Calculate the input direction based on the orientation of the player and the user's input
             Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
+            // If the input direction is non-zero, rotate the model in the direction of the input
             if (inputDir != Vector3.zero)
             {
                 model.forward = Vector3.Slerp(model.forward, inputDir.normalized, Time.fixedDeltaTime * modelRotationSpeed);
-
-                // searching the normal because i want to make the model can rotate on slope surfaces
-                RaycastHit hit;
-                if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
-                {
-                    Vector3 surfaceNormal = hit.normal;
-
-                    if (!isGrounded) surfaceNormal = Vector3.up;
-
-                    Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
-                    model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.fixedDeltaTime);
-                }
             }
         }
         else
         {
             Vector3 dirToCombatLookAt = lookAt.position - new Vector3(mainCamera.transform.position.x, lookAt.position.y, mainCamera.transform.position.z);
             orientation.forward = dirToCombatLookAt.normalized;
+            
+            model.forward = Vector3.Slerp(model.forward, dirToCombatLookAt.normalized, Time.fixedDeltaTime * modelRotationAimSpeed);
+        }
 
-            model.forward = dirToCombatLookAt.normalized;
+        // Search for the surface normal to rotate the model on slopes
+        RaycastHit hit;
+        if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
+        {
+            Vector3 surfaceNormal = hit.normal;
+        
+            if (!isGrounded) surfaceNormal = Vector3.up;
+        
+            Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
+            model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.fixedDeltaTime);
         }
     }
 
@@ -500,7 +511,7 @@ public class PlayerMovementSystem : MonoBehaviour
         float currentVel = playerRigidbody.velocity.y;
         if (lastFramePosition > currentVel)
         {
-            isFalling = true;
+            Invoke(nameof(SetFalling), timeToSetFall);
         }
         else
         {
@@ -511,6 +522,10 @@ public class PlayerMovementSystem : MonoBehaviour
     }
 
     // COOLDOWN RESETS
+    private void SetFalling()
+    {
+        isFalling = true;
+    }
 
     private void ResetJump()
     {
