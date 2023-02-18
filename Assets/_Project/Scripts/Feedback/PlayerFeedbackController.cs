@@ -11,6 +11,14 @@ public class PlayerFeedbackController : FeedbackController
     [SerializeField] private MMFeedbacks landingFeedbackShort;
     [SerializeField] private TrailRenderer trailLeftShoe;
     [SerializeField] private TrailRenderer trailRightShoe;
+    [SerializeField] private GameObject speedPs;
+    [SerializeField] private MMFeedbacks dashFeedback;
+    [SerializeField] private TrailRenderer trailMidBody;
+    
+    private void Awake()
+    {
+        speedPs.SetActive(false);
+    }
 
     /////////// JUMP
     public void PlayJumpFeedback()
@@ -36,11 +44,16 @@ public class PlayerFeedbackController : FeedbackController
     /////////// DASH
     public void PlayDashFeedback()
     {
+        dashFeedback.PlayFeedbacks();
         LargeShoesTrail();
+        trailMidBody.emitting = true;
+        speedPs.SetActive(true);
     }
     public void StopDashFeedback()
     {
         ShortShoesTrail();
+        trailMidBody.emitting = false;
+        speedPs.SetActive(false);
     }
     /////////// LAND
     public void PlayLandingShortFeedback()
