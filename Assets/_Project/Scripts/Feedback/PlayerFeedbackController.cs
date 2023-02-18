@@ -5,16 +5,24 @@ using MoreMountains.Feedbacks;
 
 public class PlayerFeedbackController : FeedbackController
 {
+    // was in movement script
     [SerializeField] private MMFeedbacks jumpFeedback;
     [SerializeField] private MMFeedbacks doubleJumpFeedback;
     [SerializeField] private MMFeedbacks landingFeedback;
     [SerializeField] private MMFeedbacks landingFeedbackShort;
     [SerializeField] private TrailRenderer trailLeftShoe;
     [SerializeField] private TrailRenderer trailRightShoe;
+    // was in dash script
     [SerializeField] private GameObject speedPs;
     [SerializeField] private MMFeedbacks dashFeedback;
     [SerializeField] private TrailRenderer trailMidBody;
+    // was in throwing script
+    [SerializeField] private MMFeedbacks throwingFeedback;
+
     
+    [SerializeField] private MMFeedbacks comebackFeedback; //companion feedback
+    [SerializeField] private MMFeedbacks exclamationFeedback; // companion feedback
+
     private void Awake()
     {
         speedPs.SetActive(false);
@@ -63,6 +71,11 @@ public class PlayerFeedbackController : FeedbackController
     public void PlayLandingLargeFeedback()
     {
         landingFeedback.PlayFeedbacks();
+    }
+    /////////// THROW
+    public void PlayThrowFeedback()
+    {
+        throwingFeedback.PlayFeedbacks();
     }
 
     private void LargeShoesTrail()

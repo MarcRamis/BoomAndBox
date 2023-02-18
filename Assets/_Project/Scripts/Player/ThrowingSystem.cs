@@ -25,9 +25,13 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float returnTime;
     [SerializeField] private AnimationCurve returnCurveSmooth;
 
+    //Inputs
+    [HideInInspector] private PlayerInputController myInputs;
+    //Feedback
+    [HideInInspector] private PlayerFeedbackController playerFeedbackController;
+
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackFeedback;
-    [SerializeField] private MMFeedbacks throwingFeedback;
     [SerializeField] private MMFeedbacks exclamationFeedback;
 
     // Constant variables
@@ -37,16 +41,15 @@ public class ThrowingSystem : MonoBehaviour
     private float elapsedTime;
     private Vector3 startPosition;
 
-    // Start
-    private void Start()
+    private void Awake()
     {
-        // Get components
         pm = GetComponent<PlayerMovementSystem>();
         companion = objectToThrow.GetComponent<Companion>();
-        
-        // Init Inputs
-        pm.myInputs.OnThrowPerformed += DoThrow;
-        pm.myInputs.OnReturnPerformed += DoReturn;
+        myInputs = GetComponent<PlayerInputController>();
+        playerFeedbackController = GetComponent<PlayerFeedbackController>();
+
+        myInputs.OnThrowPerformed += DoThrow;
+        myInputs.OnReturnPerformed += DoReturn;
 
         standPosition.position = companion.transform.position;
     }
@@ -109,10 +112,12 @@ public class ThrowingSystem : MonoBehaviour
     // Functions
     private void Throw(Vector3 forceDirection, float force)
     {
+        // effect
+        playerFeedbackController.PlayThrowFeedback();
+
         // Preferences
         readyToThrow = false;
         objectToThrow.transform.SetParent(null);
-        throwingFeedback.PlayFeedbacks();
 
         // Get rigidbody component
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
