@@ -5,7 +5,7 @@ using MoreMountains.Feedbacks;
 
 public enum ECompanionState
 {
-    NOCOMPANION,
+    NONE,
     ATTACHED,
     THROW,
     THROW_LARGE,
@@ -18,7 +18,7 @@ public class Companion : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject player;
     [SerializeField] private Transform modelCompanion;
-    [HideInInspector] private Rigidbody m_Rb;
+    [HideInInspector] private Rigidbody companionRigidBody;
     [HideInInspector] private Collider m_Collider;
     [SerializeField] private GameObject prefabHitExplosion;
 
@@ -26,7 +26,8 @@ public class Companion : MonoBehaviour
     [SerializeField] private float maxDistanceToReturn;
     [SerializeField] private float maxLargeDistanceToReturn;
     [SerializeField] private float timeRetained;
-    [HideInInspector] public ECompanionState state = ECompanionState.ATTACHED;
+    [SerializeField] private bool isLevelOnboarding;
+    [SerializeField] public ECompanionState state = ECompanionState.NONE;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
@@ -34,20 +35,28 @@ public class Companion : MonoBehaviour
     [SerializeField] private Color throwDashColor;
     [SerializeField] private Color throwLargeColor;
     [SerializeField] private TrailRenderer trailRenderer;
+    
+    //Feedback
+    [HideInInspector] private CompanionFeedbackController companionFeedbackController;
 
     private Vector3 initialScale;
     private Quaternion initialRotation;
 
-
-
-    // Start
-    private void Start()
+    private void Awake()
     {
-        m_Rb = GetComponent<Rigidbody>();
+        companionRigidBody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();
+        companionFeedbackController = GetComponent<CompanionFeedbackController>();
 
         initialScale = transform.localScale;
         initialRotation = transform.localRotation;
+
+    }
+
+    private void Start()
+    {
+        if (isLevelOnboarding) gameObject.SetActive(false);
+        else gameObject.SetActive(true);
     }
 
     // Update
@@ -84,10 +93,10 @@ public class Companion : MonoBehaviour
         {
             case ECompanionState.ATTACHED:
 
-                m_Rb.useGravity = false;
-                m_Rb.isKinematic = true;
-                m_Rb.interpolation = RigidbodyInterpolation.None;
-                m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                companionRigidBody.useGravity = false;
+                companionRigidBody.isKinematic = true;
+                companionRigidBody.interpolation = RigidbodyInterpolation.None;
+                companionRigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
 
                 m_Collider.isTrigger = true;
 
@@ -101,10 +110,10 @@ public class Companion : MonoBehaviour
                 break;
             case ECompanionState.THROW:
 
-                m_Rb.useGravity = false;
-                m_Rb.isKinematic = false;
-                m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
-                m_Rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                companionRigidBody.useGravity = false;
+                companionRigidBody.isKinematic = false;
+                companionRigidBody.interpolation = RigidbodyInterpolation.Interpolate;
+                companionRigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 m_Collider.isTrigger = false;
 
                 trailRenderer.endColor = throwDashColor;
@@ -113,10 +122,10 @@ public class Companion : MonoBehaviour
                 break;
             case ECompanionState.THROW_LARGE:
 
-                m_Rb.useGravity = false;
-                m_Rb.isKinematic = false;
-                m_Rb.interpolation = RigidbodyInterpolation.Interpolate;
-                m_Rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                companionRigidBody.useGravity = false;
+                companionRigidBody.isKinematic = false;
+                companionRigidBody.interpolation = RigidbodyInterpolation.Interpolate;
+                companionRigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 m_Collider.isTrigger = false;
 
                 trailRenderer.endColor = throwLargeColor;
@@ -127,11 +136,11 @@ public class Companion : MonoBehaviour
                 break;
             case ECompanionState.RETAINED:
 
-                m_Rb.useGravity = false;
-                m_Rb.isKinematic = false;
-                m_Rb.interpolation = RigidbodyInterpolation.None;
-                m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
-                m_Rb.velocity = Vector3.zero;
+                companionRigidBody.useGravity = false;
+                companionRigidBody.isKinematic = false;
+                companionRigidBody.interpolation = RigidbodyInterpolation.None;
+                companionRigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                companionRigidBody.velocity = Vector3.zero;
 
                 m_Collider.isTrigger = false;
 
@@ -145,10 +154,10 @@ public class Companion : MonoBehaviour
                 break;
             case ECompanionState.COMEBACK:
 
-                m_Rb.useGravity = false;
-                m_Rb.isKinematic = true;
-                m_Rb.interpolation = RigidbodyInterpolation.Extrapolate;
-                m_Rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                companionRigidBody.useGravity = false;
+                companionRigidBody.isKinematic = true;
+                companionRigidBody.interpolation = RigidbodyInterpolation.Extrapolate;
+                companionRigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
                 m_Collider.isTrigger = true;
 
                 trailRenderer.endColor = throwDashColor;
@@ -159,15 +168,46 @@ public class Companion : MonoBehaviour
                 break;
         }
     }
+    
+    public void ApplyThrow(Vector3 forceDirection, float force)
+    {
+        Vector3 forceToAdd = forceDirection * force;
+        companionRigidBody.AddForce(forceToAdd, ForceMode.Impulse);
+    }
 
     public void SetNewState(ECompanionState newState)
     {
         state = newState;
     }
-
+    
     public void MakeImpulse()
     {
-        m_Rb.AddForce(Vector3.forward * 5, ForceMode.Impulse);
+        companionRigidBody.AddForce(Vector3.forward * 5, ForceMode.Impulse);
+    }
+
+    public bool CanDash()
+    {
+        return state != ECompanionState.ATTACHED
+        && state != ECompanionState.COMEBACK
+        && state != ECompanionState.THROW_LARGE
+        && state != ECompanionState.NONE;
+    }
+
+    public Vector3 GetPosition() { return transform.position; }
+
+    public void ResetInitialProperties(bool changeRotation)
+    {
+        transform.localScale = initialScale;
+        if (changeRotation) transform.localRotation = initialRotation;
+    }
+
+    public void RotateModel(Vector3 orientation)
+    {
+        //float rotX = Mathf.Clamp(orientation.x,-90,90);
+        //float rotY = Mathf.Clamp(orientation.y,-45,45);
+        //float rotZ = orientation.z;
+
+        //modelCompanion.local = Vector3.Slerp(modelCompanion.forward, new Vector3(rotX, rotY, rotZ), Time.fixedDeltaTime * 50f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -186,29 +226,5 @@ public class Companion : MonoBehaviour
 
         if (state != ECompanionState.ATTACHED)
             state = ECompanionState.COMEBACK;
-    }
-
-    public bool CanDash()
-    {
-        return state != ECompanionState.ATTACHED
-        && state != ECompanionState.COMEBACK
-        && state != ECompanionState.THROW_LARGE;
-    }
-    
-    public Vector3 GetPosition() { return transform.position; }
-
-    public void ResetInitialProperties(bool changeRotation)
-    {
-        transform.localScale = initialScale;
-        if (changeRotation) transform.localRotation = initialRotation;
-    }
-
-    public void RotateModel(Vector3 orientation)
-    {
-        //float rotX = Mathf.Clamp(orientation.x,-90,90);
-        //float rotY = Mathf.Clamp(orientation.y,-45,45);
-        //float rotZ = orientation.z;
-        
-        //modelCompanion.local = Vector3.Slerp(modelCompanion.forward, new Vector3(rotX, rotY, rotZ), Time.fixedDeltaTime * 50f);
     }
 }       

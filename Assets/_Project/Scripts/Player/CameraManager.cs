@@ -17,15 +17,16 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private Transform followCameraTarget;
 
     [SerializeField] private Transform lookAtTarget;
-
-    [SerializeField] private CinemachineFreeLook m_camera;
+    
+    [SerializeField] private CinemachineFreeLook mainCamera;
+    [SerializeField] private CinemachineFreeLook mainCameraAiming;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        m_camera.LookAt = lookAtTarget;
+        mainCamera.LookAt = lookAtTarget;
 
         InputSystem.onDeviceChange += InputDeviceChanged;
     }
@@ -55,4 +56,20 @@ public class CameraManager : MonoBehaviour
                 break;
         }
     }
+    
+    private void FixedUpdate()
+    {
+        if (playerMovement.isAiming)
+        {
+            if (mainCamera.gameObject.activeSelf) mainCamera.gameObject.SetActive(false);
+            if (!mainCameraAiming.gameObject.activeSelf) mainCameraAiming.gameObject.SetActive(true);
+        }
+
+        else
+        {
+            if (!mainCamera.gameObject.activeSelf) mainCamera.gameObject.SetActive(true);
+            if (mainCameraAiming.gameObject.activeSelf) mainCameraAiming.gameObject.SetActive(false);
+        }
+    }
+
 }

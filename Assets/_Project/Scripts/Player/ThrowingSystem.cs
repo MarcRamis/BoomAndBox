@@ -25,9 +25,13 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float returnTime;
     [SerializeField] private AnimationCurve returnCurveSmooth;
 
+    //Inputs
+    [HideInInspector] private PlayerInputController myInputs;
+    //Feedback
+    [HideInInspector] private PlayerFeedbackController playerFeedbackController;
+
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackFeedback;
-    [SerializeField] private MMFeedbacks throwingFeedback;
     [SerializeField] private MMFeedbacks exclamationFeedback;
 
     // Constant variables
@@ -37,16 +41,15 @@ public class ThrowingSystem : MonoBehaviour
     private float elapsedTime;
     private Vector3 startPosition;
 
-    // Start
-    private void Start()
+    private void Awake()
     {
-        // Get components
         pm = GetComponent<PlayerMovementSystem>();
         companion = objectToThrow.GetComponent<Companion>();
-        
-        // Init Inputs
-        pm.myInputs.OnThrowPerformed += DoThrow;
-        pm.myInputs.OnReturnPerformed += DoReturn;
+        myInputs = GetComponent<PlayerInputController>();
+        playerFeedbackController = GetComponent<PlayerFeedbackController>();
+
+        myInputs.OnThrowPerformed += DoThrow;
+        myInputs.OnReturnPerformed += DoReturn;
 
         standPosition.position = companion.transform.position;
     }
@@ -54,14 +57,17 @@ public class ThrowingSystem : MonoBehaviour
     private void DoThrow()
     {
         // Throw BOX CHARACTER 
-        if (readyToThrow)
+        if (readyToThrow && companion.state != ECompanionState.NONE)
         {
             // Throw large
             if (pm.isAiming)
             {
                 // change state
                 companion.SetNewState(ECompanionState.THROW_LARGE);
+
                 // Do Throw
+                //Vector3 dir = pm.lookAt.position - transform.position;
+                //dir.Normalize();
                 Throw(cam.transform.forward, throwLargeForce);
             }
             else
@@ -103,28 +109,27 @@ public class ThrowingSystem : MonoBehaviour
 
         if (companion.state != ECompanionState.COMEBACK) return;
 
-        ComeBackInterp();
+        InterpolateComeback();
     }
     
     // Functions
     private void Throw(Vector3 forceDirection, float force)
     {
+        // effect
+        playerFeedbackController.PlayThrowFeedback();
+
         // Preferences
         readyToThrow = false;
         objectToThrow.transform.SetParent(null);
-        throwingFeedback.PlayFeedbacks();
 
         // Get rigidbody component
         Rigidbody projectileRb = objectToThrow.GetComponent<Rigidbody>();
 
         // Change preferences
         companion.HandleState();
-        
-        // Add force
-        Vector3 forceToAdd = forceDirection * force;
-        projectileRb.AddForce(forceToAdd, ForceMode.Impulse);
+        companion.ApplyThrow(forceDirection, force);
     }
-    private void ComeBackInterp()
+    private void InterpolateComeback()
     {
         startPosition = objectToThrow.transform.position;
         elapsedTime += Time.fixedDeltaTime;
