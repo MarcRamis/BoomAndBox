@@ -28,7 +28,9 @@ public class Companion : MonoBehaviour
     [SerializeField] private float timeRetained;
     [SerializeField] private bool isLevelOnboarding;
     [SerializeField] public ECompanionState state = ECompanionState.NONE;
-
+    [SerializeField] private float amplitude = 0.5f;
+    [SerializeField] private float upDownSpeed = 1f;
+    
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks comebackingFeedback;
     [SerializeField] private MMFeedbacks noMovingFeedback;
@@ -41,6 +43,8 @@ public class Companion : MonoBehaviour
 
     private Vector3 initialScale;
     private Quaternion initialRotation;
+    private Vector3 initialPosition;
+    private Vector3 startMoveSinPosition;
 
     private void Awake()
     {
@@ -50,13 +54,22 @@ public class Companion : MonoBehaviour
 
         initialScale = transform.localScale;
         initialRotation = transform.localRotation;
-
+        initialPosition = transform.localPosition;
+        startMoveSinPosition = initialPosition;
     }
 
     private void Start()
     {
-        if (isLevelOnboarding) gameObject.SetActive(false);
-        else gameObject.SetActive(true);
+        if (isLevelOnboarding)
+        {
+            state = ECompanionState.NONE;
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            state = ECompanionState.ATTACHED;
+            gameObject.SetActive(true);
+        }
     }
 
     // Update
@@ -73,6 +86,7 @@ public class Companion : MonoBehaviour
             if (state != ECompanionState.RETAINED && state != ECompanionState.COMEBACK)
             {
                 SetNewState(ECompanionState.RETAINED);
+                startMoveSinPosition = transform.position;
                 Invoke(nameof(ResetRetainedState), timeRetained);
             }
         }
@@ -86,6 +100,7 @@ public class Companion : MonoBehaviour
     private void ResetRetainedState()
     {
         SetNewState(ECompanionState.COMEBACK);
+        startMoveSinPosition = initialPosition;
     }
     public void HandleState()
     {
@@ -106,6 +121,8 @@ public class Companion : MonoBehaviour
                 noMovingFeedback.PlayFeedbacks();
 
                 noMovingFeedback.StopFeedbacks();
+
+                MoveUpDown();
 
                 break;
             case ECompanionState.THROW:
@@ -150,6 +167,8 @@ public class Companion : MonoBehaviour
                 ResetInitialProperties(false);
 
                 noMovingFeedback.PlayFeedbacks();
+
+                MoveUpDown();
 
                 break;
             case ECompanionState.COMEBACK:
@@ -199,6 +218,12 @@ public class Companion : MonoBehaviour
     {
         transform.localScale = initialScale;
         if (changeRotation) transform.localRotation = initialRotation;
+    }
+
+    private void MoveUpDown()
+    {
+        float newY = startMoveSinPosition.y + amplitude * Mathf.Sin(upDownSpeed * Time.time);
+        transform.localPosition = new Vector3(transform.localPosition.x, newY, transform.localPosition.z);
     }
 
     public void RotateModel(Vector3 orientation)
