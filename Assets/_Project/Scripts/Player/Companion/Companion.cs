@@ -217,6 +217,12 @@ public class Companion : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        IDamageable interactuable = collision.gameObject.GetComponent<IDamageable>();
+        if (interactuable != null)
+        {
+            interactuable.Damage(1);
+        }
+
         if (collision.gameObject.tag == "Enemy" && state != ECompanionState.ATTACHED)
         {
             collision.gameObject.GetComponent<IDamageable>().Damage(1);
