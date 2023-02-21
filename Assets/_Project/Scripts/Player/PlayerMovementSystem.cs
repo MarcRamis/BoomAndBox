@@ -108,8 +108,7 @@ public class PlayerMovementSystem : MonoBehaviour
         playerFeedbackController = GetComponent<PlayerFeedbackController>();
         
         // Initialize inputs
-        myInputs.OnJumpPerformed += DoJump;
-        myInputs.OnZoomPerformed += DoZoom;
+        myInputs.OnJumpPerformed += DoJump;        
         
         // Initalize properties
         playerRigidbody.freezeRotation = true;
@@ -179,11 +178,6 @@ public class PlayerMovementSystem : MonoBehaviour
     {
         if (isGrounded) coyoteTimeCounter = coyoteTime;
         else coyoteTimeCounter -= Time.deltaTime;
-    }
-
-    private void DoZoom()
-    {
-        isAiming = !isAiming;
     }
 
     private void DoJump()

@@ -40,10 +40,12 @@ public class Companion : MonoBehaviour
     //Feedback
     [HideInInspector] private CompanionFeedbackController companionFeedbackController;
 
-    private Vector3 initialScale;
-    private Quaternion initialRotation;
-    private Vector3 initialPosition;
-    private Vector3 startMoveSinPosition;
+
+    [HideInInspector] public bool playerAiming;
+    [HideInInspector] private Vector3 initialScale;
+    [HideInInspector] private Quaternion initialRotation;
+    [HideInInspector] private Vector3 initialPosition;
+    [HideInInspector] private Vector3 startMoveSinPosition;
 
     private void Awake()
     {
@@ -117,9 +119,11 @@ public class Companion : MonoBehaviour
                 trailRenderer.endColor = throwDashColor;
                 trailRenderer.startColor = throwDashColor;
 
-                MoveUpDown();
+                if (!playerAiming)
+                    MoveUpDown();
 
                 break;
+
             case ECompanionState.THROW:
 
                 companionRigidBody.useGravity = false;
