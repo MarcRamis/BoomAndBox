@@ -9,6 +9,7 @@ TagManager:
   - Companion
   - Enemy
   - FxTemporaire
+  - Postprocess
   layers:
   - Default
   - TransparentFX
