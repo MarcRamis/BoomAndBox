@@ -13,7 +13,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform model;
     [SerializeField] private Camera mainCamera;
-    [HideInInspector] private Rigidbody playerRigidbody;
+    [HideInInspector] public Rigidbody playerRigidbody;
     [SerializeField] private CapsuleCollider playerCollider;
     
     [Header("Movement")]
@@ -425,8 +425,17 @@ public class PlayerMovementSystem : MonoBehaviour
             Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
             orientation.forward = viewDir.normalized;
             
-            // Calculate the input direction based on the orientation of the player and the user's input
-            Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+            Vector3 inputDir = Vector3.zero;
+            // checking not dashing because i dont want to get input rotation while dashing
+            if (!isDashing)
+            {
+                // Calculate the input direction based on the orientation of the player and the user's input
+                inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+            }
+            else
+            {
+                inputDir = orientation.forward;
+            }
 
             // If the input direction is non-zero, rotate the model in the direction of the input
             if (inputDir != Vector3.zero)

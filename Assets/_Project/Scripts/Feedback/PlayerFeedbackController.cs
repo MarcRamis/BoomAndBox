@@ -5,13 +5,17 @@ using MoreMountains.Feedbacks;
 
 public class PlayerFeedbackController : FeedbackController
 {
+    [SerializeField] private AudioClip receiveDamageSound;
+
+    [Header("Visual Effects")]
     [SerializeField] private MMFeedbacks jumpFeedback;
     [SerializeField] private MMFeedbacks doubleJumpFeedback;
     [SerializeField] private MMFeedbacks landingFeedback;
     [SerializeField] private MMFeedbacks landingFeedbackShort;
     [SerializeField] private MMFeedbacks throwingFeedback;
     [SerializeField] private MMFeedbacks dashFeedback;
-    
+    [SerializeField] private MMFeedbacks receiveDamageFeedback;
+
     [SerializeField] private TrailRenderer trailLeftShoe;
     [SerializeField] private TrailRenderer trailRightShoe;
     [SerializeField] private TrailRenderer trailMidBody;
@@ -19,7 +23,7 @@ public class PlayerFeedbackController : FeedbackController
     [SerializeField] private TrailRenderer trailRightHand;
     
     [SerializeField] private GameObject speedPs;
-
+    
     private void Awake()
     {
         speedPs.SetActive(false);
@@ -77,6 +81,12 @@ public class PlayerFeedbackController : FeedbackController
     public void PlayThrowFeedback()
     {
         throwingFeedback.PlayFeedbacks();
+    }
+    /////////// RECEIVE DAMAGE
+    public void PlayReceiveDamageFeedback()
+    {
+        receiveDamageFeedback.PlayFeedbacks();
+        PlaySoundEffect(receiveDamageSound);
     }
 
     private void LargeShoesTrail()
