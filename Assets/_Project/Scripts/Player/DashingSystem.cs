@@ -15,10 +15,10 @@ public class DashingSystem : MonoBehaviour
     [HideInInspector] private PlayerMovementSystem pm;
     [HideInInspector] private ThrowingSystem tr;
     [HideInInspector] private Transform currentTarget;
-
-    [Header("Feedback")]
-    [SerializeField] private GameObject speedPs;
-    [SerializeField] private MMFeedbacks dashFeedback;
+    //Inputs
+    [HideInInspector] private PlayerInputController myInputs;
+    //Feedback
+    [HideInInspector] private PlayerFeedbackController playerFeedbackController;
 
     // Const variablaes
     private const float targetNearDistance = 0.2f;
@@ -27,41 +27,26 @@ public class DashingSystem : MonoBehaviour
     private Vector3 startPosition;
     private float elapsedTime;
     
-    // Start
-    private void Start()
+    private void Awake()
     {
         m_Rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovementSystem>();
         tr = GetComponent<ThrowingSystem>();
-
-        speedPs.SetActive(false);
+        myInputs = GetComponent<PlayerInputController>();
+        playerFeedbackController = GetComponent<PlayerFeedbackController>();
 
         // Set companion target to dash him
         currentTarget = tr.objectToThrow.transform;
 
         // Initialize inputs
-        pm.myInputs.OnDashPerformed += DoDash;
+        myInputs.OnDashPerformed += DoDash;
     }
+
 
     private void Update()
     {
         if (!tr.companion.CanDash() && pm.isDashing)
             ResetDash();
-    }
-    
-    private void DoDash()
-    {
-        // Dash
-        if (currentTarget != null)
-        {
-            // Can't dash when companion is in mode: comeback, attached
-            if (tr.companion.CanDash() && !pm.isDashing)
-            {
-                pm.isDashing = true;
-                tr.companion.SetNewState(ECompanionState.RETAINED);
-                DashFeedback();
-            }
-        }
     }
 
     // Fixed Update
@@ -71,6 +56,20 @@ public class DashingSystem : MonoBehaviour
         if (pm.isDashing)
         {
             DashInterpo();
+        }
+    }
+
+    private void DoDash()
+    {
+        if (currentTarget != null)
+        {
+            // Can't dash when companion is in mode: comeback, attached
+            if (tr.companion.CanDash() && !pm.isDashing)
+            {
+                pm.isDashing = true;
+                tr.companion.SetNewState(ECompanionState.RETAINED);
+                playerFeedbackController.PlayDashFeedback();
+            }
         }
     }
 
@@ -88,7 +87,7 @@ public class DashingSystem : MonoBehaviour
 
         // make interpolation
         transform.position = Vector3.Lerp(startPosition, currentTarget.transform.position, dashInterpCurveSmooth.Evaluate(percentageComplete));
-
+        
         // Calculate distance
         if (Vector3.Distance(transform.position, currentTarget.transform.position) < targetNearDistance || percentageComplete >= dashInterpTime)
         {
@@ -109,18 +108,6 @@ public class DashingSystem : MonoBehaviour
         tr.companion.SetNewState(ECompanionState.COMEBACK);
     
         // effects
-        GetComponent<TrailRenderer>().emitting = false;
-        speedPs.SetActive(false);
-    }
-    private void SelectTarget()
-    {
-        
-    }
-    private void DashFeedback()
-    {
-        // start effects
-        dashFeedback.PlayFeedbacks();
-        speedPs.SetActive(true);
-        GetComponent<TrailRenderer>().emitting = true;
+        playerFeedbackController.StopDashFeedback();
     }
 }
