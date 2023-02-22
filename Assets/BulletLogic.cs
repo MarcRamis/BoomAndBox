@@ -27,7 +27,7 @@ public class BulletLogic : MonoBehaviour
             }
             script.Damage(1);
         }
-        Debug.Log(other.gameObject);
+
         if(!other.isTrigger)
         {
             Destroy(this.gameObject);
