@@ -10005,7 +10005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d5e3cb6c8a6e24db8f05499a050feb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 5
   myInputs: {fileID: 0}
 --- !u!114 &1082410534
 MonoBehaviour:

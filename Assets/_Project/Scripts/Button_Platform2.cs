@@ -25,7 +25,7 @@ public class Button_Platform2 : MonoBehaviour, IDamageable
     //Private variables
     private enum PlatformAction
     {
-        Move
+        Move, Activate
     };
     private bool timer = false;
 
@@ -42,6 +42,13 @@ public class Button_Platform2 : MonoBehaviour, IDamageable
                     foreach (var platform in platformsToChange)
                     {
                         platform.GetComponentInChildren<MoveablePlatform>().ChangeMoveableState();
+                    }
+                    break;
+
+                case PlatformAction.Activate:
+                    foreach (var platform in platformsToChange)
+                    {
+                        platform.SetActive(!platform.activeSelf);
                     }
                     break;
             }
