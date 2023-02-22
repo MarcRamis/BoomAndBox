@@ -5,6 +5,7 @@ using UnityEngine;
 public class FeedbackController : MonoBehaviour
 {
     // Referencia al componente AudioSource
+    [Header("Sound Effects")]
     public AudioSource audioSource;
 
     [System.Serializable]

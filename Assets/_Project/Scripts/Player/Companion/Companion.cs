@@ -185,6 +185,8 @@ public class Companion : MonoBehaviour
     {
         Vector3 forceToAdd = forceDirection * force;
         companionRigidBody.AddForce(forceToAdd, ForceMode.Impulse);
+
+        companionFeedbackController.PlayBeingThrownFeedback();
     }
 
     public void SetNewState(ECompanionState newState)
@@ -245,8 +247,8 @@ public class Companion : MonoBehaviour
         {
             collision.gameObject.GetComponent<IDamageable>().Damage(1);
         }
-
-        Instantiate(prefabHitExplosion, collision.GetContact(0).point, prefabHitExplosion.transform.rotation);
+        
+        companionFeedbackController.PlayHitFeedback(collision.GetContact(0).point);
 
         if (state != ECompanionState.ATTACHED)
             state = ECompanionState.COMEBACK;

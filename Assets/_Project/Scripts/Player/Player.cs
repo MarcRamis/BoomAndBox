@@ -10,13 +10,15 @@ public class Player : MonoBehaviour, IDamageable
     
     [Header("References")]
     [SerializeField] public IInteractuable currentInteraction;
-    [HideInInspector] PlayerMovementSystem pm;
 
     [Header("Settings")]
     [SerializeField] private int health;
 
-    [Header("Feedback")]
-    [SerializeField] private MMFeedbacks receiveDamageFeedback;
+    //Inputs
+    [HideInInspector] public PlayerInputController myInputs;
+
+    //Feedback
+    [HideInInspector] private PlayerFeedbackController playerFeedbackController;
 
     // Internal variables
     private bool justReceivedDamage = false;
@@ -28,10 +30,12 @@ public class Player : MonoBehaviour, IDamageable
     // Start
     void Start()
     {
-        pm = GetComponent<PlayerMovementSystem>();
-        Health = health;
+        myInputs = GetComponent<PlayerInputController>();
+        playerFeedbackController = GetComponent<PlayerFeedbackController>();
         
-        pm.myInputs.OnInteractPerformed += DoInteract;
+        myInputs.OnInteractPerformed += DoInteract;
+        
+        Health = health;        
     }
     
     // Update
@@ -54,7 +58,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             // Apply operations
             Health -= damageAmount;
-            receiveDamageFeedback.PlayFeedbacks();
+            playerFeedbackController.PlayReceiveDamageFeedback();
             justReceivedDamage = true;
 
             // Reset timer to receive damage
