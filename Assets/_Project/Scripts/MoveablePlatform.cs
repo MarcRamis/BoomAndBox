@@ -8,6 +8,7 @@ public class MoveablePlatform : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private bool isMovable = false;
     [SerializeField] private bool isWaiting = false;
+    [SerializeField] private bool isOtherColor = false;
     [SerializeField] private Transform startPosition;
     [SerializeField] private Transform endPosition;
     [SerializeField] private AnimationCurve moveCurveSmooth;
@@ -73,4 +74,17 @@ public class MoveablePlatform : MonoBehaviour
     {
         wait = false;
     }
+
+    public bool GetIsOtherColor()
+    {
+        return isOtherColor;
+    }
+
+    public void ChangeColor(Color _color)
+    {
+        transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", _color);
+        transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", _color);
+        isOtherColor = !isOtherColor;
+    }
+
 }

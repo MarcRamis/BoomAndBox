@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platformsToChange: []
-  actionToDo: 0
+  actionToDo: 1
   hitFeedback: {fileID: 6765254131324558483}
   mainPostProcess: {fileID: 0}
 --- !u!1 &6765254131324558486

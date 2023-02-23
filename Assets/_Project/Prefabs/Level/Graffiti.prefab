@@ -112,3 +112,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distanceToWall: 0.01
+  gaffiti: {fileID: 2800000, guid: d3d48577105deaa4abdaefabc491b09d, type: 3}
