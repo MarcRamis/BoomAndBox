@@ -319,8 +319,7 @@ MonoBehaviour:
   triggerCollider: {fileID: 536707059}
   triggerCollider2: {fileID: 3250206659901845838}
   companion: {fileID: 0}
-  companionScript: {fileID: 0}
-  playerScript: {fileID: 0}
+  player: {fileID: 0}
   objectToPositionate: {fileID: 0}
 --- !u!1 &8501075797460776861
 GameObject:
