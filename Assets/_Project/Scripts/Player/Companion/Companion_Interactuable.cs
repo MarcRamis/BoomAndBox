@@ -8,16 +8,17 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
     [SerializeField] private BoxCollider triggerCollider;
     [SerializeField] private BoxCollider triggerCollider2;
     [SerializeField] private GameObject companion;
-    [SerializeField] private Companion companionScript;
-    [SerializeField] private Player playerScript;
+    private Companion companionScript;
+    [SerializeField] private GameObject player;
+    private Player playerScript;
     [SerializeField] private GameObject objectToPositionate;
     
     float elapsedTime;
 
     private void Awake()
     {
-        companion = GameObject.FindGameObjectWithTag("Companion");
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //companion = GameObject.FindGameObjectWithTag("Companion");
+        //GameObject player = GameObject.FindGameObjectWithTag("Player");
         companionScript = companion.GetComponent<Companion>();
         playerScript = player.GetComponent<Player>();
     }
