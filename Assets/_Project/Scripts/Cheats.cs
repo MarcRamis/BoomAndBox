@@ -9,12 +9,16 @@ public class Cheats : MonoBehaviour
     [SerializeField] private KeyCode godModeKey = KeyCode.Period;
     [SerializeField] private KeyCode restartLevel = KeyCode.Comma;
 
-    private GameObject player;
+    [Header("Player")]
+    [SerializeField] private GameObject player;
 
     // Start is called before the first frame update
     void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        if(player == null) 
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 
     // Update is called once per frame
