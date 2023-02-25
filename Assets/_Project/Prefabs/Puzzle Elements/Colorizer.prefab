@@ -60,8 +60,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b743e8c443f81184a8650f0c41c21d70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformsToChange: []
+  eventStart: []
+  eventEnds: []
+  eventAction: []
+  platformsToAppear: []
+  platformsToMove: []
+  platformsToChangeColor: []
   actionToDo: 1
+  color1: {r: 1, g: 1, b: 1, a: 1}
+  color2: {r: 1, g: 1, b: 1, a: 1}
   hitFeedback: {fileID: 6765254131324558483}
   mainPostProcess: {fileID: 0}
 --- !u!1 &6765254131324558486
@@ -181,7 +188,19 @@ MonoBehaviour:
         m_Calls: []
     OnComplete:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 3391515454385874341}
+          m_TargetAssemblyTypeName: Button_Platform2, Assembly-CSharp
+          m_MethodName: ResetTimer
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   DebugActive: 0
 --- !u!114 &6765254131324558484
 MonoBehaviour:

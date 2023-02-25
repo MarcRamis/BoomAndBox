@@ -6,8 +6,16 @@ using UnityEngine.Rendering.PostProcessing;
 using System;
 using UnityEditor;
 
-public class Button_Platform2 : MonoBehaviour, IDamageable
+public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
 {
+    public delegate void OnActivationAction();
+    public static event OnActivationAction OnActivation;
+
+    [Header("Events")]
+    [SerializeField] private GameObject[] eventStart;
+    [SerializeField] private GameObject[] eventEnds;
+    [SerializeField] private GameObject[] eventAction;
+
     [Header("Platform list to Appear")]
     [SerializeField] private GameObject[] platformsToAppear;
 
@@ -23,7 +31,7 @@ public class Button_Platform2 : MonoBehaviour, IDamageable
     [SerializeField] private Color color2 = Color.white;
 
     [Header("Feedback")]
-    [SerializeField] private MMFeedbacks hitFeedback;
+    [SerializeField] private MMFeedbacks hitFeedback;    
 
     public PostProcessVolume mainPostProcess;
 
@@ -83,12 +91,48 @@ public class Button_Platform2 : MonoBehaviour, IDamageable
                         break;
                 }
             }
-                
+            timer = true;
         }
+    }
+
+    public void ResetTimer()
+    {
+        timer = false;
     }
 
     public void Damage(int damageAmount)
     {
-        hitFeedback.PlayFeedbacks();
+        if(!timer)
+        {
+            hitFeedback.PlayFeedbacks();
+            if (eventAction.Length > 0)
+                foreach (GameObject objectActivate in eventAction)
+                {
+                    IEvent eventScript = objectActivate.gameObject.GetComponent<IEvent>();
+                    if (eventScript != null)
+                    {
+                        eventScript.EventAction(this.gameObject);
+                    }
+                }
+        }
+        
+    }
+
+    //Events
+    public void EventStarts()
+    {           
+                
+    }
+    public void EventEnds()
+    {
+
+    }
+    public void EventAction()
+    {
+
+    }
+    public void EventAction(GameObject _gameobject)
+    {
+
     }
 }
