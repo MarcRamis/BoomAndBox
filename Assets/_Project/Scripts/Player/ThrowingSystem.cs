@@ -63,13 +63,13 @@ public class ThrowingSystem : MonoBehaviour
 
     private void Update()
     {
-        //if (!pm.isGrounded)
-        //{
-        //    if (isAiming)
-        //    {
-        //        RestartCompanionPosition();
-        //    }
-        //}
+        if (!pm.isGrounded)
+        {
+            if (isAiming)
+            {
+                RestartCompanionPosition();
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -100,11 +100,13 @@ public class ThrowingSystem : MonoBehaviour
 
         if (!isAiming)
         {
+            playerFeedbackController.StopAimingFeedback();
             companion.ResetPosition(standPosition.position);
             companion.ResetInitialProperties(true);
         }
         else
         {
+            playerFeedbackController.PlayAimingFeedback();
             companion.SetNewState(ECompanionState.ATTACHED);
             companion.ResetLocalPosition(Vector3.zero);
         }
@@ -167,10 +169,10 @@ public class ThrowingSystem : MonoBehaviour
         playerFeedbackController.PlayThrowFeedback();
 
         // Preferences
-        readyToThrow = false;
         objectToThrow.transform.SetParent(null);
-
         justThrow = true;
+
+        readyToThrow = false;
         Invoke(nameof(ResetJustThrow), justThrowCooldown);
 
         // Get rigidbody component
@@ -225,7 +227,7 @@ public class ThrowingSystem : MonoBehaviour
         companion.ResetInitialProperties(true);
         elapsedTime = 0;
         comebackFeedback.PlayFeedbacks();
-
+        
         // timer to throw again
         Invoke(nameof(ResetThrowCooldown), throwCooldown);
     }

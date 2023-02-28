@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using MoreMountains.Feedbacks;
 
 public class PlayerFeedbackController : FeedbackController
@@ -23,6 +24,8 @@ public class PlayerFeedbackController : FeedbackController
     [SerializeField] private TrailRenderer trailRightHand;
     
     [SerializeField] private GameObject speedPs;
+
+    [SerializeField] private Image cursor;
     
     private void Awake()
     {
@@ -88,7 +91,15 @@ public class PlayerFeedbackController : FeedbackController
         receiveDamageFeedback.PlayFeedbacks();
         PlaySoundEffect(receiveDamageSound);
     }
-
+    /////////// START AIMING
+    public void PlayAimingFeedback()
+    {
+        cursor.gameObject.SetActive(true);
+    }
+    public void StopAimingFeedback()
+    {
+        cursor.gameObject.SetActive(false);
+    }
     private void LargeShoesTrail()
     {
         trailLeftShoe.emitting = true;
