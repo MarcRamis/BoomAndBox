@@ -69,7 +69,8 @@ public class PlayerMovementSystem : MonoBehaviour
     // this variable exists because setting to true fall instantly wasn't pretty satisfying
     // Also it helps to "hide" partially a problem when u are grounded and sloping on a surface
     [HideInInspector] private float timeToSetFall = 0.15f;
-    
+    [SerializeField] private float fallingthreshold = 0.5f;
+
     //Inputs
     [HideInInspector] public PlayerInputController myInputs;
 
@@ -127,9 +128,12 @@ public class PlayerMovementSystem : MonoBehaviour
         /* Executed one time per frame. 
          * It doesn't depends on the machine is working.
          * Here goes inputs and variable updates. */
+        
 
         CheckGround();
-        
+
+        CheckFalling();
+
         MyInputDirection();
         StartCoyoteTime();
         SpeedControl();
@@ -146,7 +150,7 @@ public class PlayerMovementSystem : MonoBehaviour
          * It doesn't depends on the machine is being executed.
          * Here goes: physics movement*/
 
-        CheckFalling();
+        
 
         MovePlayer();
         RotateModel();
@@ -511,16 +515,25 @@ public class PlayerMovementSystem : MonoBehaviour
     
     private void CheckFalling()
     {
-        float currentVel = playerRigidbody.velocity.y;
-        if (lastFramePosition > currentVel)
+        if(!isGrounded)
         {
-            Invoke(nameof(SetFalling), timeToSetFall);
+            float currentVel = playerRigidbody.velocity.y;
+            float distance = lastFramePosition - currentVel;
+            Debug.Log(distance);
+            //if (lastFramePosition > currentVel)
+            //{
+            //    Invoke(nameof(SetFalling), timeToSetFall);
+            //}
+            if(distance > fallingthreshold)
+            {
+                Invoke(nameof(SetFalling), timeToSetFall);
+            }
+            else
+            {
+                isFalling = false;
+            }
+            
         }
-        else
-        {
-            isFalling = false;
-        }
-
         lastFramePosition = playerRigidbody.velocity.y;
     }
 
