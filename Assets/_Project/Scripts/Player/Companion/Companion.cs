@@ -21,7 +21,9 @@ public class Companion : MonoBehaviour
     [HideInInspector] private Rigidbody companionRigidBody;
     [HideInInspector] private Collider m_Collider;
     [SerializeField] private GameObject prefabHitExplosion;
-
+    [SerializeField] private Transform playerParent;
+    [SerializeField] private Transform socketHand;
+    
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
     [SerializeField] private float maxLargeDistanceToReturn;
@@ -39,7 +41,6 @@ public class Companion : MonoBehaviour
 
     //Feedback
     [HideInInspector] private CompanionFeedbackController companionFeedbackController;
-
 
     [HideInInspector] public bool playerAiming;
     [HideInInspector] private Vector3 initialScale;
@@ -63,12 +64,12 @@ public class Companion : MonoBehaviour
     {
         if (isLevelOnboarding)
         {
-            state = ECompanionState.NONE;
+            SetNewState(ECompanionState.NONE);
             gameObject.SetActive(false);
         }
         else
         {
-            state = ECompanionState.ATTACHED;
+            SetNewState(ECompanionState.ATTACHED);
             gameObject.SetActive(true);
         }
     }
@@ -76,7 +77,7 @@ public class Companion : MonoBehaviour
     // Update
     private void Update()
     {
-        HandleState();
+        
     }
 
     // Fixed Update
@@ -119,8 +120,17 @@ public class Companion : MonoBehaviour
                 trailRenderer.endColor = throwDashColor;
                 trailRenderer.startColor = throwDashColor;
 
+                transform.parent = playerParent;
+
                 if (!playerAiming)
+                {
                     MoveUpDown();
+                    transform.SetParent(playerParent);
+                }
+                else
+                {
+                    transform.SetParent(socketHand);
+                }
 
                 break;
 
@@ -192,6 +202,7 @@ public class Companion : MonoBehaviour
     public void SetNewState(ECompanionState newState)
     {
         state = newState;
+        HandleState();
     }
     
     public void MakeImpulse()
@@ -207,12 +218,26 @@ public class Companion : MonoBehaviour
         && state != ECompanionState.NONE;
     }
 
+    public bool CanAim()
+    {
+        return state == ECompanionState.ATTACHED;
+    }
+
     public Vector3 GetPosition() { return transform.position; }
 
     public void ResetInitialProperties(bool changeRotation)
     {
         transform.localScale = initialScale;
-        if (changeRotation) transform.localRotation = initialRotation;
+        if (changeRotation) 
+            transform.localRotation = initialRotation;
+    }
+    public void ResetLocalPosition(Vector3 newPos)
+    {
+        transform.localPosition = newPos;
+    }
+    public void ResetPosition(Vector3 newPos)
+    {
+        transform.position = newPos;
     }
 
     private void MoveUpDown()
@@ -237,10 +262,10 @@ public class Companion : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        IDamageable interactuable = collision.gameObject.GetComponent<IDamageable>();
-        if (interactuable != null)
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        if (damageable != null)
         {
-            interactuable.Damage(1);
+            damageable.Damage(1);
         }
 
         if (collision.gameObject.tag == "Enemy" && state != ECompanionState.ATTACHED)
@@ -251,6 +276,6 @@ public class Companion : MonoBehaviour
         companionFeedbackController.PlayHitFeedback(collision.GetContact(0).point);
 
         if (state != ECompanionState.ATTACHED)
-            state = ECompanionState.COMEBACK;
+            SetNewState(ECompanionState.COMEBACK);
     }
 }       
