@@ -3,17 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using UnityEngine.Rendering.PostProcessing;
+using System;
+using UnityEditor;
 
-public class Button_Platform2 : MonoBehaviour, IDamageable
+public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
 {
-    [Header("Platform list")]
-    [SerializeField] private GameObject[] platformsToChange;
+    public delegate void OnActivationAction();
+    public static event OnActivationAction OnActivation;
+
+    [Header("Events")]
+    [SerializeField] private GameObject[] eventStart;
+    [SerializeField] private GameObject[] eventEnds;
+    [SerializeField] private GameObject[] eventAction;
+
+    [Header("Platform list to Appear")]
+    [SerializeField] private GameObject[] platformsToAppear;
+
+    [Header("Platform list to Move")]
+    [SerializeField] private GameObject[] platformsToMove;
+
+    [Header("Platform list to ChangeColor")]
+    [SerializeField] private GameObject[] platformsToChangeColor;
 
     [Header("Settings")]
     [SerializeField] private PlatformAction actionToDo;
+    [SerializeField] private Color color1 = Color.white;
+    [SerializeField] private Color color2 = Color.white;
 
     [Header("Feedback")]
-    [SerializeField] private MMFeedbacks hitFeedback;
+    [SerializeField] private MMFeedbacks hitFeedback;    
 
     public PostProcessVolume mainPostProcess;
 
@@ -23,9 +41,13 @@ public class Button_Platform2 : MonoBehaviour, IDamageable
     }
 
     //Private variables
+    [Flags]
     private enum PlatformAction
     {
-        Move
+        NONE = 0,
+        Move = 1 << 1,
+        Activate = 1 << 2,
+        ChangeColor = 1 << 3,
     };
     private bool timer = false;
 
@@ -36,20 +58,81 @@ public class Button_Platform2 : MonoBehaviour, IDamageable
         if (collision.gameObject.tag == "Companion" && !timer)
         {
             //hitFeedback.PlayFeedbacks();
-            switch (actionToDo)
+            foreach(PlatformAction option in Enum.GetValues(typeof(PlatformAction)))
             {
-                case PlatformAction.Move:
-                    foreach (var platform in platformsToChange)
-                    {
-                        platform.GetComponentInChildren<MoveablePlatform>().ChangeMoveableState();
-                    }
-                    break;
+                switch (option)
+                {
+                    case PlatformAction.Move:
+                        foreach (var platform in platformsToMove)
+                        {
+                            platform.GetComponentInChildren<MoveablePlatform>().ChangeMoveableState();
+                        }
+                        break;
+
+                    case PlatformAction.Activate:
+                        foreach (var platform in platformsToAppear)
+                        {
+                            platform.SetActive(!platform.activeSelf);
+                        }
+                        break;
+                    case PlatformAction.ChangeColor:
+                        foreach (var platform in platformsToChangeColor)
+                        {
+                            MoveablePlatform tempScript = platform.GetComponentInChildren<MoveablePlatform>();
+                            if (tempScript.GetIsOtherColor())
+                            {
+                                tempScript.ChangeColor(color1);
+                            }
+                            else
+                            {
+                                tempScript.ChangeColor(color2);
+                            }
+                        }
+                        break;
+                }
             }
+            timer = true;
         }
+    }
+
+    public void ResetTimer()
+    {
+        timer = false;
     }
 
     public void Damage(int damageAmount)
     {
-        hitFeedback.PlayFeedbacks();
+        if(!timer)
+        {
+            hitFeedback.PlayFeedbacks();
+            if (eventAction.Length > 0)
+                foreach (GameObject objectActivate in eventAction)
+                {
+                    IEvent eventScript = objectActivate.gameObject.GetComponent<IEvent>();
+                    if (eventScript != null)
+                    {
+                        eventScript.EventAction(this.gameObject);
+                    }
+                }
+        }
+        
+    }
+
+    //Events
+    public void EventStarts()
+    {           
+                
+    }
+    public void EventEnds()
+    {
+
+    }
+    public void EventAction()
+    {
+
+    }
+    public void EventAction(GameObject _gameobject)
+    {
+
     }
 }

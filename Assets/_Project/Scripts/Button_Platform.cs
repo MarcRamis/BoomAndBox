@@ -31,7 +31,10 @@ public class Button_Platform : MonoBehaviour
                 case PlatformAction.Move:
                     foreach (var platform in platformsToChange)
                     {
-                        platform.GetComponentInChildren<MoveablePlatform>().ChangeMoveableState();
+                        if(!platform.GetComponentInChildren<MoveablePlatform>().GetIsOtherColor())
+                        {
+                            platform.GetComponentInChildren<MoveablePlatform>().ChangeMoveableState();
+                        }    
                     }
                     break;
             }

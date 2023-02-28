@@ -5,16 +5,18 @@ using UnityEngine;
 public class ChekPointSystem : MonoBehaviour
 {
     [SerializeField] private Transform playerSpawn;
-    private GameObject player;
+    [SerializeField] private GameObject player;
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        if(player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void SetPlayerPosToSpawn()
     {
         player.transform.position = playerSpawn.position;
+        player.GetComponent<Player>().Damage(1);
     }
 
     public void SetSpawnPointPos(Transform newPos)

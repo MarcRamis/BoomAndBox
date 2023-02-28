@@ -9,13 +9,14 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private Sprite fullHealth;
     [SerializeField] private Sprite emptyHealth;
     //Private variables
-    private GameObject player;
+    [SerializeField] private GameObject player;
     int healthUI;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
+        if(player == null)
+            player = GameObject.FindWithTag("Player");
         healthUI = player.GetComponent<Player>().Health;
     }
 

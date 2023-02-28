@@ -22,7 +22,7 @@ MonoBehaviour:
     x: 0
     y: 30
     width: 1920
-    height: 947
+    height: 939
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
@@ -409,7 +409,7 @@ MonoBehaviour:
   m_DoValidateTrueMetals: 0
   m_ExposureSliderValue: 0
   m_SceneViewState:
-    m_AlwaysRefresh: 1
+    m_AlwaysRefresh: 0
     showFog: 1
     showSkybox: 1
     showFlares: 1
@@ -468,7 +468,7 @@ MonoBehaviour:
     m_FieldOfViewHorizontalOrVertical: 60
     m_NearClip: 0.03
     m_FarClip: 10000
-    m_DynamicClip: 1
+    m_DynamicClip: 0
     m_OcclusionCulling: 0
   m_LastSceneViewRotation: {x: 0.085616894, y: -0.90533984, z: 0.35355788, w: 0.2192617}
   m_LastSceneViewOrtho: 0
@@ -1397,7 +1397,7 @@ MonoBehaviour:
   m_LastFolders:
   - Assets/_Project/Models/G_Textures/Cursors
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: D:\_PROYECTS\PROJECT_COIN
+  m_LastProjectPath: D:\Estudios\Uni\3o CAVJA\TFG\Unity\PROJECT_COIN
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
