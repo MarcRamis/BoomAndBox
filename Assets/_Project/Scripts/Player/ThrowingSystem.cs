@@ -21,7 +21,7 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float throwLargeForce;
     [SerializeField] private float throwCooldown = 0.25f;
     [SerializeField] private float justThrowCooldown = 0.05f;
-    [HideInInspector] public bool readyToThrow = true;
+    [SerializeField] public bool readyToThrow = true;
     [HideInInspector] public bool justThrow = false;
     [HideInInspector] public bool isAiming;
     [SerializeField] private float aimingInterpTime;
@@ -63,12 +63,9 @@ public class ThrowingSystem : MonoBehaviour
 
     private void Update()
     {
-        if (!pm.isGrounded)
+        if (!pm.isGrounded && isAiming)
         {
-            if (isAiming)
-            {
-                RestartCompanionPosition();
-            }
+            RestartCompanionPosition();
         }
     }
 
@@ -83,19 +80,15 @@ public class ThrowingSystem : MonoBehaviour
 
     private void DoAim()
     {
-        if (pm.isGrounded)
+        if (pm.isGrounded && companion.CanAim())
         {
-            if (companion.CanAim())
-            {
-                RestartCompanionPosition();
-            }
+            RestartCompanionPosition();
         }
     }
 
     private void RestartCompanionPosition()
     {
         SwapAim();
-
         companion.SetNewState(ECompanionState.ATTACHED);
 
         if (!isAiming)
@@ -110,6 +103,9 @@ public class ThrowingSystem : MonoBehaviour
             companion.SetNewState(ECompanionState.ATTACHED);
             companion.ResetLocalPosition(Vector3.zero);
         }
+
+        // timer to throw again
+        Invoke(nameof(ResetThrowCooldownWithoutFeedback), throwCooldown);
     }
 
     private void DoThrow()
@@ -235,5 +231,10 @@ public class ThrowingSystem : MonoBehaviour
     {
         readyToThrow = true;
         exclamationFeedback.PlayFeedbacks();
+    }
+
+    private void ResetThrowCooldownWithoutFeedback()
+    {
+        readyToThrow = true;
     }
 }

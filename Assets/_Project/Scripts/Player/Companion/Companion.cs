@@ -42,7 +42,7 @@ public class Companion : MonoBehaviour
     //Feedback
     [HideInInspector] private CompanionFeedbackController companionFeedbackController;
 
-    [HideInInspector] public bool playerAiming;
+    [SerializeField] public bool playerAiming;
     [HideInInspector] private Vector3 initialScale;
     [HideInInspector] private Quaternion initialRotation;
     [HideInInspector] private Vector3 initialPosition;
@@ -77,7 +77,10 @@ public class Companion : MonoBehaviour
     // Update
     private void Update()
     {
-        
+        if (CanMoveUpIdle())
+        {
+            MoveUpDown();
+        }
     }
 
     // Fixed Update
@@ -124,7 +127,6 @@ public class Companion : MonoBehaviour
 
                 if (!playerAiming)
                 {
-                    MoveUpDown();
                     transform.SetParent(playerParent);
                 }
                 else
@@ -208,6 +210,11 @@ public class Companion : MonoBehaviour
     public void MakeImpulse()
     {
         companionRigidBody.AddForce(Vector3.forward * 5, ForceMode.Impulse);
+    }
+
+    public bool CanMoveUpIdle()
+    {
+        return state == ECompanionState.ATTACHED && !playerAiming;
     }
 
     public bool CanDash()
