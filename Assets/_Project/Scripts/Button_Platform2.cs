@@ -78,15 +78,13 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
                     case PlatformAction.ChangeColor:
                         foreach (var platform in platformsToChangeColor)
                         {
-                            MoveablePlatform tempScript = platform.GetComponentInChildren<MoveablePlatform>();
-                            if (tempScript.GetIsOtherColor())
-                            {
-                                tempScript.ChangeColor(color1);
-                            }
-                            else
-                            {
-                                tempScript.ChangeColor(color2);
-                            }
+                            IColorizer tempScript = platform.GetComponent<IColorizer>();
+
+                            if(tempScript != null)
+                                tempScript.ChangeMaterial();
+
+
+
                         }
                         break;
                 }
