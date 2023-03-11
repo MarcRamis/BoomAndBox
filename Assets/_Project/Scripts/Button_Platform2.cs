@@ -70,9 +70,12 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
                         break;
 
                     case PlatformAction.Activate:
-                        foreach (var platform in platformsToAppear)
+                        if (platformsToAppear[0] != null)
                         {
-                            platform.SetActive(!platform.activeSelf);
+                            foreach (var platform in platformsToAppear)
+                            {
+                                platform.SetActive(!platform.activeSelf);
+                            }
                         }
                         break;
                     case PlatformAction.ChangeColor:
