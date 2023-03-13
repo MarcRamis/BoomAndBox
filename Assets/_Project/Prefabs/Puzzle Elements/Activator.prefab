@@ -50,7 +50,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platformsToChange: []
   actionToDo: 0
+  isColorCorrect: 1
   hitFeedback: {fileID: 6765254131324558483}
+  matBaseColor1: {fileID: 2100000, guid: 2004db742a3e4de4fb44d5d744d50f60, type: 2}
+  matBaseColor2: {fileID: 2100000, guid: be7de8792bbb6414cb7398805ebee3ee, type: 2}
 --- !u!135 &6765254129903958738
 SphereCollider:
   m_ObjectHideFlags: 0

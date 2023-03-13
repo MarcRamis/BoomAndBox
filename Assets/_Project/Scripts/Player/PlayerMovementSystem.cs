@@ -69,7 +69,8 @@ public class PlayerMovementSystem : MonoBehaviour
     // this variable exists because setting to true fall instantly wasn't pretty satisfying
     // Also it helps to "hide" partially a problem when u are grounded and sloping on a surface
     [HideInInspector] private float timeToSetFall = 0.15f;
-    
+    [SerializeField] private float fallingthreshold = 0.5f;
+
     //Inputs
     [HideInInspector] public PlayerInputController myInputs;
 
@@ -127,9 +128,12 @@ public class PlayerMovementSystem : MonoBehaviour
         /* Executed one time per frame. 
          * It doesn't depends on the machine is working.
          * Here goes inputs and variable updates. */
+        
 
         CheckGround();
-        
+
+        CheckFalling();
+
         MyInputDirection();
         StartCoyoteTime();
         SpeedControl();
@@ -146,7 +150,7 @@ public class PlayerMovementSystem : MonoBehaviour
          * It doesn't depends on the machine is being executed.
          * Here goes: physics movement*/
 
-        CheckFalling();
+        
 
         MovePlayer();
         RotateModel();
@@ -182,40 +186,36 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void DoJump()
     {
-        // checking if the player is aiming because its weird if he jumps while aiming
-        if (!isAiming)
+        // Jump on ground
+        // Only can jump when is grounded or in coyote time
+        if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
         {
-            // Jump on ground
-            // Only can jump when is grounded or in coyote time
-            if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
-            {
-                coyoteTimeCounter = 0f;
-                readyToJump = false;
+            coyoteTimeCounter = 0f;
+            readyToJump = false;
 
-                ApplyJumpForce();
-                playerFeedbackController.PlayJumpFeedback();
+            ApplyJumpForce();
+            playerFeedbackController.PlayJumpFeedback();
 
-                Invoke(nameof(ResetJump), jumpCooldown);
-            }
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
 
-            // Double Jump in air
-            /* Only can jump when jump cooldown is ready to prevent the double jump spam.
-             * There is a counter of double jumps in air the player can make to change if it's necessary.
-             
-             * Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in 
-               because it mustn't count.*/
-            else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
-            {
-                isDoubleJumping = true;
-                
-                ApplyJumpForce();
-                playerFeedbackController.PlayDoubleJumpFeedback();
+        // Double Jump in air
+        /* Only can jump when jump cooldown is ready to prevent the double jump spam.
+         * There is a counter of double jumps in air the player can make to change if it's necessary.
 
-                currentDoubleJumps--;
-                timeInAir = 0;
+         * Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in 
+           because it mustn't count.*/
+        else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
+        {
+            isDoubleJumping = true;
 
-                Invoke(nameof(ResetDoubleJump), jumpCooldown);
-            }
+            ApplyJumpForce();
+            playerFeedbackController.PlayDoubleJumpFeedback();
+
+            currentDoubleJumps--;
+            timeInAir = 0;
+
+            Invoke(nameof(ResetDoubleJump), jumpCooldown);
         }
 
 
@@ -416,15 +416,15 @@ public class PlayerMovementSystem : MonoBehaviour
         // Calculate the view direction from the player to the main camera
         Vector3 viewDirFullOrientation = transform.position - mainCamera.transform.position;
         fullOrientation.forward = viewDirFullOrientation.normalized;
-        
+
         if (!isAiming)
         {
             // Transform only with orientation on x, z. Needed to just rotate the player in the input direction
-           // but i use it to move the player to the camera direction
+            // but i use it to move the player to the camera direction
 
             Vector3 viewDir = transform.position - new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
             orientation.forward = viewDir.normalized;
-            
+
             Vector3 inputDir = Vector3.zero;
             // checking not dashing because i dont want to get input rotation while dashing
             if (!isDashing)
@@ -447,18 +447,23 @@ public class PlayerMovementSystem : MonoBehaviour
         {
             Vector3 dirToCombatLookAt = lookAt.position - new Vector3(mainCamera.transform.position.x, lookAt.position.y, mainCamera.transform.position.z);
             orientation.forward = dirToCombatLookAt.normalized;
-            
+
             model.forward = Vector3.Slerp(model.forward, dirToCombatLookAt.normalized, Time.fixedDeltaTime * modelRotationAimSpeed);
         }
 
+        //CalculateNormal();
+    }
+
+    private void CalculateNormal()
+    {
         // Search for the surface normal to rotate the model on slopes
         RaycastHit hit;
         if (Physics.Raycast(groundTransform.position, groundTransform.TransformDirection(-Vector3.up), out hit, 1.0f))
         {
             Vector3 surfaceNormal = hit.normal;
-        
+
             if (!isGrounded) surfaceNormal = Vector3.up;
-        
+
             Quaternion targetRotation = Quaternion.FromToRotation(model.up, surfaceNormal) * model.rotation;
             model.rotation = Quaternion.Slerp(model.rotation, targetRotation, modelRotationSpeed * Time.fixedDeltaTime);
         }
@@ -510,16 +515,25 @@ public class PlayerMovementSystem : MonoBehaviour
     
     private void CheckFalling()
     {
-        float currentVel = playerRigidbody.velocity.y;
-        if (lastFramePosition > currentVel)
+        if(!isGrounded)
         {
-            Invoke(nameof(SetFalling), timeToSetFall);
+            float currentVel = playerRigidbody.velocity.y;
+            float distance = lastFramePosition - currentVel;
+            Debug.Log(distance);
+            //if (lastFramePosition > currentVel)
+            //{
+            //    Invoke(nameof(SetFalling), timeToSetFall);
+            //}
+            if(distance > fallingthreshold)
+            {
+                Invoke(nameof(SetFalling), timeToSetFall);
+            }
+            else
+            {
+                isFalling = false;
+            }
+            
         }
-        else
-        {
-            isFalling = false;
-        }
-
         lastFramePosition = playerRigidbody.velocity.y;
     }
 
