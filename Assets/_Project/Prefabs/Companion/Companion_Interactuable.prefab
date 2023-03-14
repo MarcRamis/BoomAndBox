@@ -321,6 +321,7 @@ MonoBehaviour:
   companion: {fileID: 0}
   player: {fileID: 0}
   objectToPositionate: {fileID: 0}
+  masterLevel: {fileID: 0}
 --- !u!1 &8501075797460776861
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,7 +432,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 1ededec559b6d8346801351a392f96e2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 556a321e51b08614c8e5eafc8636f9b6, type: 2}
+      objectReference: {fileID: 2100000, guid: e85109520f8c0204dbb31096db2f70c7, type: 2}
     - target: {fileID: 919132149155446097, guid: 1ededec559b6d8346801351a392f96e2, type: 3}
       propertyPath: m_Name
       value: Box
