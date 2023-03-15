@@ -8,9 +8,17 @@ public class Cheats : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private KeyCode godModeKey = KeyCode.Period;
     [SerializeField] private KeyCode restartLevel = KeyCode.Comma;
+    [SerializeField] private KeyCode nextCheckPoint = KeyCode.Alpha1;
+    [SerializeField] private KeyCode lastCheckPoint = KeyCode.Alpha2;
 
     [Header("Player")]
     [SerializeField] private GameObject player;
+
+    [Header("CheackPoints")]
+    [SerializeField] private GameObject[] checkPoints = null;
+    [SerializeField] private ChekPointSystem checkPointSystemScript = null;
+
+    private int currentCheackBoxIndex = 0;
 
     // Start is called before the first frame update
     void Awake()
@@ -19,6 +27,7 @@ public class Cheats : MonoBehaviour
         {
             player = GameObject.FindGameObjectWithTag("Player");
         }
+
     }
 
     // Update is called once per frame
@@ -33,6 +42,30 @@ public class Cheats : MonoBehaviour
             else if (Input.GetKeyDown(restartLevel))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else if (Input.GetKeyDown(nextCheckPoint))
+            {
+                if(++currentCheackBoxIndex <= checkPoints.Length - 1) 
+                {
+                    checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
+                }
+                else
+                {
+                    currentCheackBoxIndex = 0;
+                    checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
+                }
+            }
+            else if (Input.GetKeyDown(lastCheckPoint))
+            {
+                if (--currentCheackBoxIndex >= 0)
+                {
+                    checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
+                }
+                else
+                {
+                    currentCheackBoxIndex = checkPoints.Length - 1;
+                    checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
+                }
             }
         }
         
