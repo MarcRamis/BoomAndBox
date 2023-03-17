@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.deltation.toon-shader": "file:C:/Users/usuario/Desktop/urp-toon-shader-master/Packages/com.deltation.toon-shader",
+    "com.deltation.toon-shader": "../RepositoriosLocales/urp-toon-shader-master/Packages/com.deltation.toon-shader",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.cinemachine": "2.8.9",
     "com.unity.collab-proxy": "1.15.17",
