@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120c195fad3579d44adffd30ca764d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneNameToChangeOnPlay: ThirdPerson
+  sceneNameToChangeOnPlay: Level 1
 --- !u!1 &8247008952368267866
 GameObject:
   m_ObjectHideFlags: 0

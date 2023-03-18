@@ -31,11 +31,15 @@ public class PauseMenuLogic : MonoBehaviour
         if (isMenuOpen)
         {
             canvas.gameObject.SetActive(false);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1f;
         }
         else
         {
             canvas.gameObject.SetActive(true);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0f;
         }
         isMenuOpen = !isMenuOpen;
@@ -47,6 +51,8 @@ public class PauseMenuLogic : MonoBehaviour
 
     public void Restart()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
