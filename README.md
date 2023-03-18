@@ -1,1 +1,1 @@
-# PROJECT_COIN
+# Boom & Box Project
