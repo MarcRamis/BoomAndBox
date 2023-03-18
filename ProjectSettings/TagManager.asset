@@ -9,6 +9,8 @@ TagManager:
   - Companion
   - Enemy
   - FxTemporaire
+  - Postprocess
+  - MainSoundtrack
   layers:
   - Default
   - TransparentFX

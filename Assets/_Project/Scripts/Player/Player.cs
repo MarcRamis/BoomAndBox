@@ -8,11 +8,17 @@ public class Player : MonoBehaviour, IDamageable
 {
     public int Health { get; set; }
     
+    [Header("References")]
+    [SerializeField] public IInteractuable currentInteraction;
+
     [Header("Settings")]
     [SerializeField] private int health;
 
-    [Header("Feedback")]
-    [SerializeField] private MMFeedbacks receiveDamageFeedback;
+    //Inputs
+    [HideInInspector] public PlayerInputController myInputs;
+
+    //Feedback
+    [HideInInspector] private PlayerFeedbackController playerFeedbackController;
 
     // Internal variables
     private bool justReceivedDamage = false;
@@ -24,13 +30,25 @@ public class Player : MonoBehaviour, IDamageable
     // Start
     void Start()
     {
-        Health = health;
+        myInputs = GetComponent<PlayerInputController>();
+        playerFeedbackController = GetComponent<PlayerFeedbackController>();
+        
+        myInputs.OnInteractPerformed += DoInteract;
+        
+        Health = health;        
     }
-
+    
     // Update
     void Update()
     {
-        
+    }
+
+    private void DoInteract()
+    {
+        if (currentInteraction != null)
+        {
+            currentInteraction.MakeInteraction();
+        }
     }
 
     // Functions
@@ -40,7 +58,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             // Apply operations
             Health -= damageAmount;
-            receiveDamageFeedback.PlayFeedbacks();
+            playerFeedbackController.PlayReceiveDamageFeedback();
             justReceivedDamage = true;
 
             // Reset timer to receive damage
@@ -50,8 +68,6 @@ public class Player : MonoBehaviour, IDamageable
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
-
-
         }
     }
     private void ResetJustReceivedDamage()
@@ -68,6 +84,27 @@ public class Player : MonoBehaviour, IDamageable
         else
         {
             Debug.Log("Invencibility OFF");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IInteractuable interactuable = other.gameObject.GetComponent<IInteractuable>();
+        if (interactuable != null)
+        {
+            currentInteraction = interactuable;
+            interactuable.InteractStarts();
+        }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        IInteractuable interactuable = other.gameObject.GetComponent<IInteractuable>();
+        if (interactuable != null)
+        {
+
+            currentInteraction = null;
+            interactuable.InteractEnds();
         }
     }
 }
