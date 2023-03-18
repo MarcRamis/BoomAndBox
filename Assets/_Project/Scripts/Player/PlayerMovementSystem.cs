@@ -518,20 +518,22 @@ public class PlayerMovementSystem : MonoBehaviour
         if(!isGrounded)
         {
             float currentVel = playerRigidbody.velocity.y;
-            float distance = lastFramePosition - currentVel;
-            Debug.Log(distance);
-            //if (lastFramePosition > currentVel)
-            //{
-            //    Invoke(nameof(SetFalling), timeToSetFall);
-            //}
-            if(distance > fallingthreshold)
+            if (lastFramePosition > currentVel)
             {
                 Invoke(nameof(SetFalling), timeToSetFall);
             }
-            else
-            {
-                isFalling = false;
-            }
+
+            //float distance = lastFramePosition - currentVel;
+            //Debug.Log(distance);
+
+            //if(distance > fallingthreshold)
+            //{
+            //    Invoke(nameof(SetFalling), timeToSetFall);
+            //}
+            //else
+            //{
+            //    isFalling = false;
+            //}
             
         }
         lastFramePosition = playerRigidbody.velocity.y;
