@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 6765254131324558483}
   - component: {fileID: 6765254131324558484}
   - component: {fileID: 6765254131324558482}
-  - component: {fileID: 211919856}
+  - component: {fileID: 6761001608312235769}
   m_Layer: 0
   m_Name: HitFeedback
   m_TagString: Untagged
@@ -121,7 +121,7 @@ MonoBehaviour:
   Feedbacks:
   - {fileID: 6765254131324558484}
   - {fileID: 6765254131324558482}
-  - {fileID: 211919856}
+  - {fileID: 6761001608312235769}
   InitializationMode: 2
   SafeMode: 3
   Direction: 0
@@ -398,7 +398,7 @@ MonoBehaviour:
   NestParticles: 1
   ApplyRotation: 0
   ApplyScale: 0
---- !u!114 &211919856
+--- !u!114 &6761001608312235769
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -407,11 +407,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6765254131324558486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91416cb6373b43240b06529b626195a1, type: 3}
+  m_Script: {fileID: 11500000, guid: a1cba05e4f75e82489426a0f40143740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Active: 1
-  Label: Color Grading
+  Label: Color Adjustments URP
   Chance: 100
   Timing:
     TimescaleMode: 0
@@ -435,7 +435,7 @@ MonoBehaviour:
     TargetBPM: 120
   DebugActive: 0
   Channel: 0
-  ShakeDuration: 1
+  ShakeDuration: 0.5
   RelativeIntensity: 1
   ResetShakerValuesAfterShake: 0
   ResetTargetValuesAfterShake: 0
@@ -570,6 +570,70 @@ MonoBehaviour:
     m_RotationOrder: 4
   RemapContrastZero: 0
   RemapContrastOne: 0
+  ColorFilterMode: 0
+  ColorFilterGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  ColorFilterDestination: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  ColorFilterCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6765254131566978941
 GameObject:
   m_ObjectHideFlags: 0
