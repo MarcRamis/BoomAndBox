@@ -12,6 +12,7 @@ Material:
   m_ValidKeywords:
   - _ADDITIONAL_LIGHTS_ENABLED
   - _FOG
+  - _RAMP_TRIPLE
   m_InvalidKeywords:
   - _ZWRITE_ON
   m_LightmapFlags: 4
@@ -113,10 +114,10 @@ Material:
     - _Parallax: 0.005
     - _PureShadowColor: 0
     - _QueueOffset: 0
-    - _Ramp0: 0
-    - _Ramp1: 0.5
-    - _RampSmoothness: 0.005
-    - _RampTriple: 0
+    - _Ramp0: -0.19
+    - _Ramp1: 0.26
+    - _RampSmoothness: 0.31
+    - _RampTriple: 1
     - _ReceiveShadows: 1
     - _ReflectionBlend: 0.5
     - _ReflectionProbes: 0
