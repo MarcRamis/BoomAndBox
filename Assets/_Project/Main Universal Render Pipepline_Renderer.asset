@@ -26,19 +26,19 @@ MonoBehaviour:
     overrideMaterialPassIndex: 0
     overrideDepthState: 0
     depthCompareFunction: 4
-    enableWrite: 1
+    enableWrite: 0
     stencilSettings:
       overrideStencilState: 0
       stencilReference: 0
       stencilCompareFunction: 8
       passOperation: 0
-      failOperation: 0
+      failOperation: 1
       zFailOperation: 0
     cameraSettings:
       overrideCamera: 0
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
+      cameraFieldOfView: 51
 --- !u!114 &-6519268255003112069
 MonoBehaviour:
   m_ObjectHideFlags: 0
