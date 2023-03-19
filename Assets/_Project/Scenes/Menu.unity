@@ -578,6 +578,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1185397799579152082, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 68840c3a5be91ff459b2b316e261b59e, type: 3}
+    - target: {fileID: 1452843228305493418, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3825459726510623269, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
