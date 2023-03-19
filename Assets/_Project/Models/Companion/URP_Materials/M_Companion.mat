@@ -125,7 +125,7 @@ Material:
     - _Parallax: 0.005
     - _PureShadowColor: 0
     - _QueueOffset: 0
-    - _Ramp0: -0.595
+    - _Ramp0: 0
     - _Ramp1: 0.5
     - _RampSmoothness: 0.25
     - _RampTriple: 0
