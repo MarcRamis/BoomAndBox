@@ -1891,7 +1891,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862171984}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.000000018626451, y: -0.000000033527613, z: 0.0000000027939677, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2406,7 +2406,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1085861683}
-  m_LocalRotation: {x: 0.000000018626451, y: -0.000000033527613, z: 0.0000000027939677, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7594,7 +7594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c2ce51367856bd49b72678cc4263225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Active: 1
+  Active: 0
   Label: Sound
   Chance: 100
   Timing:
@@ -7878,7 +7878,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751291483}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.000000018626451, y: -0.000000033527613, z: 0.0000000027939677, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9721,7 +9721,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727418759626}
-  m_LocalRotation: {x: 0.045398336, y: 0.05213344, z: -0.0023724537, w: 0.9976049}
+  m_LocalRotation: {x: 0.045398355, y: 0.052133407, z: -0.0023724532, w: 0.9976049}
   m_LocalPosition: {x: 31, y: 3.8400002, z: -5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11726,7 +11726,7 @@ MonoBehaviour:
   audioSource: {fileID: 1655306876}
   audioFeedbacks: []
   hitSound: {fileID: 8300000, guid: 78a32b6a4f1dfbf48b8e7950291c0a57, type: 3}
-  beingThrownSound: {fileID: 8300000, guid: 0e2e920466865bb4cb2ad644ce2a8c7f, type: 3}
+  beingThrownSound: {fileID: 0}
   companionAudioSource: {fileID: 0}
   comebackFeedback: {fileID: 0}
   exclamationFeedback: {fileID: 0}
