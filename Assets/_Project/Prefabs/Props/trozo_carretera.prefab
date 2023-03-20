@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6701359394634533975}
   - component: {fileID: 8855472787070646429}
   - component: {fileID: 7864798105501671733}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: trozo_carretera
   m_TagString: Untagged
   m_Icon: {fileID: 0}

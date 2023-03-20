@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
+using DG.Tweening;
+using UnityEngine.Events;
 
 public class Button_Platform : MonoBehaviour, IColorizer
 {
@@ -10,7 +12,9 @@ public class Button_Platform : MonoBehaviour, IColorizer
 
     [Header("Settings")]
     [SerializeField] private PlatformAction actionToDo;
-    [SerializeField] private bool isColorCorrect = true; 
+    [SerializeField] private bool isColorCorrect = true;
+    [SerializeField] private float rotationSpeed = 25.0f;
+    [SerializeField] private float angleToHave = 0.0f;
 
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks hitFeedback;
@@ -19,11 +23,15 @@ public class Button_Platform : MonoBehaviour, IColorizer
     [SerializeField] private Material matBaseColor1;
     [SerializeField] private Material matBaseColor2;
 
+    [Header("Unity Events")]
+    [SerializeField] UnityEvent End_Event;
+
     //Private variables
     private MeshRenderer matBaseColor;
     private enum PlatformAction
     {
-        Move
+        Move,
+        End
     };
     private bool timer = false;
 
@@ -35,6 +43,10 @@ public class Button_Platform : MonoBehaviour, IColorizer
         {
             matBaseColor.material = matBaseColor2;
         }
+
+        if (End_Event == null)
+            End_Event = new UnityEvent();
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -52,6 +64,13 @@ public class Button_Platform : MonoBehaviour, IColorizer
                             platform.GetComponentInChildren<MoveablePlatform>().ChangeMoveableState();
                         }    
                     }
+                    break;
+                case PlatformAction.End:
+                    isColorCorrect = false;
+                    End_Event?.Invoke();
+                    Vector3 to = new Vector3(transform.rotation.eulerAngles.x, angleToHave, transform.rotation.eulerAngles.z);
+
+                    transform.localEulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, Time.deltaTime);
                     break;
             }
         }
