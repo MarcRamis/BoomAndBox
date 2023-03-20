@@ -68,9 +68,14 @@ public class Button_Platform : MonoBehaviour, IColorizer
                 case PlatformAction.End:
                     isColorCorrect = false;
                     End_Event?.Invoke();
-                    Vector3 to = new Vector3(transform.rotation.eulerAngles.x, angleToHave, transform.rotation.eulerAngles.z);
-
-                    transform.localEulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, Time.deltaTime);
+                    Transform tempTrans = this.transform;
+                    Debug.Log(tempTrans.localRotation);
+                    tempTrans.localRotation = Quaternion.Euler(new Vector3(tempTrans.rotation.eulerAngles.x, tempTrans.rotation.eulerAngles.y + 180, tempTrans.rotation.eulerAngles.z));
+                    Debug.Log(tempTrans.localRotation);
+                    transform.eulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, tempTrans.rotation.eulerAngles, Time.deltaTime);
+                    //Debug.Log(tempTrans.rotation);
+                    //Vector3 to = new Vector3(transform.rotation.eulerAngles.x, tempTrans.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+                    //transform.localEulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, Time.deltaTime);
                     break;
             }
         }
