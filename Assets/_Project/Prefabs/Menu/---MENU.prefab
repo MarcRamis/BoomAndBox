@@ -304,6 +304,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   masterSlider: {fileID: 4222882103296897907}
+  eventsSystem: {fileID: 0}
+  playButton: {fileID: 8247008953543629061}
   initMasterVolume: 0.4
 --- !u!1 &1556610675411909805
 GameObject:
@@ -949,7 +951,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.89411765, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1131,6 +1133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneNameToChangeOnPlay: Intro
   options: {fileID: 1452843228305493418}
+  optionSlider: {fileID: 6307301062191765008}
 --- !u!1 &8247008952368267866
 GameObject:
   m_ObjectHideFlags: 0

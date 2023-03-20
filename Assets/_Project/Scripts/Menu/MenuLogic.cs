@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class MenuLogic : MonoBehaviour
@@ -12,6 +13,9 @@ public class MenuLogic : MonoBehaviour
     [Header("Objects")]
     [SerializeField] private GameObject options = null;
 
+    [Header("Button to options")]
+    [SerializeField] private GameObject optionSlider;
+
     public void Play()
     {
         SceneManager.LoadScene(sceneNameToChangeOnPlay);
@@ -19,6 +23,9 @@ public class MenuLogic : MonoBehaviour
 
     public void Options()
     {
+        var eventSystem = EventSystem.current;
+        eventSystem.SetSelectedGameObject(optionSlider, new BaseEventData(eventSystem));
+
         options.SetActive(true);
     }
 
