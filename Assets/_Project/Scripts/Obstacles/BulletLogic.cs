@@ -8,11 +8,15 @@ public class BulletLogic : MonoBehaviour
     [SerializeField] private float bulletSpeed = 10.0f;
 
     [SerializeField] private Rigidbody rb;
+    [HideInInspector] private ShooterFeedbackController shooterFeedbackController;
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
+        shooterFeedbackController = GetComponent<ShooterFeedbackController>();
+    }
+    private void Start()
+    {
         rb.velocity = (transform.rotation * Vector3.right) * bulletSpeed;
     }
 
@@ -30,6 +34,7 @@ public class BulletLogic : MonoBehaviour
 
         if(!other.isTrigger)
         {
+            shooterFeedbackController.PlayBeingDestroyed();
             Destroy(this.gameObject);
         }
     }

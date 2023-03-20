@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7636463702901488236}
   - component: {fileID: 7636463702901488247}
   - component: {fileID: 7636463702901488237}
+  - component: {fileID: 5155484565809043106}
   - component: {fileID: 7636463702901488242}
   m_Layer: 0
   m_Name: Laser_Projectile
@@ -2190,7 +2191,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1127
+  m_VersionIndex: 1133
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2305,6 +2306,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpeed: 25
   rb: {fileID: 7636463702901488236}
+--- !u!114 &5155484565809043106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7636463702901488244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f763a8d1f17f8054d9a18e8c7067b9db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  audioFeedbacks: []
+  prefabDestroyedShooter: {fileID: 100000, guid: 8bca8598f8258fa4aad51269807cd1bd, type: 3}
 --- !u!136 &7636463702901488242
 CapsuleCollider:
   m_ObjectHideFlags: 0
