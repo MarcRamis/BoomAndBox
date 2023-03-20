@@ -81,7 +81,7 @@ MonoBehaviour:
   - {fileID: -6519268255003112069}
   - {fileID: 4068400392724664973}
   m_RendererFeatureMap: 5c3039f1a6fbba927b0d0f0910e886a58dd269149adc7538
-  m_UseNativeRenderPass: 0
+  m_UseNativeRenderPass: 1
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:
@@ -99,10 +99,10 @@ MonoBehaviour:
   m_AssetVersion: 1
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147483647
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147483647
   m_DefaultStencilState:
     overrideStencilState: 0
     stencilReference: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e38814dca432c48bb766b50969ea4b, type: 3}
   m_Name: AtmosphericFogRenderFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     color: {r: 0.21586864, g: 0.29107928, b: 0.46226418, a: 1}
     sunColor: {r: 0.8773585, g: 0.8098478, b: 0.6911268, a: 1}

@@ -48,11 +48,13 @@ public class Cheats : MonoBehaviour
                 if(++currentCheackBoxIndex <= checkPoints.Length - 1) 
                 {
                     checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
+                    checkPointSystemScript.SetPlayerPosToSpawnNoDmg();
                 }
                 else
                 {
                     currentCheackBoxIndex = 0;
                     checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
+                    checkPointSystemScript.SetPlayerPosToSpawnNoDmg();
                 }
             }
             else if (Input.GetKeyDown(lastCheckPoint))
@@ -60,11 +62,13 @@ public class Cheats : MonoBehaviour
                 if (--currentCheackBoxIndex >= 0)
                 {
                     checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
+                    checkPointSystemScript.SetPlayerPosToSpawnNoDmg();
                 }
                 else
                 {
                     currentCheackBoxIndex = checkPoints.Length - 1;
                     checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
+                    checkPointSystemScript.SetPlayerPosToSpawnNoDmg();
                 }
             }
         }

@@ -6,6 +6,7 @@ public class CheckPointTrigger : MonoBehaviour
 {
     [SerializeField] private ChekPointSystem CheckPointSystem;
     [SerializeField] private Transform spawnTrans;
+    [SerializeField] private GameObject checkpointFeedback;
     [SerializeField] private bool deactivateAfterUse = false;
     [SerializeField] private bool startActivated = false;
 
@@ -13,13 +14,16 @@ public class CheckPointTrigger : MonoBehaviour
 
     private void Start()
     {
-        if(CheckPointSystem == null)
+        checkpointFeedback.SetActive(false);
+
+        if (CheckPointSystem == null)
         {
             CheckPointSystem = FindObjectOfType<ChekPointSystem>();
         }
-
+        
         if(startActivated)
         {
+            checkpointFeedback.SetActive(true);
             CheckPointSystem.SetSpawnPointPos(spawnTrans);
         }
 
@@ -33,6 +37,7 @@ public class CheckPointTrigger : MonoBehaviour
     {
         if (other.transform.tag == "Player" && !isActive)
         {
+            checkpointFeedback.SetActive(true);
             CheckPointSystem.SetSpawnPointPos(spawnTrans);
             if(deactivateAfterUse)
                 GetComponent<BoxCollider>().enabled = false;
@@ -47,8 +52,8 @@ public class CheckPointTrigger : MonoBehaviour
     {
         if(isActive)
         {
+            checkpointFeedback.SetActive(false);
             isActive = false;
-            Debug.Log(this.gameObject.name);
         }
             
     }

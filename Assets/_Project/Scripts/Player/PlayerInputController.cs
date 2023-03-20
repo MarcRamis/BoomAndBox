@@ -93,4 +93,13 @@ public class PlayerInputController : MonoBehaviour, PlayerInputActions.IPlayerAc
         
         OnInteractPerformed?.Invoke();
     }
+    
+    public void DisableGameActions()
+    {
+        inputs.Player.Disable();
+    }
+    public void EnableGameActions()
+    {
+        inputs.Player.Enable();
+    }
 }

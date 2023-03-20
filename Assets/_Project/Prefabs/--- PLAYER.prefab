@@ -7594,7 +7594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c2ce51367856bd49b72678cc4263225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Active: 1
+  Active: 0
   Label: Sound
   Chance: 100
   Timing:
@@ -9984,6 +9984,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   myInputs: {fileID: 0}
+  playerRigidbody: {fileID: 0}
 --- !u!114 &1082410534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11341,6 +11342,10 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+      propertyPath: fakeShadow
+      value: 
+      objectReference: {fileID: 6449113726961725677}
+    - target: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
       propertyPath: socketHand
       value: 
       objectReference: {fileID: 1582702312}
@@ -11726,7 +11731,7 @@ MonoBehaviour:
   audioSource: {fileID: 1655306876}
   audioFeedbacks: []
   hitSound: {fileID: 8300000, guid: 78a32b6a4f1dfbf48b8e7950291c0a57, type: 3}
-  beingThrownSound: {fileID: 8300000, guid: 0e2e920466865bb4cb2ad644ce2a8c7f, type: 3}
+  beingThrownSound: {fileID: 0}
   companionAudioSource: {fileID: 0}
   comebackFeedback: {fileID: 0}
   exclamationFeedback: {fileID: 0}
@@ -11932,7 +11937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: f5128b69fabcff249a767519118489bd, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5128b69fabcff249a767519118489bd, type: 3}

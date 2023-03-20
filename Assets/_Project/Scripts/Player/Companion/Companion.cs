@@ -23,6 +23,7 @@ public class Companion : MonoBehaviour
     [SerializeField] private GameObject prefabHitExplosion;
     [SerializeField] private Transform playerParent;
     [SerializeField] private Transform socketHand;
+    [SerializeField] private GameObject fakeShadow;
     
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
@@ -128,10 +129,12 @@ public class Companion : MonoBehaviour
                 if (!playerAiming)
                 {
                     transform.SetParent(playerParent);
+                    fakeShadow.SetActive(true);
                 }
                 else
                 {
                     transform.SetParent(socketHand);
+                    fakeShadow.SetActive(false);
                 }
 
                 break;
@@ -147,6 +150,8 @@ public class Companion : MonoBehaviour
                 trailRenderer.endColor = throwDashColor;
                 trailRenderer.startColor = throwDashColor;
 
+                fakeShadow.SetActive(false);
+
                 break;
             case ECompanionState.THROW_LARGE:
 
@@ -158,6 +163,8 @@ public class Companion : MonoBehaviour
 
                 trailRenderer.endColor = throwLargeColor;
                 trailRenderer.startColor = throwLargeColor;
+
+                fakeShadow.SetActive(false);
 
                 break;
             case ECompanionState.RETAINED:
@@ -175,6 +182,8 @@ public class Companion : MonoBehaviour
 
                 ResetInitialProperties(false);
 
+                fakeShadow.SetActive(true);
+
                 //MoveUpDown();
 
                 break;
@@ -188,6 +197,8 @@ public class Companion : MonoBehaviour
 
                 trailRenderer.endColor = throwDashColor;
                 trailRenderer.startColor = throwDashColor;
+                
+                fakeShadow.SetActive(true);
 
                 break;
         }
