@@ -13,12 +13,18 @@ public class PauseMenuLogic : MonoBehaviour
 
     [Header("InputController")]
     [SerializeField] private MenuInputController inputsUI;
+    [HideInInspector] private Player player;
 
     private bool isMenuOpen = false;
 
     private void Awake()
     {
         inputsUI.onPauseInput += TogglePauseMenuState;
+
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        }
     }
 
     // Update is called once per frame
@@ -37,6 +43,9 @@ public class PauseMenuLogic : MonoBehaviour
     {
         if (isMenuOpen)
         {
+            if (player != null)
+                player.AllowInputs();
+
             canvas.gameObject.SetActive(false);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -44,6 +53,9 @@ public class PauseMenuLogic : MonoBehaviour
         }
         else
         {
+            if (player != null)
+                player.BlockInputs();
+
             canvas.gameObject.SetActive(true);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

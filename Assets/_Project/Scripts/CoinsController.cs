@@ -8,6 +8,7 @@ public class CoinsController : MonoBehaviour
 {
     [SerializeField] private int coinCuantity = 0;
     [SerializeField] private Image coinImage = null;
+    [SerializeField] private float conversion = 0.5f;
     private float score = 0;
 
     // Start is called before the first frame update
@@ -26,7 +27,8 @@ public class CoinsController : MonoBehaviour
                     count++;
                 }
             }
-            coinCuantity = count;
+            float cvr = count * conversion;
+            coinCuantity = (int)cvr;
         }
         
 
