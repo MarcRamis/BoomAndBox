@@ -40,4 +40,9 @@ public class PlayerCharacterAnimations : MonoBehaviour
         playerAnimator.SetBool("ReadyToThrow", throwingSystem.readyToThrow);
         playerAnimator.SetBool("JustThrow", throwingSystem.justThrow);
     }
+
+    public void PlayReceiveDamageAnimation()
+    {
+        playerAnimator.SetTrigger("ReceiveDamage");
+    }
 }

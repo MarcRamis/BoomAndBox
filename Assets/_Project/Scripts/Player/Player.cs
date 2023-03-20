@@ -19,6 +19,9 @@ public class Player : MonoBehaviour, IDamageable
 
     //Feedback
     [HideInInspector] private PlayerFeedbackController playerFeedbackController;
+    [HideInInspector] private PlayerCharacterAnimations playerCharacterAnimations;
+
+    [HideInInspector] public Rigidbody playerRigidbody;
 
     // Internal variables
     private bool justReceivedDamage = false;
@@ -26,12 +29,14 @@ public class Player : MonoBehaviour, IDamageable
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
-
+    
     // Start
     void Start()
     {
+        playerRigidbody = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
         playerFeedbackController = GetComponent<PlayerFeedbackController>();
+        playerCharacterAnimations = GetComponent<PlayerCharacterAnimations>();
         
         myInputs.OnInteractPerformed += DoInteract;
         
@@ -56,9 +61,12 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (!justReceivedDamage && !godMode)
         {
+            BlockInputsToAllow();
+            
             // Apply operations
             Health -= damageAmount;
             playerFeedbackController.PlayReceiveDamageFeedback();
+            playerCharacterAnimations.PlayReceiveDamageAnimation();
             justReceivedDamage = true;
 
             // Reset timer to receive damage
@@ -85,6 +93,23 @@ public class Player : MonoBehaviour, IDamageable
         {
             Debug.Log("Invencibility OFF");
         }
+    }
+
+    public void BlockInputs()
+    {
+        playerRigidbody.velocity = Vector3.zero;
+        myInputs.DisableGameActions();
+    }
+
+    public void AllowInputs()
+    {
+        myInputs.EnableGameActions();
+    }
+
+    public void BlockInputsToAllow()
+    {
+        BlockInputs();
+        Invoke(nameof(AllowInputs), 0.8f);
     }
 
     private void OnTriggerEnter(Collider other)
