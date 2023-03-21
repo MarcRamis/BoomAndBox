@@ -5,11 +5,23 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/_Project/Scenes/Menu.unity
+    guid: 7ca7b322eda53f447836df61fcf58381
+  - enabled: 1
+    path: Assets/_Project/Scenes/Intro.unity
+    guid: 5df2f656c68c780408744a624fd39568
+  - enabled: 1
+    path: Assets/_Project/Scenes/Level 1.unity
+    guid: e15f6cb879c774347a0d896ad4a37181
   - enabled: 0
     path: Assets/_Project/Scenes/PlatformLevel-Prototype.unity
     guid: 7c1855edce6246845968eecd3158039b
-  - enabled: 1
-    path: Assets/_Project/Scenes/ThirdPerson.unity
+  - enabled: 0
+    path: Assets/_Project/Scenes/Gameplay Prototyping Levels/ThirdPerson.unity
     guid: 2fa1d606e34c0d544bbaa8162a5db2a7
+  - enabled: 0
+    path: Assets/_Project/Scenes/Gameplay Prototyping Levels/Level 1 - MARC TEST.unity
+    guid: ad55caafca0f37a458280dc5f74df4c7
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 2f320289889f91644b91d6b504c67f85, type: 2}

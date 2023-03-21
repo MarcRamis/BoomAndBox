@@ -9,6 +9,6 @@ PhysicMaterial:
   m_Name: Companion
   dynamicFriction: 0
   staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
+  bounciness: 0.83
+  frictionCombine: 0
   bounceCombine: 0
