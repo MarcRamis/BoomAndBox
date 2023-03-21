@@ -15,6 +15,7 @@ public class EventsSystem : MonoBehaviour
     }
 
     public event Action onCoinCollected;
+    public event Action onCheckPointActivated;
     public void CoinCollected()
     {
         if(onCoinCollected != null)
@@ -22,4 +23,13 @@ public class EventsSystem : MonoBehaviour
             onCoinCollected();
         }
     }
+
+    public void CheckPointActivated()
+    {
+        if (onCheckPointActivated != null)
+        {
+            onCheckPointActivated();
+        }
+    }
+
 }

@@ -7,17 +7,21 @@ public class MoveablePlatform : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private bool isMovable = false;
+    [SerializeField] private bool isWaiting = false;
+    [SerializeField] private bool isOtherColor = false;
     [SerializeField] private Transform startPosition;
     [SerializeField] private Transform endPosition;
     [SerializeField] private AnimationCurve moveCurveSmooth;
     [SerializeField] private float velocity;
     [SerializeField] private float offSetToChangeDirection;
+    [SerializeField] private float timeToWait;
     private float elapsedTime;
     private bool reachDestination = false;
+    private bool wait = false;
 
     private void FixedUpdate()
     {
-        if (isMovable)
+        if (isMovable && !wait)
         {
             MovePlatform();
         }
@@ -34,6 +38,11 @@ public class MoveablePlatform : MonoBehaviour
             {
                 reachDestination = false;
                 elapsedTime = 0.0f;
+                if(isWaiting)
+                {
+                    wait = true;
+                    Invoke(nameof(WaitTimer), timeToWait);
+                }
             }
 
         }
@@ -44,6 +53,11 @@ public class MoveablePlatform : MonoBehaviour
             {
                 reachDestination = true;
                 elapsedTime = 0.0f;
+                if (isWaiting)
+                {
+                    wait = true;
+                    Invoke(nameof(WaitTimer), timeToWait);
+                }
             }
         }
 
@@ -54,6 +68,23 @@ public class MoveablePlatform : MonoBehaviour
     public void ChangeMoveableState()
     {
         isMovable = !isMovable;
+    }
+
+    private void WaitTimer()
+    {
+        wait = false;
+    }
+
+    public bool GetIsOtherColor()
+    {
+        return isOtherColor;
+    }
+
+    public void ChangeColor(Color _color)
+    {
+        transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", _color);
+        transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", _color);
+        isOtherColor = !isOtherColor;
     }
 
 }
