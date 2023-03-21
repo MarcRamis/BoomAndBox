@@ -234,7 +234,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 5365867497683852892}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -3043,8 +3043,31 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Gameplay Programmer & Producer\nMarc\n\nLead Artist & Concept\nAitor 
-    \n\nAnimator\nLaura\n\nModeler Artist\nPau\n\nLevel Designer & Generalist Programmer\nAlex"
+  m_text: 'Gameplay Programmer & Producer
+
+    Marc Ramis
+
+
+    Lead Artist & Concept
+
+    Aitor
+    Garrido
+
+
+    Animator
+
+    Laura Rodriguez
+
+
+    Modeler Artist
+
+    Pau Gallego
+
+
+    Level
+    Designer & Generalist Programmer
+
+    Alex Alcaide'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
