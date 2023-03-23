@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -29,7 +30,10 @@ public class Player : MonoBehaviour, IDamageable
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
-    
+
+    [Header("Unity Events")]
+    [SerializeField] UnityEvent Death_Event;
+
     // Start
     void Start()
     {
@@ -39,7 +43,9 @@ public class Player : MonoBehaviour, IDamageable
         playerCharacterAnimations = GetComponent<PlayerCharacterAnimations>();
         
         myInputs.OnInteractPerformed += DoInteract;
-        
+        if (Death_Event == null)
+            Death_Event = new UnityEvent();
+
         Health = health;        
     }
     
@@ -62,7 +68,10 @@ public class Player : MonoBehaviour, IDamageable
         if (!justReceivedDamage && !godMode)
         {
             BlockInputsToAllow();
-            
+
+            // Call event
+            Death_Event?.Invoke();
+
             // Apply operations
             Health -= damageAmount;
             playerFeedbackController.PlayReceiveDamageFeedback();

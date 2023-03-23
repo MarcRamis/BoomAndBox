@@ -5,6 +5,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine.Rendering.PostProcessing;
 using System;
 using UnityEditor;
+using UnityEngine.Events;
 
 public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
 {
@@ -30,10 +31,17 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
     [SerializeField] private Color color1 = Color.white;
     [SerializeField] private Color color2 = Color.white;
 
+    [Header("Analytics")]
+    [SerializeField] private int puzzleID = 0;
+    [SerializeField] private int elementPuzzleOrder = 0;
+
     [Header("Feedback")]
     [SerializeField] private MMFeedbacks hitFeedback;    
 
     public PostProcessVolume mainPostProcess;
+
+    [Header("Unity Events")]
+    [SerializeField] PuzzleEvent Puzzle_Event;
 
     private void Awake()
     {
@@ -93,6 +101,7 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
                 }
             }
             timer = true;
+            Puzzle_Event?.Invoke(puzzleID, elementPuzzleOrder);
         }
     }
 

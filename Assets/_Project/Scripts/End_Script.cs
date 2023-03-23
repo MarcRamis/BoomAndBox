@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Events;
 
 public class End_Script : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class End_Script : MonoBehaviour
     //    }
     //}
 
+    [SerializeField] UnityEvent EndLevel_Event;
+
+    private void Awake()
+    {
+        if (EndLevel_Event == null)
+            EndLevel_Event = new UnityEvent();
+    }
+
     private void Update()
     {
         if(startPainting)
@@ -35,6 +44,7 @@ public class End_Script : MonoBehaviour
         if (currentActivators >= numberOffActivators)
         {
             startPainting = true;
+            EndLevel_Event?.Invoke();
         }
     }
 

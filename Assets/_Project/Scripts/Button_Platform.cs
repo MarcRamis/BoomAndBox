@@ -4,6 +4,11 @@ using UnityEngine;
 using MoreMountains.Feedbacks;
 using DG.Tweening;
 using UnityEngine.Events;
+using System;
+
+//---Events
+[Serializable]
+public class PuzzleEvent : UnityEvent<int, int> { }
 
 public class Button_Platform : MonoBehaviour, IColorizer
 {
@@ -23,8 +28,13 @@ public class Button_Platform : MonoBehaviour, IColorizer
     [SerializeField] private Material matBaseColor1;
     [SerializeField] private Material matBaseColor2;
 
+    [Header("Analytics")]
+    [SerializeField] private int puzzleID = 0;
+    [SerializeField] private int elementPuzzleOrder = 0;
+
     [Header("Unity Events")]
     [SerializeField] UnityEvent End_Event;
+    [SerializeField] PuzzleEvent Puzzle_Event;
 
     //Private variables
     private MeshRenderer matBaseColor;
@@ -46,7 +56,8 @@ public class Button_Platform : MonoBehaviour, IColorizer
 
         if (End_Event == null)
             End_Event = new UnityEvent();
-
+        if(Puzzle_Event == null)
+            Puzzle_Event = new PuzzleEvent();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -78,6 +89,7 @@ public class Button_Platform : MonoBehaviour, IColorizer
                     //transform.localEulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, Time.deltaTime);
                     break;
             }
+            Puzzle_Event?.Invoke(puzzleID, elementPuzzleOrder);
         }
     }
 
