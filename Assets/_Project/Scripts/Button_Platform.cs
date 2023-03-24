@@ -34,7 +34,7 @@ public class Button_Platform : MonoBehaviour, IColorizer
 
     [Header("Unity Events")]
     [SerializeField] UnityEvent End_Event;
-    [SerializeField] PuzzleEvent Puzzle_Event;
+    //[SerializeField] PuzzleEvent Puzzle_Event;
 
     //Private variables
     private MeshRenderer matBaseColor;
@@ -56,8 +56,8 @@ public class Button_Platform : MonoBehaviour, IColorizer
 
         if (End_Event == null)
             End_Event = new UnityEvent();
-        if(Puzzle_Event == null)
-            Puzzle_Event = new PuzzleEvent();
+        //if(Puzzle_Event == null)
+        //    Puzzle_Event = new PuzzleEvent();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -89,7 +89,8 @@ public class Button_Platform : MonoBehaviour, IColorizer
                     //transform.localEulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, Time.deltaTime);
                     break;
             }
-            Puzzle_Event?.Invoke(puzzleID, elementPuzzleOrder);
+            JSON_Creator.Instance.Puzzle(puzzleID, elementPuzzleOrder);
+            //Puzzle_Event?.Invoke(puzzleID, elementPuzzleOrder);
         }
     }
 

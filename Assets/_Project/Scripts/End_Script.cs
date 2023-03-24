@@ -23,12 +23,12 @@ public class End_Script : MonoBehaviour
     //    }
     //}
 
-    [SerializeField] UnityEvent EndLevel_Event;
+    //[SerializeField] UnityEvent EndLevel_Event;
 
     private void Awake()
     {
-        if (EndLevel_Event == null)
-            EndLevel_Event = new UnityEvent();
+        //if (EndLevel_Event == null)
+        //    EndLevel_Event = new UnityEvent();
     }
 
     private void Update()
@@ -44,7 +44,8 @@ public class End_Script : MonoBehaviour
         if (currentActivators >= numberOffActivators)
         {
             startPainting = true;
-            EndLevel_Event?.Invoke();
+            JSON_Creator.Instance.CreateJSON();
+            //EndLevel_Event?.Invoke();
         }
     }
 

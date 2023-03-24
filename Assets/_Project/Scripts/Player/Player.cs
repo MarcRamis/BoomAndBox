@@ -31,8 +31,9 @@ public class Player : MonoBehaviour, IDamageable
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
 
-    [Header("Unity Events")]
-    [SerializeField] UnityEvent Death_Event;
+    //[Header("Unity Events")]
+    //[SerializeField] UnityEvent Death_Event;
+    //[SerializeField] UnityEvent Restart_Event;
 
     // Start
     void Start()
@@ -43,8 +44,10 @@ public class Player : MonoBehaviour, IDamageable
         playerCharacterAnimations = GetComponent<PlayerCharacterAnimations>();
         
         myInputs.OnInteractPerformed += DoInteract;
-        if (Death_Event == null)
-            Death_Event = new UnityEvent();
+        //if (Death_Event == null)
+        //    Death_Event = new UnityEvent();
+        //if(Restart_Event == null)
+        //    Restart_Event = new UnityEvent();
 
         Health = health;        
     }
@@ -70,7 +73,8 @@ public class Player : MonoBehaviour, IDamageable
             BlockInputsToAllow();
 
             // Call event
-            Death_Event?.Invoke();
+            //Death_Event?.Invoke();
+            JSON_Creator.Instance.PlayerDied();
 
             // Apply operations
             Health -= damageAmount;
@@ -83,6 +87,8 @@ public class Player : MonoBehaviour, IDamageable
 
             if(Health <= 0)
             {
+                //Restart_Event?.Invoke();
+                JSON_Creator.Instance.LevelRestart();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }

@@ -40,8 +40,8 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
 
     public PostProcessVolume mainPostProcess;
 
-    [Header("Unity Events")]
-    [SerializeField] PuzzleEvent Puzzle_Event;
+    //[Header("Unity Events")]
+    //[SerializeField] PuzzleEvent Puzzle_Event;
 
     private void Awake()
     {
@@ -101,7 +101,8 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
                 }
             }
             timer = true;
-            Puzzle_Event?.Invoke(puzzleID, elementPuzzleOrder);
+            JSON_Creator.Instance.Puzzle(puzzleID, elementPuzzleOrder);
+            //Puzzle_Event?.Invoke(puzzleID, elementPuzzleOrder);
         }
     }
 

@@ -51,6 +51,13 @@ public struct Puzzle
 
 }
 [System.Serializable]
+public struct LevelRestart
+{
+    public int idNumber;
+    public double timeInGame; 
+
+}
+[System.Serializable]
 public class Container
 {
     public string level;
@@ -59,6 +66,7 @@ public class Container
     public List<CheckPoints> checkPointsList = new List<CheckPoints>();
     public List<Puzzle> puzzleList = new List<Puzzle>();
     public int deathCount = 0;
+    public List<LevelRestart> levelRestartList = new List<LevelRestart>();
     public double endTimer = 0.0f;
 
     public void InvencibilityAdd(bool _state, double _timeInGame)
@@ -119,5 +127,13 @@ public class Container
         _tempPuzzle.elements.Add(_tempElements);
 
         puzzleList.Add(_tempPuzzle);
+    }
+    public void LevelRestartAdd(int _idNumber, double _timeGame)
+    {
+        LevelRestart _tempLevelRestart = new LevelRestart();
+        _tempLevelRestart.idNumber = _idNumber;
+        _tempLevelRestart.timeInGame = _timeGame;
+
+        levelRestartList.Add(_tempLevelRestart);
     }
 }

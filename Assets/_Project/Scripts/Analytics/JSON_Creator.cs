@@ -1,24 +1,64 @@
+using MoreMountains.Tools;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class JSON_Creator : MonoBehaviour
 {
+    // Static
+    public static JSON_Creator Instance;
+
+    private string levelName;
+
     private Container container = new Container();
     private double timer = 0.0f;
 
     //CheeckPoint variables
     private double lastCheckPointTimer = 0.0f;
     private int lastCheckPointID = 0;
+    private int numberRestarts = 0;
+
+    private void Awake()
+    {
+        if (JSON_Creator.Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
-        container.level = SceneManager.GetActiveScene().name;
+        levelName = SceneManager.GetActiveScene().name;
+
+        if (container.level != null && levelName != container.level)
+        {
+            ResetClass();
+        }
+        else
+        {
+            container.level = levelName;
+        }
     }
     private void Update()
     {
         timer += Time.deltaTime;
+    }
+    private void ResetClass()
+    {
+        container = new Container();
+        timer = 0.0f;
+
+        //CheeckPoint variables
+        lastCheckPointTimer = 0.0f;
+        lastCheckPointID = 0;
+        numberRestarts = 0;
     }
     public void InvencibilityEvent(bool _state)
     {
@@ -43,6 +83,12 @@ public class JSON_Creator : MonoBehaviour
     public void PlayerDied()
     {
         container.deathCount++;
+    }
+    public void LevelRestart()
+    {
+        numberRestarts++;
+
+        container.LevelRestartAdd(numberRestarts, timer);
     }
     public void CreateJSON()
     {

@@ -17,8 +17,8 @@ public class CheckPointTrigger : MonoBehaviour
     [SerializeField] private bool deactivateAfterUse = false;
     [SerializeField] private bool startActivated = false;
 
-    [Header("Unity Events")]
-    [SerializeField] CheckPointEvent CheckPoint_Event;
+    //[Header("Unity Events")]
+    //[SerializeField] CheckPointEvent CheckPoint_Event;
 
     private bool isActive = false;
 
@@ -41,8 +41,8 @@ public class CheckPointTrigger : MonoBehaviour
 
         EventsSystem.current.onCheckPointActivated += OnCheckPointActivated;
 
-        if(CheckPoint_Event == null)
-            CheckPoint_Event = new CheckPointEvent();
+        //if(CheckPoint_Event == null)
+        //    CheckPoint_Event = new CheckPointEvent();
 
     }
 
@@ -56,7 +56,8 @@ public class CheckPointTrigger : MonoBehaviour
                 GetComponent<BoxCollider>().enabled = false;
 
             EventsSystem.current.CheckPointActivated();
-            CheckPoint_Event?.Invoke(checkPointID);
+            JSON_Creator.Instance.CheckPoint(checkPointID);
+            //CheckPoint_Event?.Invoke(checkPointID);
 
             isActive = true;
 

@@ -26,9 +26,10 @@ public class Cheats : MonoBehaviour
     [SerializeField] private GameObject[] checkPoints = null;
     [SerializeField] private ChekPointSystem checkPointSystemScript = null;
 
-    [Header("Unity Events")]
-    [SerializeField] InvencibilityEvent Invencibility_Event;
-    [SerializeField] TeleporttEvent CheckPoint_Event;
+    //[Header("Unity Events")]
+    //[SerializeField] InvencibilityEvent Invencibility_Event;
+    //[SerializeField] TeleporttEvent CheckPoint_Event;
+    //[SerializeField] UnityEvent Restart_Event;
 
     private int currentCheackBoxIndex = 0;
     private bool godModeState = false;
@@ -41,10 +42,12 @@ public class Cheats : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player");
         }
 
-        if(Invencibility_Event == null)
-            Invencibility_Event = new InvencibilityEvent();
-        if (CheckPoint_Event == null)
-            CheckPoint_Event = new TeleporttEvent();
+        //if(Invencibility_Event == null)
+        //    Invencibility_Event = new InvencibilityEvent();
+        //if (CheckPoint_Event == null)
+        //    CheckPoint_Event = new TeleporttEvent();
+        //if(Restart_Event == null)
+        //    Restart_Event = new UnityEvent();
 
     }
 
@@ -57,13 +60,15 @@ public class Cheats : MonoBehaviour
             if (Input.GetKeyDown(godModeKey))
             {
                 player.GetComponent<Player>().SwitchGodMode();
-                Invencibility_Event?.Invoke(godModeState);
+                JSON_Creator.Instance.InvencibilityEvent(godModeState);
+                //Invencibility_Event?.Invoke(godModeState);
                 godModeState = !godModeState;
             }
             else if (Input.GetKeyDown(restartLevel))
             {
+                //Restart_Event?.Invoke();
+                JSON_Creator.Instance.LevelRestart();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
             }
             else if (Input.GetKeyDown(nextCheckPoint))
             {
@@ -78,7 +83,8 @@ public class Cheats : MonoBehaviour
                     checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
                     checkPointSystemScript.SetPlayerPosToSpawnNoDmg();
                 }
-                CheckPoint_Event?.Invoke(false);
+                JSON_Creator.Instance.Teleport(false);
+                //CheckPoint_Event?.Invoke(false);
             }
             else if (Input.GetKeyDown(lastCheckPoint))
             {
@@ -93,7 +99,8 @@ public class Cheats : MonoBehaviour
                     checkPointSystemScript.SetSpawnPointPos(checkPoints[currentCheackBoxIndex].transform);
                     checkPointSystemScript.SetPlayerPosToSpawnNoDmg();
                 }
-                CheckPoint_Event?.Invoke(true);
+                JSON_Creator.Instance.Teleport(true);
+                //CheckPoint_Event?.Invoke(true);
             }
         }
         
