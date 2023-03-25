@@ -82,7 +82,7 @@ public class JSON_Creator : MonoBehaviour
     }
     public void PlayerDied()
     {
-        container.deathCount++;
+        container.DeathCountAdd(timer);
     }
     public void LevelRestart()
     {
