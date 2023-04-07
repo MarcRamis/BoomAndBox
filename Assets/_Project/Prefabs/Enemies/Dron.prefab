@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 440301099160599262}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,6 +42,8 @@ GameObject:
   - component: {fileID: 8393787382673253099}
   - component: {fileID: 8393787382673253117}
   - component: {fileID: 8393787382673253092}
+  - component: {fileID: 6024203415204909238}
+  - component: {fileID: 6338881978650031064}
   - component: {fileID: 8393787382673253088}
   - component: {fileID: 8393787382673253091}
   - component: {fileID: 8393787382673253116}
@@ -109,6 +111,8 @@ MonoBehaviour:
   navMesh: {fileID: 0}
   config: {fileID: 11400000, guid: 82ec18ac56ab1d647bfb9865d1a85c3f, type: 2}
   rigidbody: {fileID: 8393787382673253117}
+  player: {fileID: 0}
+  manager: {fileID: 0}
   health: 5
   groundTransform: {fileID: 440301099160599262}
   groundRadius: 0.2
@@ -125,6 +129,38 @@ MonoBehaviour:
   fallingMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &6024203415204909238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8393787382673253103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78897d60acd093e4598ac762d0b32ac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  audioFeedbacks: []
+  damageFeedback: {fileID: 8393787383332195246}
+  dieFeedback: {fileID: 8393787383549152068}
+  preparingForChargeFeedback: {fileID: 8393787384257368130}
+  chargeFeedback: {fileID: 8393787384323788723}
+  explosionPrefab: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
+  model: {fileID: 0}
+--- !u!114 &6338881978650031064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8393787382673253103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f31357f8c91dd56418b1acc8ba73d380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &8393787382673253088
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -134,8 +170,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 8393787382673253103}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.10000038
-  m_Speed: 2
+  m_Radius: 0.93
+  m_Speed: 1
   m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 800
@@ -143,10 +179,10 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.19999981
+  m_Height: 1.09
   m_BaseOffset: 0.6
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &8393787382673253091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8393787382936737283}
   - component: {fileID: 8393787382936737308}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +423,7 @@ GameObject:
   - component: {fileID: 8393787383332195240}
   - component: {fileID: 8393787383332195241}
   - component: {fileID: 1675231576}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: DamageFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,6 +461,7 @@ MonoBehaviour:
   - {fileID: 8393787383332195247}
   - {fileID: 8393787383332195240}
   - {fileID: 8393787383332195241}
+  - {fileID: 1675231576}
   InitializationMode: 2
   SafeMode: 3
   Direction: 0
@@ -891,7 +928,7 @@ GameObject:
   - component: {fileID: 8393787383352724158}
   - component: {fileID: 8393787383352724153}
   - component: {fileID: 8393787383352724152}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -941,7 +978,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 10ea3fa04a298ec439163f476ac6dee9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -973,7 +1010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8393787383549152075}
   - component: {fileID: 8393787383549152068}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: DieFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1086,7 +1123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8393787383875092837}
   - component: {fileID: 8393787383875092838}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Tail 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1272,7 +1309,7 @@ GameObject:
   - component: {fileID: 8393787384257368135}
   - component: {fileID: 8393787384257368130}
   - component: {fileID: 8393787384257368131}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: PreparingForChargeFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1436,7 +1473,7 @@ GameObject:
   - component: {fileID: 8393787384323788723}
   - component: {fileID: 8393787384323788621}
   - component: {fileID: 8393787384323788622}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: ChargeFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1650,7 +1687,7 @@ GameObject:
   - component: {fileID: 8393787384362079508}
   - component: {fileID: 8393787384362079509}
   - component: {fileID: 8393787384362079510}
-  m_Layer: 11
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1702,7 +1739,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b3a6fd6bd7e1f864cb24309bd11de0cc, type: 2}
+  - {fileID: 2100000, guid: 23d29cff0b5ebbb458bf5b1454ac70a9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1735,7 +1772,7 @@ GameObject:
   - component: {fileID: 8393787384565845000}
   - component: {fileID: 8393787384565845003}
   - component: {fileID: 8393787384565845002}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: r (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1785,7 +1822,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 10ea3fa04a298ec439163f476ac6dee9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1817,7 +1854,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8393787384749218676}
   - component: {fileID: 8393787384749218677}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Tail 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

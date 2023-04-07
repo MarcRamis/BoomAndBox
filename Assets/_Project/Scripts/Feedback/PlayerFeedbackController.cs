@@ -26,9 +26,12 @@ public class PlayerFeedbackController : FeedbackController
     [SerializeField] private GameObject speedPs;
 
     [SerializeField] private Image cursor;
-    
+
+    [HideInInspector] private PlayerCharacterAnimations playerCharacterAnimations;
+
     private void Awake()
     {
+        playerCharacterAnimations = GetComponent<PlayerCharacterAnimations>();
         speedPs.SetActive(false);
     }
 
@@ -90,6 +93,7 @@ public class PlayerFeedbackController : FeedbackController
     {
         receiveDamageFeedback.PlayFeedbacks();
         PlaySoundEffect(receiveDamageSound);
+        playerCharacterAnimations.PlayReceiveDamageAnimation();
     }
     /////////// START AIMING
     public void PlayAimingFeedback()

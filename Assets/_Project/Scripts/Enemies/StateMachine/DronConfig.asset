@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxTimeChase: 0.4
   maxDistance: 1
-  maxDistanceToIdleState: 30
-  maxDistanceToChargeState: 8
+  maxDistanceToIdleState: 20
+  maxDistanceToChargeState: 4
   chaseSpeed: 5
   maxRandomWalkSightRadiusDistance: 20
   maxRandomWalkRadius: 10
   maxTimeRandomWalk: 2
-  idleSpeed: 2
-  chargeForce: 300
-  timePreparingToCharge: 1
-  maxDistanceToChaseState: 20
+  idleSpeed: 1
+  chargeForce: 200
+  timePreparingToCharge: 2
+  maxDistanceToChaseState: 8
+  isCharging: 0

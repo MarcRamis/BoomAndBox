@@ -4,23 +4,25 @@ using UnityEngine;
 using MoreMountains.Feedbacks;
 using UnityEngine.SceneManagement;
 
+public enum EModeState { REGULAR, AIMING, COMBAT, COMPANION_TRANSFORMATION }
+
 public class Player : MonoBehaviour, IDamageable
 {
     public int Health { get; set; }
     
     [Header("References")]
     [SerializeField] public IInteractuable currentInteraction;
-
+    
     [Header("Settings")]
     [SerializeField] private int health;
+    [SerializeField] public EModeState modeState;
 
     //Inputs
     [HideInInspector] public PlayerInputController myInputs;
 
     //Feedback
     [HideInInspector] private PlayerFeedbackController playerFeedbackController;
-    [HideInInspector] private PlayerCharacterAnimations playerCharacterAnimations;
-
+    
     [HideInInspector] public Rigidbody playerRigidbody;
 
     // Internal variables
@@ -36,11 +38,11 @@ public class Player : MonoBehaviour, IDamageable
         playerRigidbody = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
         playerFeedbackController = GetComponent<PlayerFeedbackController>();
-        playerCharacterAnimations = GetComponent<PlayerCharacterAnimations>();
         
         myInputs.OnInteractPerformed += DoInteract;
         
-        Health = health;        
+        Health = health;
+        modeState = EModeState.REGULAR;
     }
     
     // Update
@@ -61,12 +63,11 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (!justReceivedDamage && !godMode)
         {
-            BlockInputsToAllow();
+            BlockInputsDamage();
             
             // Apply operations
             Health -= damageAmount;
             playerFeedbackController.PlayReceiveDamageFeedback();
-            playerCharacterAnimations.PlayReceiveDamageAnimation();
             justReceivedDamage = true;
 
             // Reset timer to receive damage
@@ -95,6 +96,37 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
+    public bool CanMove()
+    {
+        return modeState == EModeState.REGULAR;
+    }
+
+    public bool CanJump()
+    {
+        return true;
+    }
+
+    public void SetNewState(EModeState newState)
+    {
+        modeState = newState;
+        HandleModeState();
+    }
+
+    public void HandleModeState()
+    {
+        switch (modeState)
+        {
+            case EModeState.REGULAR:
+                break;
+            case EModeState.AIMING:
+                break;
+            case EModeState.COMBAT:
+                break;
+            case EModeState.COMPANION_TRANSFORMATION:
+                break;
+        }
+    }
+
     public void BlockInputs()
     {
         playerRigidbody.velocity = Vector3.zero;
@@ -106,7 +138,7 @@ public class Player : MonoBehaviour, IDamageable
         myInputs.EnableGameActions();
     }
 
-    public void BlockInputsToAllow()
+    public void BlockInputsDamage()
     {
         BlockInputs();
         Invoke(nameof(AllowInputs), 0.8f);
