@@ -4,7 +4,8 @@ using UnityEngine;
 using TMPro;
 using MoreMountains.Feedbacks;
 using UnityEngine.InputSystem;
-public enum EMoveState { WALKING, DASHING, AIMING, SLIDING, AIR }
+
+public enum EMoveState { WALKING, DASHING, AIMING, SLIDING, AIR, COMBAT }
 public enum EAnimState { IDLE, RUNNING }
 
 [RequireComponent(typeof(PlayerInput))]

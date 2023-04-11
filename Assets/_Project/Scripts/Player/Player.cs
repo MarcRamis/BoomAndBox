@@ -95,6 +95,16 @@ public class Player : MonoBehaviour, IDamageable
             Debug.Log("Invencibility OFF");
         }
     }
+    
+    public bool CanThrow()
+    {
+        return modeState == EModeState.REGULAR || modeState == EModeState.AIMING;
+    }
+    
+    public bool CanDash()
+    {
+        return modeState == EModeState.REGULAR || modeState == EModeState.AIMING;
+    }
 
     public bool CanMove()
     {
@@ -103,7 +113,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool CanJump()
     {
-        return true;
+        return modeState == EModeState.REGULAR;
     }
 
     public void SetNewState(EModeState newState)
