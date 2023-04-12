@@ -71,7 +71,7 @@ public class PlayerMovementSystem : MonoBehaviour
     // this variable exists because setting to true fall instantly wasn't pretty satisfying
     // Also it helps to "hide" partially a problem when u are grounded and sloping on a surface
     [HideInInspector] private float timeToSetFall = 0.15f;
-    [SerializeField] private float fallingthreshold = 0.5f;
+    //[SerializeField] private float fallingthreshold = 0.5f;
 
     //Inputs
     [HideInInspector] public PlayerInputController myInputs;
@@ -140,10 +140,9 @@ public class PlayerMovementSystem : MonoBehaviour
         MyInputDirection();
         StartCoyoteTime();
         SpeedControl();
+
         HandleMovementState();
         HandleAnimState();
-
-        // Handle drag
         HandleDrag();
     }
 

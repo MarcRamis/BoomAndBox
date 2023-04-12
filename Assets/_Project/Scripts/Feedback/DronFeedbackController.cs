@@ -35,7 +35,6 @@ public class DronFeedbackController : AgentFeedbackController
     
     public override void StopPreparingCharge()
     {
-        Debug.Log("entro");
         preparingForChargeFeedback.StopFeedbacks();
     }
 

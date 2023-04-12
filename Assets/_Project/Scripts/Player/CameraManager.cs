@@ -33,9 +33,6 @@ public class CameraManager : MonoBehaviour
 
         mainCameraSpeedTmp = new Vector2(mainCamera.m_XAxis.m_MaxSpeed, mainCamera.m_YAxis.m_MaxSpeed);
         mainCameraAimSpeedTmp = new Vector2(mainCameraAiming.m_XAxis.m_MaxSpeed, mainCameraAiming.m_YAxis.m_MaxSpeed);
-
-        Debug.Log(mainCameraSpeedTmp);
-        Debug.Log(mainCameraAimSpeedTmp);
     }
 
     private void Update()

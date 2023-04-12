@@ -2,26 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RythmSystem : MonoBehaviour
-{
-    private AudioSource audioSource;
-    private float[] audioSamples = new float[512]; // Array para almacenar los datos de audio
+public enum ERythmBase { NONE, FIRST, SECOND}
 
-    public float threshold = 0.1f; // Umbral para detectar el ritmo
-    public float speed = 1f; // Velocidad del movimiento
-    public float maxDistance = 2f; // Distancia máxima del movimiento
-    public float multiplierNeeded = 10000f; // Multiplier que utilizo para mejorar el valor de intensidad que obtengo del volumen del audio, para tener más control a la hora de hacer que se mueva
+public class RythmSystem : MonoBehaviour
+{ 
+    [HideInInspector] private AudioSource audioSource;
+    [HideInInspector]  private float[] audioSamples = new float[512]; // Array para almacenar los datos de audio
+
+    [Header("Settings")]
+    [SerializeField] private float threshold = 0.1f; // Umbral para detectar el ritmo
+    [SerializeField] private float multiplierNeeded = 10000f; // Multiplier que utilizo para mejorar el valor de intensidad que obtengo del volumen del audio, para tener más control a la hora de hacer que se mueva
+    public ERythmBase rythmState = ERythmBase.NONE;
+
+    [Header("AudioClips Container")]
+    [SerializeField] private AudioClip[] audioBase;
+
+    private float intensity;
     
     private void Awake()
     {
-        audioSource = GameObject.FindGameObjectWithTag("MainSoundtrack").GetComponent<AudioSource>();
+        GameObject loopMusic = GameObject.FindGameObjectWithTag("MainSoundtrack");
 
-        if (multiplierNeeded < 1)
-            multiplierNeeded = 1;
+        if (loopMusic != null)
+        {
+            audioSource = loopMusic.GetComponent<AudioSource>();
+            SetNewState(ERythmBase.SECOND);
+        }
     }
 
     private void Update()
     {
+        if (multiplierNeeded < 1)
+            multiplierNeeded = 1;
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SetNewState(ERythmBase.FIRST);
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SetNewState(ERythmBase.SECOND);
+        }
+
         // Obtener los datos de audio del audio source
         audioSource.GetSpectrumData(audioSamples, 0, FFTWindow.BlackmanHarris);
 
@@ -31,15 +53,42 @@ public class RythmSystem : MonoBehaviour
         {
             sum += Mathf.Abs(audioSamples[i]);
         }
-        float intensity = sum / audioSamples.Length;
+        intensity = sum / audioSamples.Length;
         intensity *= multiplierNeeded;
-       
-        // Si la intensidad del ritmo supera el umbral, mover el objeto hacia arriba
-        if (intensity > threshold)
+
+        if (IsRythmMoment())
         {
-            Debug.Log(intensity);
-            transform.position += Vector3.up * speed * Time.deltaTime;
-            transform.position = new Vector3(transform.position.x, Mathf.Min(transform.position.y, maxDistance), transform.position.z);
+            //Debug.Log(intensity);
         }
+    }
+
+    private void HandleRythmState()
+    {
+        audioSource.Stop();
+
+        switch (rythmState)
+        {
+            case ERythmBase.NONE:
+                break;
+            case ERythmBase.FIRST:
+                audioSource.clip = audioBase[0];
+                break;
+            case ERythmBase.SECOND:
+                audioSource.clip = audioBase[1];
+                break;
+        }
+        
+        audioSource.Play();
+    }
+    
+    private void SetNewState(ERythmBase newState)
+    {
+        rythmState = newState;
+        HandleRythmState();
+    }
+
+    public bool IsRythmMoment()
+    {
+        return intensity > threshold;
     }
 }

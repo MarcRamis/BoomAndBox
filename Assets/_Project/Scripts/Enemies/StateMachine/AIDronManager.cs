@@ -54,8 +54,6 @@ public class AIDronManager : AIManager
 
                 break;
         }
-
-        Debug.Log(agent.stateMachine.currentState);
     }
     public override void OnExit(Agent agent)
     {

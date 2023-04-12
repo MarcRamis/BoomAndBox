@@ -18,6 +18,7 @@ public class PlayerInputController : MonoBehaviour, PlayerInputActions.IPlayerAc
     [HideInInspector] public Action OnDashPerformed;
     [HideInInspector] public Action OnZoomPerformed;
     [HideInInspector] public Action OnInteractPerformed;
+    [HideInInspector] public Action OnAttackPerformed;
 
     private void OnEnable()
     {
@@ -93,7 +94,15 @@ public class PlayerInputController : MonoBehaviour, PlayerInputActions.IPlayerAc
         
         OnInteractPerformed?.Invoke();
     }
-    
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+        
+        OnAttackPerformed?.Invoke();
+    }
+
     public void DisableGameActions()
     {
         inputs.Player.Disable();

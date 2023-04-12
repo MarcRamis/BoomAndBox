@@ -116,6 +116,11 @@ public class Player : MonoBehaviour, IDamageable
     {
         return modeState == EModeState.REGULAR;
     }
+    
+    public bool CanAttack()
+    {
+        return modeState == EModeState.COMBAT;
+    }
 
     public void SetNewState(EModeState newState)
     {
