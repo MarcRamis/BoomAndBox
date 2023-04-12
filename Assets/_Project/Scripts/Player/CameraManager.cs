@@ -21,13 +21,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private CinemachineFreeLook mainCamera;
     [SerializeField] private CinemachineFreeLook mainCameraAiming;
 
-    [Header("Settings")]
-    [SerializeField] private float runFov = 60;
-    [SerializeField] private float timeLerpFov = 0.1f;
-    [HideInInspector] private float initialFov;
-
-    private bool fovRunningOnce = false;
-    private bool fovIdleOnce = false;
+    private Vector2 mainCameraSpeedTmp;
+    private Vector2 mainCameraAimSpeedTmp;
 
     private void Awake()
     {
@@ -37,7 +32,12 @@ public class CameraManager : MonoBehaviour
         InputSystem.onDeviceChange += InputDeviceChanged;
 
         mainCamera.LookAt = lookAtTarget;
-        initialFov = mainCamera.m_Lens.FieldOfView;
+
+        mainCameraSpeedTmp = new Vector2(mainCamera.m_XAxis.m_MaxSpeed, mainCamera.m_YAxis.m_MaxSpeed);
+        mainCameraAimSpeedTmp = new Vector2(mainCameraAiming.m_XAxis.m_MaxSpeed, mainCameraAiming.m_YAxis.m_MaxSpeed);
+
+        Debug.Log(mainCameraSpeedTmp);
+        Debug.Log(mainCameraAimSpeedTmp);
     }
 
     private void InputDeviceChanged(InputDevice device, InputDeviceChange change)
@@ -65,7 +65,7 @@ public class CameraManager : MonoBehaviour
                 break;
         }
     }
-    
+
     private void Update()
     {
         if (playerMovement.isAiming)
@@ -73,53 +73,29 @@ public class CameraManager : MonoBehaviour
             if (mainCamera.gameObject.activeSelf) mainCamera.gameObject.SetActive(false);
             if (!mainCameraAiming.gameObject.activeSelf) mainCameraAiming.gameObject.SetActive(true);
 
-            //if (mainCamera.m_Lens.FieldOfView == runFov)
-            //{
-            //    mainCamera.m_Lens.FieldOfView = initialFov;
-            //}
-        }
-
-        else
-        {
-            if (!mainCamera.gameObject.activeSelf) mainCamera.gameObject.SetActive(true);
-            if (mainCameraAiming.gameObject.activeSelf) mainCameraAiming.gameObject.SetActive(false);
-
-            //if (playerMovement.playerRigidbody.velocity.magnitude > 0.1f)
-            //{
-            //    if (!fovRunningOnce)
-            //    {
-            //        fovRunningOnce = true;
-            //        fovIdleOnce = false;
-            //        StartCoroutine(LerpFieldOfView(runFov, timeLerpFov));
-            //    }
-            //}
-            //else
-            //{
-            //    if (!fovIdleOnce)
-            //    {
-            //        fovIdleOnce = true;
-            //        fovRunningOnce = false;
-            //        StartCoroutine(LerpFieldOfView(initialFov, timeLerpFov));
-            //    }
-            //}
+            else
+            {
+                if (!mainCamera.gameObject.activeSelf) mainCamera.gameObject.SetActive(true);
+                if (mainCameraAiming.gameObject.activeSelf) mainCameraAiming.gameObject.SetActive(false);
+            }
         }
     }
-
-    IEnumerator LerpFieldOfView(float targetFOV, float lerpTime)
+    
+    public void LockCamera()
     {
-        CinemachineFreeLook freeLook = mainCamera.GetComponent<CinemachineFreeLook>();
+        mainCamera.m_XAxis.m_MaxSpeed = 0;
+        mainCamera.m_YAxis.m_MaxSpeed = 0;
 
-        float originalFOV = freeLook.m_Lens.FieldOfView;
-        float elapsedTime = 0f;
+        mainCameraAiming.m_XAxis.m_MaxSpeed = 0;
+        mainCameraAiming.m_YAxis.m_MaxSpeed = 0;
+    }
+    
+    public void UnlockCamera()
+    {
+        mainCamera.m_XAxis.m_MaxSpeed = mainCameraSpeedTmp.x;
+        mainCamera.m_YAxis.m_MaxSpeed = mainCameraSpeedTmp.y;
 
-        while (elapsedTime < lerpTime)
-        {
-            elapsedTime += Time.deltaTime;
-            freeLook.m_Lens.FieldOfView = Mathf.Lerp(originalFOV, targetFOV, elapsedTime / lerpTime);
-            yield return null;
-        }
-
-        // Asegurarse de que el valor final es exactamente el targetFOV
-        freeLook.m_Lens.FieldOfView = targetFOV;
+        mainCameraAiming.m_XAxis.m_MaxSpeed = mainCameraAimSpeedTmp.x;
+        mainCameraAiming.m_YAxis.m_MaxSpeed = mainCameraAimSpeedTmp.y;
     }
 }

@@ -16,7 +16,8 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Settings")]
     [SerializeField] private int health;
     [SerializeField] public EModeState modeState;
-
+    [SerializeField] CameraManager cameraManager;
+    
     //Inputs
     [HideInInspector] public PlayerInputController myInputs;
 
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour, IDamageable
     private const float justReceivedDamageTimer = 0.25f;
     
     // Start
-    void Start()
+    private void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
@@ -46,7 +47,7 @@ public class Player : MonoBehaviour, IDamageable
     }
     
     // Update
-    void Update()
+    private void Update()
     {
     }
 
@@ -143,9 +144,17 @@ public class Player : MonoBehaviour, IDamageable
         myInputs.DisableGameActions();
     }
 
+    public void BlockInputsAndCamera()
+    {
+        playerRigidbody.velocity = Vector3.zero;
+        myInputs.DisableGameActions();
+        cameraManager.LockCamera();
+    }
+
     public void AllowInputs()
     {
         myInputs.EnableGameActions();
+        cameraManager.UnlockCamera();
     }
 
     public void BlockInputsDamage()
