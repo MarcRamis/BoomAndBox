@@ -29,8 +29,6 @@ public class CameraManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        InputSystem.onDeviceChange += InputDeviceChanged;
-
         mainCamera.LookAt = lookAtTarget;
 
         mainCameraSpeedTmp = new Vector2(mainCamera.m_XAxis.m_MaxSpeed, mainCamera.m_YAxis.m_MaxSpeed);
@@ -40,44 +38,17 @@ public class CameraManager : MonoBehaviour
         Debug.Log(mainCameraAimSpeedTmp);
     }
 
-    private void InputDeviceChanged(InputDevice device, InputDeviceChange change)
-    {
-        switch (change)
-        {
-            //New device added
-            case InputDeviceChange.Added:
-
-                break;
-
-            //Device disconnected
-            case InputDeviceChange.Disconnected:
-                Debug.Log("Device disconnected");
-                break;
-
-            //Familiar device connected
-            case InputDeviceChange.Reconnected:
-                Debug.Log("Device reconnected");
-
-                break;
-
-            //Else
-            default:
-                break;
-        }
-    }
-
     private void Update()
     {
         if (playerMovement.isAiming)
         {
             if (mainCamera.gameObject.activeSelf) mainCamera.gameObject.SetActive(false);
             if (!mainCameraAiming.gameObject.activeSelf) mainCameraAiming.gameObject.SetActive(true);
-
-            else
-            {
-                if (!mainCamera.gameObject.activeSelf) mainCamera.gameObject.SetActive(true);
-                if (mainCameraAiming.gameObject.activeSelf) mainCameraAiming.gameObject.SetActive(false);
-            }
+        }
+        else
+        {
+            if (!mainCamera.gameObject.activeSelf) mainCamera.gameObject.SetActive(true);
+            if (mainCameraAiming.gameObject.activeSelf) mainCameraAiming.gameObject.SetActive(false);
         }
     }
     
