@@ -11,8 +11,9 @@ public class DronFeedbackController : AgentFeedbackController
     [SerializeField] private MMFeedbacks dieFeedback;
     [SerializeField] public MMFeedbacks preparingForChargeFeedback;
     [SerializeField] public MMFeedbacks chargeFeedback;
-
+    
     [SerializeField] public GameObject explosionPrefab;
+    [SerializeField] public GameObject dronChargingPrefab;
 
     /////////// TAKE DAMAGE
     public override void PlayTakeDamage()
@@ -30,12 +31,14 @@ public class DronFeedbackController : AgentFeedbackController
     /////////// PREPARING CHARGE
     public override void PlayPreparingCharge()
     {
-        preparingForChargeFeedback.PlayFeedbacks();
+        dronChargingPrefab.SetActive(true);
+        //preparingForChargeFeedback.PlayFeedbacks();
     }
     
     public override void StopPreparingCharge()
     {
-        preparingForChargeFeedback.StopFeedbacks();
+        dronChargingPrefab.SetActive(false);
+        //preparingForChargeFeedback.StopFeedbacks();
     }
 
     /////////// CHARGE
@@ -46,7 +49,7 @@ public class DronFeedbackController : AgentFeedbackController
 
     public override void StopCharge()
     {
-        Debug.Log("entro");
+        //Debug.Log("entro");
         chargeFeedback.StopFeedbacks();
     }
 

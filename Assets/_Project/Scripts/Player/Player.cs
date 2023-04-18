@@ -4,7 +4,7 @@ using UnityEngine;
 using MoreMountains.Feedbacks;
 using UnityEngine.SceneManagement;
 
-public enum EModeState { REGULAR, AIMING, COMBAT, COMPANION_TRANSFORMATION }
+public enum EPlayerModeState { REGULAR, AIMING, COMBAT, COMPANION_TRANSFORMATION }
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -15,14 +15,14 @@ public class Player : MonoBehaviour, IDamageable
     
     [Header("Settings")]
     [SerializeField] private int health;
-    [SerializeField] public EModeState modeState;
+    [SerializeField] public EPlayerModeState modeState = EPlayerModeState.REGULAR;
     [SerializeField] CameraManager cameraManager;
     
     //Inputs
     [HideInInspector] public PlayerInputController myInputs;
 
     //Feedback
-    [HideInInspector] private PlayerFeedbackController playerFeedbackController;
+    [HideInInspector] public PlayerFeedbackController feedbackController;
     
     [HideInInspector] public Rigidbody playerRigidbody;
 
@@ -38,12 +38,12 @@ public class Player : MonoBehaviour, IDamageable
     {
         playerRigidbody = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
-        playerFeedbackController = GetComponent<PlayerFeedbackController>();
+        feedbackController = GetComponent<PlayerFeedbackController>();
         
         myInputs.OnInteractPerformed += DoInteract;
         
         Health = health;
-        modeState = EModeState.REGULAR;
+        modeState = EPlayerModeState.COMBAT;
     }
     
     // Update
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour, IDamageable
             currentInteraction.MakeInteraction();
         }
     }
-
+    
     // Functions
     public void Damage(int damageAmount)
     {
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour, IDamageable
             
             // Apply operations
             Health -= damageAmount;
-            playerFeedbackController.PlayReceiveDamageFeedback();
+            feedbackController.PlayReceiveDamageFeedback();
             justReceivedDamage = true;
 
             // Reset timer to receive damage
@@ -99,30 +99,30 @@ public class Player : MonoBehaviour, IDamageable
     
     public bool CanThrow()
     {
-        return modeState == EModeState.REGULAR || modeState == EModeState.AIMING;
+        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING;
     }
     
     public bool CanDash()
     {
-        return modeState == EModeState.REGULAR || modeState == EModeState.AIMING;
+        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING;
     }
 
     public bool CanMove()
     {
-        return modeState == EModeState.REGULAR;
+        return modeState == EPlayerModeState.REGULAR;
     }
 
     public bool CanJump()
     {
-        return modeState == EModeState.REGULAR;
+        return modeState == EPlayerModeState.REGULAR;
     }
     
     public bool CanAttack()
     {
-        return modeState == EModeState.COMBAT;
+        return modeState == EPlayerModeState.COMBAT;
     }
 
-    public void SetNewState(EModeState newState)
+    public void SetNewState(EPlayerModeState newState)
     {
         modeState = newState;
         HandleModeState();
@@ -132,13 +132,13 @@ public class Player : MonoBehaviour, IDamageable
     {
         switch (modeState)
         {
-            case EModeState.REGULAR:
+            case EPlayerModeState.REGULAR:
                 break;
-            case EModeState.AIMING:
+            case EPlayerModeState.AIMING:
                 break;
-            case EModeState.COMBAT:
+            case EPlayerModeState.COMBAT:
                 break;
-            case EModeState.COMPANION_TRANSFORMATION:
+            case EPlayerModeState.COMPANION_TRANSFORMATION:
                 break;
         }
     }
@@ -166,6 +166,12 @@ public class Player : MonoBehaviour, IDamageable
     {
         BlockInputs();
         Invoke(nameof(AllowInputs), 0.8f);
+    }
+
+    public void BlockInputsWithTime(float time)
+    {
+        BlockInputs();
+        Invoke(nameof(AllowInputs), time);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -12,7 +12,7 @@ public class CombatEvent : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            player.SetNewState(EModeState.COMBAT);
+            player.SetNewState(EPlayerModeState.COMBAT);
         }
     }
 
@@ -20,7 +20,7 @@ public class CombatEvent : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            player.SetNewState(EModeState.REGULAR);
+            player.SetNewState(EPlayerModeState.REGULAR);
         }
     }
 }

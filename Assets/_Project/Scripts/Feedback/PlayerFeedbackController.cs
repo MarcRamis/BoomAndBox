@@ -92,8 +92,13 @@ public class PlayerFeedbackController : FeedbackController
     public void PlayReceiveDamageFeedback()
     {
         receiveDamageFeedback.PlayFeedbacks();
-        PlaySoundEffect(receiveDamageSound);
+        //PlaySoundEffect(receiveDamageSound);
         playerCharacterAnimations.PlayReceiveDamageAnimation();
+    }
+    /////////// RECEIVE DAMAGE
+    public void PlayAttack()
+    {
+        playerCharacterAnimations.PlayAttack();
     }
     /////////// START AIMING
     public void PlayAimingFeedback()

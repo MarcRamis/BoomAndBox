@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ERythmBase { NONE, FIRST, SECOND}
+public enum ERythmBase { NONE, FIRST, SECOND, THIRD }
 
 public class RythmSystem : MonoBehaviour
 { 
@@ -26,10 +26,10 @@ public class RythmSystem : MonoBehaviour
         if (loopMusic != null)
         {
             audioSource = loopMusic.GetComponent<AudioSource>();
-            SetNewState(ERythmBase.SECOND);
+            SetNewState(ERythmBase.THIRD);
         }
     }
-
+    
     private void Update()
     {
         if (multiplierNeeded < 1)
@@ -43,7 +43,14 @@ public class RythmSystem : MonoBehaviour
         {
             SetNewState(ERythmBase.SECOND);
         }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            SetNewState(ERythmBase.THIRD);
+        }
+    }
 
+    private void FixedUpdate()
+    {
         // Obtener los datos de audio del audio source
         audioSource.GetSpectrumData(audioSamples, 0, FFTWindow.BlackmanHarris);
 
@@ -76,11 +83,14 @@ public class RythmSystem : MonoBehaviour
             case ERythmBase.SECOND:
                 audioSource.clip = audioBase[1];
                 break;
+            case ERythmBase.THIRD:
+                audioSource.clip = audioBase[2];
+                break;
         }
-        
+
         audioSource.Play();
     }
-    
+
     private void SetNewState(ERythmBase newState)
     {
         rythmState = newState;

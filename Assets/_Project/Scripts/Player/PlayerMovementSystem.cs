@@ -31,6 +31,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [HideInInspector] public Vector3 moveDirection;
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isAiming;
+    [HideInInspector] public bool isCombat;
     [HideInInspector] public bool justHitGround;
     
     [Header("Stairs")]
