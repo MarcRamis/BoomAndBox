@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 990d01eb71be3694b9bb4893571928d0
+guid: 76725b0a4b0fdd3459a60c5ddf477382
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
-    second: Box Attack
+    second: Box Run Combat
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,18 +36,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Box Attack
+      name: Box Run Combat
       takeName: Take 001
       internalID: 0
       firstFrame: 0
-      lastFrame: 43
+      lastFrame: 30
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1

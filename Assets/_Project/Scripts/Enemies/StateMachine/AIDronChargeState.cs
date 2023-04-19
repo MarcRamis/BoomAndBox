@@ -5,18 +5,35 @@ using UnityEngine;
 public class AIDronChargeState : IAIState
 {
     // Internal variables
+    private MTimer chargeTimer;
+    private MTimer preparingChargeTimer;
     private float timerLoop;
     private GameObject chargePrefab;
 
+    private bool activatePhysics = false;
+    private bool doCharge = false;
+    
+    private const float chargeTime = 0.5f;
+    private const float preparingChargeTime = 2f;
+    private const float preparingChargeTimeAfterFirstRound = 5f;
+    
     public void Enter(Agent agent)
     {
-        agent.feedbackController.PlayPreparingCharge();
+        chargeTimer = new MTimer();
+        chargeTimer.OnTimerEnd += ChargeFinished;
         
+        preparingChargeTimer = new MTimer();
+        preparingChargeTimer.SetTimeLimit(preparingChargeTime);
+        preparingChargeTimer.OnTimerEnd += PreparingChargeFinished;
+        preparingChargeTimer.StartTimer();
+
+        //agent.feedbackController.PlayPreparingCharge();
+
         timerLoop = agent.config.timePreparingToCharge;
         
         DesactivatePhysiscs(agent);
     }
-
+    
     public void Exit(Agent agent)
     {
         agent.feedbackController.StopPreparingCharge();
@@ -29,37 +46,45 @@ public class AIDronChargeState : IAIState
     {
         return EAIState.CHARGE;
     }
-
+    
     public void Update(Agent agent)
     {
         agent.manager.OnUpdate(agent);
-        
-        if (agent.config.isCharging)
-        {
-            timerLoop -= Time.fixedDeltaTime;
+        chargeTimer.Update(Time.fixedDeltaTime);
+        preparingChargeTimer.Update(Time.fixedDeltaTime);
 
-            agent.feedbackController.StopCharge();
-            
-            if (agent.rigidbody.velocity.magnitude <= 0.1f && timerLoop < 0.0f)
-            {
-                agent.feedbackController.StopPreparingCharge();
-                ActivatePhysics(agent);
-            }
+        if (doCharge)
+        {
+            Debug.Log("entr carga");
+            doCharge = false;
+            DesactivatePhysiscs(agent);
+            Charge(agent);
+
+            chargeTimer.SetTimeLimit(chargeTime);
+            chargeTimer.StartTimer();
         }
-        else
+        
+        if (activatePhysics)
         {
-            agent.feedbackController.PlayPreparingCharge();
-            agent.feedbackController.PlayCharge();
+            Debug.Log("entr prepar");
+            activatePhysics = false;
+            ActivatePhysics(agent);
 
-            if (timerLoop < 0.0f)
-            {
-                DesactivatePhysiscs(agent);
-                Charge(agent);
-                timerLoop = agent.config.timePreparingToCharge;
-            }
+            preparingChargeTimer.SetTimeLimit(preparingChargeTimeAfterFirstRound);
+            preparingChargeTimer.StartTimer();
         }
     }
 
+    private void PreparingChargeFinished()
+    {
+        doCharge = true;
+    }
+
+    private void ChargeFinished()
+    {
+        activatePhysics = true;
+    }
+    
     private void Charge(Agent agent)
     {
         Vector3 direction = agent.player.transform.position - agent.transform.position;

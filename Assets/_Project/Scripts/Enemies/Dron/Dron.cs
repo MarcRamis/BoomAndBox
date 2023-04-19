@@ -6,7 +6,10 @@ using MoreMountains.Tools;
 using MoreMountains.Feedbacks;
 
 public class Dron : Enemy
-{   
+{
+    [SerializeField] private Transform wheelModel;
+    [SerializeField] private float multiplierWheelSpeed;
+
     // Constant variables
 
     // Internal variables
@@ -23,11 +26,19 @@ public class Dron : Enemy
     {
         base.Update();
 
-        if(stateMachine.currentState == EAIState.CHASE_PLAYER || stateMachine.currentState == EAIState.RANDOM_WALK)
+        if (stateMachine.currentState == EAIState.CHASE_PLAYER || stateMachine.currentState == EAIState.RANDOM_WALK)
         {
             FallingCheck();
         }
+        
+        RotateModel();
     }
+
+    private void RotateModel()
+    {
+        wheelModel.Rotate(Vector3.right * (navMesh.velocity.magnitude * multiplierWheelSpeed));
+    }
+
     private new void FixedUpdate()
     {
         base.FixedUpdate();
@@ -47,14 +58,15 @@ public class Dron : Enemy
         feedbackController.PlayDeath();
         Destroy(this.gameObject);
     }
-
+    
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player" && rigidbody.velocity.magnitude > 0.1f)
         {
-            collision.gameObject.GetComponent<IDamageable>().Damage(1);
+            //collision.gameObject.GetComponent<IDamageable>().Damage(1);
         }
     }
+    
     private void DesactivatePhysiscs(Agent agent)
     {
         agent.rigidbody.isKinematic = false;

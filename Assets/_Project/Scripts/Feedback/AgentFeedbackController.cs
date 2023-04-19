@@ -38,4 +38,13 @@ public class AgentFeedbackController : FeedbackController
     public virtual void PlayImpulse()
     {
     }
+    
+    /////////// WALK
+    public virtual void PlayWalk()
+    {
+    }
+    /////////// RUN
+    public virtual void PlayRun()
+    {
+    }
 }

@@ -18,9 +18,12 @@ public class AIChasePlayerState : IAIState
     public void Update(Agent agent)
     {
         agent.manager.OnUpdate(agent);
-
+        
         if (agent.navMesh.isOnNavMesh)
+        { 
+            agent.feedbackController.PlayRun();
             CheckPathWithTime(agent);
+        }
     }
 
     public void Exit(Agent agent)

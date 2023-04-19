@@ -9,11 +9,17 @@ public class DronFeedbackController : AgentFeedbackController
     [Header("Visual Effects")]
     [SerializeField] private MMFeedbacks damageFeedback;
     [SerializeField] private MMFeedbacks dieFeedback;
-    [SerializeField] public MMFeedbacks preparingForChargeFeedback;
-    [SerializeField] public MMFeedbacks chargeFeedback;
+    [SerializeField] private MMFeedbacks preparingForChargeFeedback;
+    [SerializeField] private MMFeedbacks chargeFeedback;
+    [SerializeField] private MMFeedbacks walkFeedback;
+    [SerializeField] private MMFeedbacks runFeedback;
     
-    [SerializeField] public GameObject explosionPrefab;
-    [SerializeField] public GameObject dronChargingPrefab;
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private GameObject dronChargingPrefab;
+
+    [SerializeField] private TrailRenderer trail1;
+    [SerializeField] private TrailRenderer trail2;
+    [SerializeField] private TrailRenderer trail3;
 
     /////////// TAKE DAMAGE
     public override void PlayTakeDamage()
@@ -56,5 +62,16 @@ public class DronFeedbackController : AgentFeedbackController
     /////////// IMPULSE
     public override void PlayImpulse()
     {
+    }
+    
+    /////////// IMPULSE
+    public override void PlayWalk()
+    {
+        walkFeedback.PlayFeedbacks();
+    }
+    /////////// RUN
+    public virtual void PlayRun()
+    {
+        runFeedback.PlayFeedbacks();
     }
 }

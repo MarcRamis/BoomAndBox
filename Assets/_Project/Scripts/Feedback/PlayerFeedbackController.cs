@@ -22,7 +22,7 @@ public class PlayerFeedbackController : FeedbackController
     [SerializeField] private TrailRenderer trailMidBody;
     [SerializeField] private TrailRenderer trailLeftHand;
     [SerializeField] private TrailRenderer trailRightHand;
-    
+
     [SerializeField] private GameObject speedPs;
 
     [SerializeField] private Image cursor;
@@ -95,11 +95,7 @@ public class PlayerFeedbackController : FeedbackController
         //PlaySoundEffect(receiveDamageSound);
         playerCharacterAnimations.PlayReceiveDamageAnimation();
     }
-    /////////// RECEIVE DAMAGE
-    public void PlayAttack()
-    {
-        playerCharacterAnimations.PlayAttack();
-    }
+
     /////////// START AIMING
     public void PlayAimingFeedback()
     {
@@ -109,6 +105,21 @@ public class PlayerFeedbackController : FeedbackController
     {
         cursor.gameObject.SetActive(false);
     }
+
+    /////////// Attack
+    public void PlayAttack()
+    {
+        playerCharacterAnimations.PlayAttack();
+        trailLeftHand.emitting = true;
+        trailRightHand.emitting = true;
+    }
+    
+    public void StopAttack()
+    {
+        trailLeftHand.emitting = false;
+        trailRightHand.emitting = false;
+    }
+
     private void LargeShoesTrail()
     {
         trailLeftShoe.emitting = true;

@@ -65,7 +65,6 @@ public abstract class Enemy : Agent, IDamageable
 
             justReceivedDamage = true;
             Invoke(nameof(ResetJustReceivedDamage), justReceivedDamageTimer);
-            Debug.Log("takedamage");
         }
 
         if (Health <= 0)

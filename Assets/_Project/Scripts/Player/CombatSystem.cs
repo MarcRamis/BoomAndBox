@@ -21,8 +21,10 @@ public class CombatSystem : MonoBehaviour
     [HideInInspector] private RythmSystem rythmSystem;
     
     [Header("References")]
+    [SerializeField] private GameObject weaponGameObject;
     [SerializeField] private BoxCollider weaponCollider;
-    
+    [SerializeField] private WeaponFeedbackController weaponFeedbackController;
+
     [Header("Settings")]
     [SerializeField] private float attackCd = 0.8f;
 
@@ -30,7 +32,7 @@ public class CombatSystem : MonoBehaviour
     [HideInInspector] private bool hasHit = false;
 
     private bool rythmMoment;
-    private readonly int maxFrameBuffer = 2;
+    private readonly int maxFrameBuffer = 10;
 
     private void Awake()
     {
@@ -60,7 +62,7 @@ public class CombatSystem : MonoBehaviour
             if (attackIsReady)
             {
                 attackIsReady = false;
-
+                player.playerRigidbody.AddForce(Vector3.forward * 100f, ForceMode.Acceleration);
                 
                 if (rythmMoment)
                 {
@@ -73,20 +75,23 @@ public class CombatSystem : MonoBehaviour
                 }
 
                 player.feedbackController.PlayAttack();
+                weaponFeedbackController.PlayAttack();
 
-                Invoke(nameof(AttackOn), 0.1f);
-                Invoke(nameof(AttackOff), 0.3f);
+                hitIsOn = true;
+                //Invoke(nameof(AttackOff), 0.8f);
 
                 player.BlockInputsWithTime(attackCd);
                 Invoke(nameof(ResetAttack), attackCd);
             }
         }
     }
-
+    
     private void ResetAttack()
     {
         attackIsReady = true;
         hitIsOn = false;
+        player.feedbackController.StopAttack();
+        weaponFeedbackController.StopAttack();
     }
     private void AttackOn()
     {
@@ -113,7 +118,7 @@ public class CombatSystem : MonoBehaviour
         {
             trailFillerList = FillTrail(trailList.First.Value, trailList.Last.Value);
         }
-
+        
         // Real collider
         Collider[] hits = Physics.OverlapBox(bo.pos, bo.size / 2, bo.rot, hittableLayers, QueryTriggerInteraction.Ignore);
         Dictionary<long, Collider> colliderList = new Dictionary<long, Collider>();
@@ -130,13 +135,25 @@ public class CombatSystem : MonoBehaviour
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(2);
+                damageable.Damage(1);
             }
             else
             {
                 Debug.Log(other.name);
             }
         }
+    }
+    
+    public void ShowWeapon()
+    {
+        weaponGameObject.SetActive(true);
+        weaponCollider.gameObject.SetActive(true);
+    }
+
+    public void HideWeapon()
+    {
+        weaponGameObject.SetActive(false);
+        weaponCollider.gameObject.SetActive(false);
     }
 
     private static void CollectColliders(Collider[] hits, Dictionary<long, Collider> colliderList)
@@ -173,7 +190,7 @@ public class CombatSystem : MonoBehaviour
         }
         return fillerList;
     }
-
+    
     private void OnDrawGizmos()
     {
         if (debugTrail)

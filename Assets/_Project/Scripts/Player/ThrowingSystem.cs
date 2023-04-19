@@ -113,6 +113,16 @@ public class ThrowingSystem : MonoBehaviour
         Invoke(nameof(ResetThrowCooldownWithoutFeedback), throwCooldown);
     }
 
+    public void NotMode()
+    {
+        companion.gameObject.SetActive(false);
+    }
+    
+    public void YesMode()
+    {
+        companion.gameObject.SetActive(true);
+    }
+
     private void DoThrow()
     {
         if (player.CanThrow())

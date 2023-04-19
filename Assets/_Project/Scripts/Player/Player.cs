@@ -17,7 +17,11 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private int health;
     [SerializeField] public EPlayerModeState modeState = EPlayerModeState.REGULAR;
     [SerializeField] CameraManager cameraManager;
+    [HideInInspector] public bool dashOnboarding = false;
     
+    [HideInInspector] public ThrowingSystem throwingSystem;
+    [HideInInspector] public CombatSystem combatSystem;
+
     //Inputs
     [HideInInspector] public PlayerInputController myInputs;
 
@@ -25,10 +29,10 @@ public class Player : MonoBehaviour, IDamageable
     [HideInInspector] public PlayerFeedbackController feedbackController;
     
     [HideInInspector] public Rigidbody playerRigidbody;
-
+    
     // Internal variables
     private bool justReceivedDamage = false;
-    private bool godMode = false;
+    private bool godMode = true;
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
@@ -36,6 +40,8 @@ public class Player : MonoBehaviour, IDamageable
     // Start
     private void Awake()
     {
+        throwingSystem = GetComponent<ThrowingSystem>();
+        combatSystem = GetComponent<CombatSystem>();
         playerRigidbody = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
         feedbackController = GetComponent<PlayerFeedbackController>();
@@ -43,7 +49,7 @@ public class Player : MonoBehaviour, IDamageable
         myInputs.OnInteractPerformed += DoInteract;
         
         Health = health;
-        modeState = EPlayerModeState.COMBAT;
+        SetNewState(EPlayerModeState.REGULAR);
     }
     
     // Update
@@ -104,7 +110,7 @@ public class Player : MonoBehaviour, IDamageable
     
     public bool CanDash()
     {
-        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING;
+        return (modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING ) && !dashOnboarding;
     }
 
     public bool CanMove()
@@ -133,10 +139,14 @@ public class Player : MonoBehaviour, IDamageable
         switch (modeState)
         {
             case EPlayerModeState.REGULAR:
+                throwingSystem.YesMode();
+                combatSystem.HideWeapon();
                 break;
             case EPlayerModeState.AIMING:
                 break;
             case EPlayerModeState.COMBAT:
+                combatSystem.ShowWeapon();
+                throwingSystem.NotMode();
                 break;
             case EPlayerModeState.COMPANION_TRANSFORMATION:
                 break;

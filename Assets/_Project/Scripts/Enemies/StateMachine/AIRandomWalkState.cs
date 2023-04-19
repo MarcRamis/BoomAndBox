@@ -25,9 +25,12 @@ public class AIRandomWalkState : IAIState
     public void Update(Agent agent)
     {
         agent.manager.OnUpdate(agent);
-
+        
         if (agent.navMesh.isOnNavMesh)
+        {
+            agent.feedbackController.PlayWalk();
             FollowRandomPath(agent);
+        }
     }
 
     private void FollowRandomPath(Agent agent)

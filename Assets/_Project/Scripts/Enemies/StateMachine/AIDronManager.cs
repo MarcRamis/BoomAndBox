@@ -27,7 +27,7 @@ public class AIDronManager : AIManager
                     agent.stateMachine.ChangeState(EAIState.CHASE_PLAYER);
 
                 break;
-
+            
             case EAIState.CHASE_PLAYER:
 
                 //if (IsPlayerFarAway(agent, agent.config.maxDistanceToIdleState))
