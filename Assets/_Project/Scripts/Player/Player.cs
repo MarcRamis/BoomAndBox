@@ -32,7 +32,8 @@ public class Player : MonoBehaviour, IDamageable
     [HideInInspector] public PlayerFeedbackController feedbackController;
     
     [HideInInspector] public Rigidbody playerRigidbody;
-    
+    [HideInInspector] public Transform beingTargettedBy = null;
+
     // Internal variables
     private bool justReceivedDamage = false;
     private bool godMode = true;

@@ -9,6 +9,7 @@ public class AIRandomWalkState : IAIState
     public void Enter(Agent agent)
     {
         agent.navMesh.speed = agent.config.idleSpeed;
+        agent.navMesh.angularSpeed = agent.config.idleAngularSpeed;
 
         currentTarget = RandomNavmeshLocation(agent, agent.config.maxRandomWalkRadius);
     }

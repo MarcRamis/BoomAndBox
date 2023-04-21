@@ -13,7 +13,9 @@ public class AIChasePlayerState : IAIState
 
     public void Enter(Agent agent)
     {
+        agent.playerScript.beingTargettedBy = agent.transform;
         agent.navMesh.speed = agent.config.chaseSpeed;
+        agent.navMesh.angularSpeed = agent.config.chaseAngularSpeed;
     }
     public void Update(Agent agent)
     {
@@ -25,10 +27,9 @@ public class AIChasePlayerState : IAIState
             CheckPathWithTime(agent);
         }
     }
-
+    
     public void Exit(Agent agent)
     {
-
     }
 
     private void CheckPathWithTime(Agent agent)

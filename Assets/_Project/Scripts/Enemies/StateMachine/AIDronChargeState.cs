@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,15 +8,15 @@ public class AIDronChargeState : IAIState
     // Internal variables
     private MTimer chargeTimer;
     private MTimer preparingChargeTimer;
-    private float timerLoop;
-    private GameObject chargePrefab;
 
     private bool activatePhysics = false;
     private bool doCharge = false;
+    private float preparingChargeTime = 5f;
+    private float nearlyCharge;
     
+    private const float nearlyChargePecentage = 0.6f;
     private const float chargeTime = 0.5f;
-    private const float preparingChargeTime = 2f;
-    private const float preparingChargeTimeAfterFirstRound = 5f;
+    private const float sumPreparingChargeTime = 0.5f;
     
     public void Enter(Agent agent)
     {
@@ -27,9 +28,7 @@ public class AIDronChargeState : IAIState
         preparingChargeTimer.OnTimerEnd += PreparingChargeFinished;
         preparingChargeTimer.StartTimer();
 
-        //agent.feedbackController.PlayPreparingCharge();
-
-        timerLoop = agent.config.timePreparingToCharge;
+        nearlyCharge = preparingChargeTime * nearlyChargePecentage;
         
         DesactivatePhysiscs(agent);
     }
@@ -40,6 +39,8 @@ public class AIDronChargeState : IAIState
         agent.feedbackController.StopCharge();
  
         ActivatePhysics(agent);
+
+        agent.playerScript.beingTargettedBy = null;
     }
 
     public EAIState GetId()
@@ -53,9 +54,11 @@ public class AIDronChargeState : IAIState
         chargeTimer.Update(Time.fixedDeltaTime);
         preparingChargeTimer.Update(Time.fixedDeltaTime);
 
+        CalculateNearlyCharge(agent);
+
         if (doCharge)
         {
-            Debug.Log("entr carga");
+            agent.feedbackController.PlayCharge();
             doCharge = false;
             DesactivatePhysiscs(agent);
             Charge(agent);
@@ -66,12 +69,33 @@ public class AIDronChargeState : IAIState
         
         if (activatePhysics)
         {
-            Debug.Log("entr prepar");
+            agent.feedbackController.StopCharge();
             activatePhysics = false;
             ActivatePhysics(agent);
-
-            preparingChargeTimer.SetTimeLimit(preparingChargeTimeAfterFirstRound);
+            
+            preparingChargeTime += sumPreparingChargeTime;
+            preparingChargeTimer.SetTimeLimit(preparingChargeTime);
             preparingChargeTimer.StartTimer();
+        }
+
+        LookAtPlayer(agent);
+    }
+
+    private void LookAtPlayer(Agent agent)
+    {
+        Vector3 lockY = new Vector3(agent.player.transform.position.x, agent.player.transform.position.y, agent.player.transform.position.z);
+        agent.RotateTo(lockY, agent.config.rotationSpeed);
+    }
+
+    private void CalculateNearlyCharge(Agent agent)
+    {
+        if (preparingChargeTimer.GetElapsedTime() >= nearlyCharge)
+        {
+            agent.config.isNearlyCharge = true;
+        }
+        else
+        {
+            agent.config.isNearlyCharge = false;
         }
     }
 
@@ -88,6 +112,7 @@ public class AIDronChargeState : IAIState
     private void Charge(Agent agent)
     {
         Vector3 direction = agent.player.transform.position - agent.transform.position;
+        direction = new Vector3(direction.x, 0, direction.z);
         direction = direction.normalized;
         Vector3 forceToApply = direction * agent.config.chargeForce;
         
@@ -97,18 +122,13 @@ public class AIDronChargeState : IAIState
 
     private void DesactivatePhysiscs(Agent agent)
     {
-        agent.config.isCharging = true;
         agent.rigidbody.isKinematic = false;
         agent.navMesh.enabled = false;
-        agent.transform.rotation = Quaternion.identity;
     }
     
     private void ActivatePhysics(Agent agent)
     {
-        agent.config.isCharging = false;
         agent.rigidbody.isKinematic = true;
         agent.navMesh.enabled = true;
-        agent.navMesh.angularSpeed = 10000;
-        agent.transform.rotation = Quaternion.identity;
     }
 }

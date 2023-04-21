@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6460956005148120156}
   - component: {fileID: 6460956005148120157}
+  - component: {fileID: 969599925}
   m_Layer: 0
   m_Name: GameLoopMusic
   m_TagString: MainSoundtrack
@@ -128,3 +129,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &969599925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6460956005148120154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e9ac9ff9f9cbf04fa2c42277f26ac1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  threshold: 1
+  multiplierNeeded: 100000
+  rythmState: 0
+  audioBase:
+  - {fileID: 8300000, guid: 826a727f0d644c7408a0c90ed1093d36, type: 3}
+  - {fileID: 8300000, guid: fdc890f647c08a74ca03dd389397a8a4, type: 3}
+  - {fileID: 8300000, guid: 5d643fd77955d2b488a7eeac511fa251, type: 3}

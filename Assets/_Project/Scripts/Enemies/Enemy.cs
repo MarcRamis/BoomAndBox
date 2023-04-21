@@ -18,7 +18,7 @@ public abstract class Enemy : Agent, IDamageable
     private bool justReceivedDamage = false;
 
     // Constant variables
-    private const float justReceivedDamageTimer = 0.2f;
+    private const float justReceivedDamageTimer = 0.3f;
     private const float gravityAddition = 2.0f;
 
     // Awake

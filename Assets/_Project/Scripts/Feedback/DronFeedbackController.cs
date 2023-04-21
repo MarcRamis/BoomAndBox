@@ -50,12 +50,17 @@ public class DronFeedbackController : AgentFeedbackController
     /////////// CHARGE
     public override void PlayCharge()
     {
+        trail1.emitting = true;
+        trail2.emitting = true;
+        trail3.emitting = true;
         chargeFeedback.PlayFeedbacks();
     }
 
     public override void StopCharge()
     {
-        //Debug.Log("entro");
+        trail1.emitting = false;
+        trail2.emitting = false;
+        trail3.emitting = false;
         chargeFeedback.StopFeedbacks();
     }
 
@@ -70,7 +75,7 @@ public class DronFeedbackController : AgentFeedbackController
         walkFeedback.PlayFeedbacks();
     }
     /////////// RUN
-    public virtual void PlayRun()
+    public override void PlayRun()
     {
         runFeedback.PlayFeedbacks();
     }

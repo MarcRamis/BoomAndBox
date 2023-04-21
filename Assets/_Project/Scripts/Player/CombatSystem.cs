@@ -36,16 +36,15 @@ public class CombatSystem : MonoBehaviour
     
     [HideInInspector] public bool attackIsReady = true;
     [HideInInspector] private bool hasHit = false;
-    [HideInInspector] private Transform beingTargetted = null;
-    
+   
     private bool rythmMoment;
     private readonly int maxFrameBuffer = 10;
 
     private void Awake()
     {
         player = GetComponent<Player>();
-        rythmSystem = GetComponent<RythmSystem>();
-
+        rythmSystem = GameObject.FindGameObjectWithTag("MainSoundtrack").GetComponent<RythmSystem>();
+        
         player.myInputs.OnAttackPerformed += DoAttack;
     }
     
@@ -145,6 +144,7 @@ public class CombatSystem : MonoBehaviour
             if (damageable != null)
             {
                 damageable.Damage(1);
+                player.feedbackController.PlayHit();
             }
             else
             {

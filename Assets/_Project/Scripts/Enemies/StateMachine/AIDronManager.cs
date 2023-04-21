@@ -6,15 +6,6 @@ public class AIDronManager : AIManager
 {
     public override void OnEnter(Agent agent)
     {
-        switch (agent.stateMachine.currentState)
-        {
-            case EAIState.RANDOM_WALK:
-                break;
-            case EAIState.CHASE_PLAYER:
-                break;
-            case EAIState.CHARGE:
-                break;
-        }
     }
 
     public override void OnUpdate(Agent agent)
@@ -23,11 +14,18 @@ public class AIDronManager : AIManager
         {
             case EAIState.RANDOM_WALK:
                 
-                if (IsPlayerNear(agent, agent.config.maxRandomWalkSightRadiusDistance))
+                if (IsPlayerNear(agent, agent.config.maxRandomWalkSightRadiusDistance) /*&& agent.playerScript.beingTargettedBy == null*/)
+                {
                     agent.stateMachine.ChangeState(EAIState.CHASE_PLAYER);
-
+                }
+                
+                else if(IsPlayerNear(agent, agent.config.maxRandomWalkSightRadiusDistance) && agent.playerScript.beingTargettedBy != null)
+                {
+                    // mantienes distancia
+                }
+                
                 break;
-            
+
             case EAIState.CHASE_PLAYER:
 
                 //if (IsPlayerFarAway(agent, agent.config.maxDistanceToIdleState))
@@ -35,7 +33,7 @@ public class AIDronManager : AIManager
                 //    agent.stateMachine.ChangeState(EAIState.RANDOM_WALK);
                 //    return;
                 //}
-
+                
                 if (IsPlayerNear(agent, agent.config.maxDistanceToChargeState))
                 {
                     agent.stateMachine.ChangeState(EAIState.CHARGE);
@@ -46,26 +44,22 @@ public class AIDronManager : AIManager
 
             case EAIState.CHARGE:
                 
-                if (IsPlayerFarAway(agent, agent.config.maxDistanceToChaseState))
+                if (IsPlayerFarAway(agent, agent.config.maxDistanceToChaseState) && !agent.config.isNearlyCharge)
                 {
                     agent.stateMachine.ChangeState(EAIState.CHASE_PLAYER);
                     return;
                 }
 
                 break;
+            case EAIState.RECEIVE_DAMAGE:
+
+                agent.stateMachine.ChangeState(EAIState.CHASE_PLAYER);
+
+                break;
         }
     }
     public override void OnExit(Agent agent)
     {
-        switch (agent.stateMachine.currentState)
-        {
-            case EAIState.RANDOM_WALK:
-                break;
-            case EAIState.CHASE_PLAYER:
-                break;
-            case EAIState.CHARGE:
-                break;
-        }
     }
 
     private bool IsPlayerNear(Agent agent, float distance)
