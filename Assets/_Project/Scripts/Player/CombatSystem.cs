@@ -27,10 +27,17 @@ public class CombatSystem : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float attackCd = 0.8f;
-
+    [SerializeField] private float hitOnStartCd = 0.2f;
+    [SerializeField] private float hitOnFinishCd = 0.5f;
+    [SerializeField] private float returnControlsAfterAttackCd = 0.7f;
+    [SerializeField] private float attackImpulse = 50f;
+    [SerializeField] private Vector3 collisionSize; 
+    [SerializeField] private float sizeSmall;
+    
     [HideInInspector] public bool attackIsReady = true;
     [HideInInspector] private bool hasHit = false;
-
+    [HideInInspector] private Transform beingTargetted = null;
+    
     private bool rythmMoment;
     private readonly int maxFrameBuffer = 10;
 
@@ -44,15 +51,17 @@ public class CombatSystem : MonoBehaviour
     
     private void Update()
     {
-        if (hitIsOn)
-        {
-            CheckTrail();
-        }
+        collisionSize = weaponCollider.size;
     }
 
     private void FixedUpdate()
     {
         rythmMoment = rythmSystem.IsRythmMoment();
+
+        if (hitIsOn)
+        {
+            CheckTrail();
+        }
     }
 
     private void DoAttack()
@@ -62,7 +71,6 @@ public class CombatSystem : MonoBehaviour
             if (attackIsReady)
             {
                 attackIsReady = false;
-                player.playerRigidbody.AddForce(Vector3.forward * 100f, ForceMode.Acceleration);
                 
                 if (rythmMoment)
                 {
@@ -76,11 +84,11 @@ public class CombatSystem : MonoBehaviour
 
                 player.feedbackController.PlayAttack();
                 weaponFeedbackController.PlayAttack();
-
-                hitIsOn = true;
-                //Invoke(nameof(AttackOff), 0.8f);
-
-                player.BlockInputsWithTime(attackCd);
+                player.playerRigidbody.AddForce(player.model.forward * attackImpulse * 10f, ForceMode.Acceleration);
+                
+                Invoke(nameof(AttackOn),hitOnStartCd);
+                Invoke(nameof(AttackOff), hitOnFinishCd);
+                player.BlockInputsWithTime(returnControlsAfterAttackCd);
                 Invoke(nameof(ResetAttack), attackCd);
             }
         }
@@ -89,7 +97,6 @@ public class CombatSystem : MonoBehaviour
     private void ResetAttack()
     {
         attackIsReady = true;
-        hitIsOn = false;
         player.feedbackController.StopAttack();
         weaponFeedbackController.StopAttack();
     }
@@ -100,6 +107,8 @@ public class CombatSystem : MonoBehaviour
     private void AttackOff()
     {
         hitIsOn = false;
+        trailList.Clear();
+        trailFillerList.Clear();
     }
 
     private void CheckTrail()
@@ -114,10 +123,10 @@ public class CombatSystem : MonoBehaviour
         {
             trailList.RemoveLast();
         }
-        if (trailList.Count > 1)
-        {
-            trailFillerList = FillTrail(trailList.First.Value, trailList.Last.Value);
-        }
+        //if (trailList.Count > 1)
+        //{
+        //    trailFillerList = FillTrail(trailList.First.Value, trailList.Last.Value);
+        //}
         
         // Real collider
         Collider[] hits = Physics.OverlapBox(bo.pos, bo.size / 2, bo.rot, hittableLayers, QueryTriggerInteraction.Ignore);
@@ -143,17 +152,15 @@ public class CombatSystem : MonoBehaviour
             }
         }
     }
-    
+
     public void ShowWeapon()
     {
         weaponGameObject.SetActive(true);
-        weaponCollider.gameObject.SetActive(true);
     }
 
     public void HideWeapon()
     {
         weaponGameObject.SetActive(false);
-        weaponCollider.gameObject.SetActive(false);
     }
 
     private static void CollectColliders(Collider[] hits, Dictionary<long, Collider> colliderList)
@@ -172,7 +179,7 @@ public class CombatSystem : MonoBehaviour
         LinkedList<BufferObj> fillerList = new LinkedList<BufferObj>();
         float distance = Math.Abs((from.pos - to.pos).magnitude);
         
-        if (distance > weaponCollider.size.z)
+        if (distance > sizeSmall)
         {
             int steps = Mathf.CeilToInt(distance / weaponCollider.size.z);
             float stepsAmount = 1 / (steps + 1);

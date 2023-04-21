@@ -12,6 +12,9 @@ public class Player : MonoBehaviour, IDamageable
     
     [Header("References")]
     [SerializeField] public IInteractuable currentInteraction;
+    [SerializeField] public Transform model;
+    [SerializeField] public Transform orientation;
+    [SerializeField] public Transform fullOrientation;
     
     [Header("Settings")]
     [SerializeField] private int health;
@@ -49,7 +52,7 @@ public class Player : MonoBehaviour, IDamageable
         myInputs.OnInteractPerformed += DoInteract;
         
         Health = health;
-        SetNewState(EPlayerModeState.REGULAR);
+        SetNewState(EPlayerModeState.COMBAT);
     }
     
     // Update

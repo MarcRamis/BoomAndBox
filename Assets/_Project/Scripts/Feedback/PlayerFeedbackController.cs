@@ -110,8 +110,8 @@ public class PlayerFeedbackController : FeedbackController
     public void PlayAttack()
     {
         playerCharacterAnimations.PlayAttack();
-        trailLeftHand.emitting = true;
-        trailRightHand.emitting = true;
+        //trailLeftHand.emitting = true;
+        //trailRightHand.emitting = true;
     }
     
     public void StopAttack()

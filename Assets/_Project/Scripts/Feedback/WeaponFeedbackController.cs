@@ -14,18 +14,18 @@ public class WeaponFeedbackController : FeedbackController
     /////////// MAKE DAMAGE
     public void PlayAttack()
     {
-        trail1.emitting = true;
-        trail2.emitting = true;
-        trail3.emitting = true;
-        trail4.emitting = true;
+        //trail1.emitting = true;
+        //trail2.emitting = true;
+        //trail3.emitting = true;
+        //trail4.emitting = true;
     }
     
     public void StopAttack()
     {
-        trail1.emitting = false;
-        trail2.emitting = false;
-        trail3.emitting = false;
-        trail4.emitting = false;
+        //trail1.emitting = false;
+        //trail2.emitting = false;
+        //trail3.emitting = false;
+        //trail4.emitting = false;
     }
 
     /////////// HIT
