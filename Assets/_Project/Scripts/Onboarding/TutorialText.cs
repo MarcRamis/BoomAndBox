@@ -69,28 +69,7 @@ public class TutorialText : MonoBehaviour
     {
         if(other.gameObject.tag == "Player" && currentText == 0)
         {
-            player.BlockInputs();
-
-            textMeshProUGUI.text = textsToAppear[currentText].text;
-            switch(textsToAppear[currentText].faceSelected)
-            {
-                case Text.Face.Normal:
-                    image.sprite = normalFace;
-                    break;
-                case Text.Face.Angry:
-                    image.sprite = angryFace;
-                    break;
-                case Text.Face.NONE:
-                    image.sprite = normalFace;
-                    break;
-                default:
-                    image.sprite = normalFace;
-                    break;
-            }
-            canvas.gameObject.SetActive(true);
-
-            startTimer = true;
-            currentText++;
+            StartTutorialText();
         }
     }
 
@@ -128,6 +107,32 @@ public class TutorialText : MonoBehaviour
             }
         }
         
+    }
+
+    public void StartTutorialText()
+    {
+        player.BlockInputsAndCamera();
+
+        textMeshProUGUI.text = textsToAppear[currentText].text;
+        switch (textsToAppear[currentText].faceSelected)
+        {
+            case Text.Face.Normal:
+                image.sprite = normalFace;
+                break;
+            case Text.Face.Angry:
+                image.sprite = angryFace;
+                break;
+            case Text.Face.NONE:
+                image.sprite = normalFace;
+                break;
+            default:
+                image.sprite = normalFace;
+                break;
+        }
+        canvas.gameObject.SetActive(true);
+
+        startTimer = true;
+        currentText++;
     }
 
     private void OnDisable()

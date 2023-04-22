@@ -43,7 +43,7 @@ public class PlayerCharacterAnimations : MonoBehaviour
         playerAnimator.SetBool("PressedInputJump", !playerMovementSystem.readyToJump);
 
         playerAnimator.SetBool("isCombat", player.CanAttack());
-        playerAnimator.SetBool("ReadyToAttack", combatSystem.attackIsReady);
+        //playerAnimator.SetBool("ReadyToAttack", combatSystem.attackIsReady);
         
         playerAnimator.SetBool("ReadyToThrow", throwingSystem.readyToThrow);
         playerAnimator.SetBool("JustThrow", throwingSystem.justThrow);
