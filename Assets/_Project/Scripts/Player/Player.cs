@@ -53,7 +53,7 @@ public class Player : MonoBehaviour, IDamageable
         myInputs.OnInteractPerformed += DoInteract;
         
         Health = health;
-        SetNewState(EPlayerModeState.COMBAT);
+        SetNewState(modeState);
     }
     
     // Update
