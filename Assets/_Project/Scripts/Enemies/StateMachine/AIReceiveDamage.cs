@@ -5,9 +5,10 @@ public class AIReceiveDamage : IAIState
 {
     private MTimer knockedTimer;
     private const float knockedTime = 1f;
+    private float knockBackForce = 15f;
 
     private bool isKnocked;
-
+    
     public void Enter(Agent agent)
     {
         isKnocked = true;
@@ -16,6 +17,8 @@ public class AIReceiveDamage : IAIState
         knockedTimer.SetTimeLimit(knockedTime);
         knockedTimer.OnTimerEnd += OnKnockedTimeFinished;
         knockedTimer.StartTimer();
+        
+        agent.navMesh.velocity = (agent.direction * -1f) * knockBackForce;
     }
     
     public void Exit(Agent agent)
@@ -29,6 +32,8 @@ public class AIReceiveDamage : IAIState
     
     public void Update(Agent agent)
     {
+        LookAtPlayer(agent);
+
         knockedTimer.Update(Time.fixedDeltaTime);
         if (!isKnocked)
         {
@@ -38,5 +43,11 @@ public class AIReceiveDamage : IAIState
     private void OnKnockedTimeFinished()
     {
         isKnocked = false;
+    }
+
+    private void LookAtPlayer(Agent agent)
+    {
+        Vector3 lockY = new Vector3(agent.player.transform.position.x, agent.player.transform.position.y, agent.player.transform.position.z);
+        agent.RotateTo(lockY, agent.config.rotationSpeed);
     }
 }

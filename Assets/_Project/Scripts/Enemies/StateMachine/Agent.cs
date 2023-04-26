@@ -13,6 +13,7 @@ public abstract class Agent : MonoBehaviour
     [SerializeField] public GameObject player;
     [HideInInspector] public Player playerScript;
     [HideInInspector] public AIManager manager;
+    [HideInInspector] public Vector3 direction;
     
     protected void Awake()
     {
@@ -38,7 +39,7 @@ public abstract class Agent : MonoBehaviour
     }
     protected void Update()
     {
-
+        direction = transform.forward;
     }
 
     protected void FixedUpdate()

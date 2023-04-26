@@ -16,15 +16,19 @@ public class DronFeedbackController : AgentFeedbackController
     
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private GameObject dronChargingPrefab;
-
+    [SerializeField] private GameObject receiveHitPrefab;
+    
     [SerializeField] private TrailRenderer trail1;
     [SerializeField] private TrailRenderer trail2;
     [SerializeField] private TrailRenderer trail3;
+    
+    [SerializeField] private Transform hitPosition;
 
     /////////// TAKE DAMAGE
     public override void PlayTakeDamage()
     {
         damageFeedback.PlayFeedbacks();
+        Instantiate(receiveHitPrefab, hitPosition.position, hitPosition.rotation);
     }
 
     /////////// DIE

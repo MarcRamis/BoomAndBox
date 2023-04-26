@@ -46,10 +46,13 @@ public class Dron : Enemy
     
     public override void Damage(int damageAmount)
     {
-        base.Damage(damageAmount);
+        if (!justReceivedDamage)
+        {
+            stateMachine.ChangeState(EAIState.RECEIVE_DAMAGE);
+            feedbackController.PlayTakeDamage();
+        }
         
-        stateMachine.ChangeState(EAIState.RECEIVE_DAMAGE);
-        feedbackController.PlayTakeDamage();
+        base.Damage(damageAmount);
     }
 
     public override void OnDeath()
@@ -85,4 +88,5 @@ public class Dron : Enemy
         }
     }
 
+    
 }

@@ -15,7 +15,7 @@ public abstract class Enemy : Agent, IDamageable
     [HideInInspector] public bool isGrounded;
 
     // Internal variables
-    private bool justReceivedDamage = false;
+    protected bool justReceivedDamage = false;
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.3f;
@@ -93,5 +93,10 @@ public abstract class Enemy : Agent, IDamageable
         {
 
         }
+    }
+
+    public void KnockBack(Vector3 direction, float force)
+    {
+        navMesh.velocity = (direction * -1f) * force;
     }
 }
