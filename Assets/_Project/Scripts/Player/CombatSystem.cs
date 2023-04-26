@@ -144,6 +144,7 @@ public class CombatSystem : MonoBehaviour
             if (damageable != null)
             {
                 damageable.Damage(1);
+                HandleCombo(damageable);
                 player.feedbackController.PlayHit();
             }
             else
@@ -151,6 +152,11 @@ public class CombatSystem : MonoBehaviour
                 Debug.Log(other.name);
             }
         }
+    }
+
+    private void HandleCombo(IDamageable damageable)
+    {
+        damageable.Knockback(15f);
     }
 
     public void ShowWeapon()

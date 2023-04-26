@@ -17,8 +17,6 @@ public class AIReceiveDamage : IAIState
         knockedTimer.SetTimeLimit(knockedTime);
         knockedTimer.OnTimerEnd += OnKnockedTimeFinished;
         knockedTimer.StartTimer();
-        
-        agent.navMesh.velocity = (agent.direction * -1f) * knockBackForce;
     }
     
     public void Exit(Agent agent)

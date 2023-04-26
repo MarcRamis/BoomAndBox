@@ -15,8 +15,8 @@ public class WeaponFeedbackController : FeedbackController
     {
         //trail1.emitting = true;
         trail2.emitting = true;
-        //trail3.emitting = true;
         //trail4.emitting = true;
+        //trail3.emitting = true;
     }
     
     public void StopAttack()

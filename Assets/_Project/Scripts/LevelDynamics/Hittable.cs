@@ -45,4 +45,9 @@ public class Hittable : MonoBehaviour, IDamageable
     {
         Destroy(this.gameObject);
     }
+
+    public void Knockback(float force)
+    {
+        throw new NotImplementedException();
+    }
 }

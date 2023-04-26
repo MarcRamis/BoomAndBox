@@ -208,4 +208,9 @@ public class Player : MonoBehaviour, IDamageable
             interactuable.InteractEnds();
         }
     }
+
+    public void Knockback(float force)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -95,7 +95,7 @@ public abstract class Enemy : Agent, IDamageable
         }
     }
 
-    public void KnockBack(Vector3 direction, float force)
+    public void Knockback(float force)
     {
         navMesh.velocity = (direction * -1f) * force;
     }

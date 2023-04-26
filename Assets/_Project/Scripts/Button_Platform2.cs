@@ -136,4 +136,9 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
     {
 
     }
+
+    public void Knockback(float force)
+    {
+        throw new NotImplementedException();
+    }
 }
