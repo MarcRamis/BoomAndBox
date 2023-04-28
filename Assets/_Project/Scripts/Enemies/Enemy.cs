@@ -80,6 +80,9 @@ public abstract class Enemy : Agent, IDamageable
     
     public virtual void OnDeath()
     {
+        //Call event to advise warn combat event
+        if (EventsSystem.current != null)
+            EventsSystem.current.EnemyDeath();
     }
 
     // Functions

@@ -43,7 +43,7 @@ public class CombatSystem : MonoBehaviour
     private void Awake()
     {
         player = GetComponent<Player>();
-        rythmSystem = GameObject.FindGameObjectWithTag("MainSoundtrack").GetComponent<RythmSystem>();
+        //rythmSystem = GameObject.FindGameObjectWithTag("MainSoundtrack").GetComponent<RythmSystem>();
         
         player.myInputs.OnAttackPerformed += DoAttack;
     }
@@ -55,7 +55,7 @@ public class CombatSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rythmMoment = rythmSystem.IsRythmMoment();
+        //rythmMoment = rythmSystem.IsRythmMoment();
 
         if (hitIsOn)
         {
@@ -71,15 +71,15 @@ public class CombatSystem : MonoBehaviour
             {
                 attackIsReady = false;
                 
-                if (rythmMoment)
-                {
-                    //Debug.Log("Attack on rythm");
-                }
-                else
-                {
-                    //Debug.Log("Attack NORMAL");
-                    
-                }
+                //if (rythmMoment)
+                //{
+                //    //Debug.Log("Attack on rythm");
+                //}
+                //else
+                //{
+                //    //Debug.Log("Attack NORMAL");
+                //    
+                //}
 
                 player.feedbackController.PlayAttack();
                 weaponFeedbackController.PlayAttack();

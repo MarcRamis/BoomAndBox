@@ -144,7 +144,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             case EPlayerModeState.REGULAR:
                 throwingSystem.YesMode();
-                //combatSystem.HideWeapon();
+                combatSystem.HideWeapon();
                 break;
             case EPlayerModeState.AIMING:
                 break;
