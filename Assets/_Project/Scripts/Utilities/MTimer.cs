@@ -43,4 +43,9 @@ public class MTimer
     {
         this.timeLimit = timeLimit;
     }
+
+    public float GetElapsedTime()
+    {
+        return elapsedTime;
+    }
 }

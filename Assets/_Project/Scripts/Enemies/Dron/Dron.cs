@@ -10,7 +10,7 @@ public class Dron : Enemy
     [SerializeField] private Transform wheelModel;
     [SerializeField] private float multiplierWheelSpeed;
 
-    // Constant variables
+    // Constant variables 
 
     // Internal variables
     [SerializeField] private LayerMask fallingMask;
@@ -46,9 +46,13 @@ public class Dron : Enemy
     
     public override void Damage(int damageAmount)
     {
+        if (!justReceivedDamage)
+        {
+            stateMachine.ChangeState(EAIState.RECEIVE_DAMAGE);
+            feedbackController.PlayTakeDamage();
+        }
+        
         base.Damage(damageAmount);
-
-        feedbackController.PlayTakeDamage();
     }
 
     public override void OnDeath()
@@ -84,4 +88,5 @@ public class Dron : Enemy
         }
     }
 
+    
 }

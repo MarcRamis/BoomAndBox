@@ -15,10 +15,10 @@ public abstract class Enemy : Agent, IDamageable
     [HideInInspector] public bool isGrounded;
 
     // Internal variables
-    private bool justReceivedDamage = false;
+    protected bool justReceivedDamage = false;
 
     // Constant variables
-    private const float justReceivedDamageTimer = 0.2f;
+    private const float justReceivedDamageTimer = 0.3f;
     private const float gravityAddition = 2.0f;
 
     // Awake
@@ -93,5 +93,10 @@ public abstract class Enemy : Agent, IDamageable
         {
 
         }
+    }
+
+    public void Knockback(float force)
+    {
+        navMesh.velocity = (direction * -1f) * force;
     }
 }

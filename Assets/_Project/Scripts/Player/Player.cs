@@ -12,6 +12,9 @@ public class Player : MonoBehaviour, IDamageable
     
     [Header("References")]
     [SerializeField] public IInteractuable currentInteraction;
+    [SerializeField] public Transform model;
+    [SerializeField] public Transform orientation;
+    [SerializeField] public Transform fullOrientation;
     
     [Header("Settings")]
     [SerializeField] private int health;
@@ -29,7 +32,8 @@ public class Player : MonoBehaviour, IDamageable
     [HideInInspector] public PlayerFeedbackController feedbackController;
     
     [HideInInspector] public Rigidbody playerRigidbody;
-    
+    [HideInInspector] public Transform beingTargettedBy = null;
+
     // Internal variables
     private bool justReceivedDamage = false;
     private bool godMode = true;
@@ -49,7 +53,7 @@ public class Player : MonoBehaviour, IDamageable
         myInputs.OnInteractPerformed += DoInteract;
         
         Health = health;
-        SetNewState(EPlayerModeState.REGULAR);
+        SetNewState(modeState);
     }
     
     // Update
@@ -203,5 +207,10 @@ public class Player : MonoBehaviour, IDamageable
             currentInteraction = null;
             interactuable.InteractEnds();
         }
+    }
+
+    public void Knockback(float force)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -16,15 +16,19 @@ public class DronFeedbackController : AgentFeedbackController
     
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private GameObject dronChargingPrefab;
-
+    [SerializeField] private GameObject receiveHitPrefab;
+    
     [SerializeField] private TrailRenderer trail1;
     [SerializeField] private TrailRenderer trail2;
     [SerializeField] private TrailRenderer trail3;
+    
+    [SerializeField] private Transform hitPosition;
 
     /////////// TAKE DAMAGE
     public override void PlayTakeDamage()
     {
         damageFeedback.PlayFeedbacks();
+        Instantiate(receiveHitPrefab, hitPosition.position, hitPosition.rotation);
     }
 
     /////////// DIE
@@ -50,12 +54,17 @@ public class DronFeedbackController : AgentFeedbackController
     /////////// CHARGE
     public override void PlayCharge()
     {
+        trail1.emitting = true;
+        trail2.emitting = true;
+        trail3.emitting = true;
         chargeFeedback.PlayFeedbacks();
     }
 
     public override void StopCharge()
     {
-        //Debug.Log("entro");
+        trail1.emitting = false;
+        trail2.emitting = false;
+        trail3.emitting = false;
         chargeFeedback.StopFeedbacks();
     }
 
@@ -70,7 +79,7 @@ public class DronFeedbackController : AgentFeedbackController
         walkFeedback.PlayFeedbacks();
     }
     /////////// RUN
-    public virtual void PlayRun()
+    public override void PlayRun()
     {
         runFeedback.PlayFeedbacks();
     }
