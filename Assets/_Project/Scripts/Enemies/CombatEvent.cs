@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CombatEvent : MonoBehaviour
 {
@@ -18,6 +20,9 @@ public class CombatEvent : MonoBehaviour
     public EnemyRound[] enemyRounds;
 
     public GameObject[] enemySpawners;
+
+    [Header("Events")]
+    [SerializeField] private UnityEvent EndCombatEvent;
 
     private bool combatZoneActivated = false;
     private int currentCombatRound = 0;
@@ -77,6 +82,9 @@ public class CombatEvent : MonoBehaviour
     public void CombatZoneEnd()
     {
         combatZoneActivated = false;
+        player.SetNewState(EPlayerModeState.REGULAR);
+        enemySpawners[0].GetComponent<EnemySpawner>().ShowDestroyedSpawner();
+        EndCombatEvent?.Invoke();
         this.gameObject.SetActive(false);
     }
 

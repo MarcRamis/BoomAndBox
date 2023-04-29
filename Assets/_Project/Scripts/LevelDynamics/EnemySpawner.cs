@@ -70,4 +70,10 @@ public class EnemySpawner : MonoBehaviour
     {
         return onUse;
     }
+
+    public void ShowDestroyedSpawner()
+    {
+        feedbackController.PlayDestroyedFeedback();
+    }
+
 }
