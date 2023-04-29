@@ -28,7 +28,7 @@ public class Hittable : MonoBehaviour, IDamageable
             Invoke(nameof(ResetDamage), justTakenDamageCd);
         }
         
-        Debug.Log(Health);
+        //Debug.Log(Health);
         
         if (Health <= 0)
         {
@@ -48,6 +48,6 @@ public class Hittable : MonoBehaviour, IDamageable
 
     public void Knockback(float force)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }

@@ -23,7 +23,7 @@ public class CombatEvent : MonoBehaviour
     private int currentCombatRound = 0;
     private int enemiesDefeated = 0;
 
-    private void Awake()
+    private void Start()
     {
         if(EventsSystem.current != null)
             EventsSystem.current.onEnemyDeath += OnEnemyDeath;
@@ -33,7 +33,9 @@ public class CombatEvent : MonoBehaviour
     {
         if(combatZoneActivated)
         {
-            if(enemyRounds[currentCombatRound].numberEnemies <= enemiesDefeated)
+            enemiesDefeated++;
+
+            if (enemyRounds[currentCombatRound - 1].numberEnemies <= enemiesDefeated)
             {
                 if(currentCombatRound > enemyRounds.Length - 1)
                 {
@@ -43,14 +45,9 @@ public class CombatEvent : MonoBehaviour
                 else
                 {
                     enemiesDefeated = 0;
-                    currentCombatRound++;
                     StartRound();
                 }
                 
-            }
-            else
-            {
-                enemiesDefeated++;
             }
         }
     }
@@ -74,9 +71,21 @@ public class CombatEvent : MonoBehaviour
 
     public void StartRound()
     {
+        StartCoroutine(SpawnEnemies());
+    }
+
+    public void CombatZoneEnd()
+    {
+        combatZoneActivated = false;
+        this.gameObject.SetActive(false);
+    }
+
+    IEnumerator SpawnEnemies()
+    {
         int currentEnemiesSpawned = 0;
         while (currentEnemiesSpawned < enemyRounds[currentCombatRound].numberEnemies)
         {
+            yield return null;
             for (int i = 0; i < enemySpawners.Length; i++)
             {
                 EnemySpawner tempSpawner = enemySpawners[i].GetComponent<EnemySpawner>();
@@ -88,13 +97,7 @@ public class CombatEvent : MonoBehaviour
                 }
             }
         }
-
-    }
-
-    public void CombatZoneEnd()
-    {
-        combatZoneActivated = false;
-        this.gameObject.SetActive(false);
+        currentCombatRound++;
     }
 
 }

@@ -1,26 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private EnemySpawnerFeedbackController feedbackController;
     [Space]
     [SerializeField] private float timeIsOpen = 4.0f;
+    [SerializeField] private Transform spawnPos = null;
+    [SerializeField] private GameObject enemyPref;
 
     private bool onWait = false;
     private float time = 0.0f;
     private bool onUse = false;
+    private GameObject enemy;
 
     private void Update()
     {
-        if(onWait)
+        if (onWait)
             Wait();
     }
 
     private void Wait()
     {
-        if(time >= timeIsOpen)
+        if (time >= timeIsOpen)
         {
             onWait = false;
             time = 0.0f;
@@ -35,18 +39,26 @@ public class EnemySpawner : MonoBehaviour
     public void StartTimer()
     {
         onWait = true;
-        InstantiateEnemy();
     }
 
     public void StartSpawnEnemy()
     {
         onUse = true;
-        feedbackController.PlayOpenFeedback();
+        feedbackController.PlayMoveFeedback();
     }
 
     public void InstantiateEnemy()
     {
+        enemy = Instantiate(enemyPref, spawnPos);
+        feedbackController.PlayEnemyMoveFeedback();
+        //StartCoroutine(MoveEnemy());
+        //enemy.GetComponent<NavMeshAgent>().enabled = true;
+    }
 
+    public void EnemySetNavMesh()
+    {
+        spawnPos.DetachChildren();
+        enemy.GetComponent<NavMeshAgent>().enabled = true;
     }
 
     public void EndSpawning()
@@ -58,5 +70,4 @@ public class EnemySpawner : MonoBehaviour
     {
         return onUse;
     }
-
 }

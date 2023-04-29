@@ -7,7 +7,9 @@ public class EnemySpawnerFeedbackController : MonoBehaviour
 {
     [SerializeField] private MMFeedbacks moveFeedback;
     [SerializeField] private MMFeedbacks openFeedback;
+    [SerializeField] private MMFeedbacks closeFeedback;
     [SerializeField] private MMFeedbacks hideFeedback;
+    [SerializeField] private MMFeedbacks enemyMoveFeedback;
 
     public void PlayMoveFeedback()
     {
@@ -21,11 +23,17 @@ public class EnemySpawnerFeedbackController : MonoBehaviour
 
     public void PlayCloseFeedback()
     {
-        openFeedback.PlayFeedbacksInReverse();
+        closeFeedback.PlayFeedbacks();
     }
 
     public void PlayHideFeedback()
     {
         hideFeedback.PlayFeedbacks();
     }
+
+    public void PlayEnemyMoveFeedback()
+    {
+        enemyMoveFeedback.PlayFeedbacks();
+    }
+
 }
