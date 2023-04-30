@@ -73,7 +73,21 @@ public class EnemySpawner : MonoBehaviour
 
     public void ShowDestroyedSpawner()
     {
-        feedbackController.PlayDestroyedFeedback();
+        StartCoroutine(WaitOnUse());
+    }
+
+    IEnumerator WaitOnUse()
+    {      
+        while (true)
+        {
+            yield return null;
+            if(!onUse)
+            {
+                feedbackController.PlayDestroyedFeedback();
+                break;
+            }
+
+        }
     }
 
 }

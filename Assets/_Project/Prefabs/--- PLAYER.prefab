@@ -10911,7 +10911,7 @@ MonoBehaviour:
   standPositionThrow: {fileID: 1582702312}
   toAttach: {fileID: 6449113727373662095}
   objectToThrow: {fileID: 5335073555746238997}
-  companion: {fileID: 0}
+  companion: {fileID: 5403513547559355750}
   throwForce: 50
   throwLargeForce: 100
   throwCooldown: 0.25
@@ -12697,6 +12697,17 @@ MonoBehaviour:
   throwLargeColor: {r: 0, g: 0, b: 0, a: 0}
   trailRenderer: {fileID: 0}
   prefabHitExplosion: {fileID: 100004, guid: fde497abc2338c24bb469d5cf60569d2, type: 3}
+--- !u!114 &5403513547559355750 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7384526047722521122, guid: bddb99df5c4d9a14183ab74212062374, type: 3}
+  m_PrefabInstance: {fileID: 3208315150353794884}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335073555746238997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b088ca87b0320c74cb0c2f358982de32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6449113726961725677 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8501075796917598121, guid: bddb99df5c4d9a14183ab74212062374, type: 3}

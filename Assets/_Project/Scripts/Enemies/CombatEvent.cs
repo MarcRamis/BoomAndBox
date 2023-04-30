@@ -91,7 +91,8 @@ public class CombatEvent : MonoBehaviour
     IEnumerator SpawnEnemies()
     {
         int currentEnemiesSpawned = 0;
-        while (currentEnemiesSpawned < enemyRounds[currentCombatRound].numberEnemies)
+        currentCombatRound++;
+        while (currentEnemiesSpawned < enemyRounds[currentCombatRound - 1].numberEnemies)
         {
             yield return null;
             for (int i = 0; i < enemySpawners.Length; i++)
@@ -105,7 +106,6 @@ public class CombatEvent : MonoBehaviour
                 }
             }
         }
-        currentCombatRound++;
     }
 
 }

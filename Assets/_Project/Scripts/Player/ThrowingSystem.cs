@@ -13,7 +13,7 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private Transform standPositionThrow;
     [SerializeField] private Transform toAttach;
     [SerializeField] public GameObject objectToThrow;
-    [HideInInspector] public Companion companion;
+    [SerializeField] public Companion companion;
     [HideInInspector] private PlayerMovementSystem pm;
     [HideInInspector] private Player player;
 
