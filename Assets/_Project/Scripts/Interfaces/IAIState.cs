@@ -2,7 +2,9 @@
 {
     RANDOM_WALK,
     CHASE_PLAYER,
-    CHARGE
+    CHARGE,
+    RECEIVE_DAMAGE,
+    KEEP_DISTANCE
 }
 
 public interface IAIState

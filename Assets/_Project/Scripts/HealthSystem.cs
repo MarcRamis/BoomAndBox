@@ -57,20 +57,16 @@ public class HealthSystem : MonoBehaviour
     {
         Transform tempTrans = hearts[4].transform;
 
-        Debug.Log("Global pos:" + tempTrans.position);
-        Debug.Log("Local pos:" + tempTrans.localPosition);
         tempTrans = transform.parent.GetComponent<RectTransform>();
         Vector3 acumPos = Vector3.zero;
         while (tempTrans != null)
         {
             if (tempTrans.GetComponent<RectTransform>() == null)
                 break;
-            Debug.Log(tempTrans.transform.name);
             acumPos += tempTrans.GetComponent<RectTransform>().position;
             tempTrans = tempTrans.parent;
         }
-        Debug.Log(acumPos);
-
+        
     }
 
 }

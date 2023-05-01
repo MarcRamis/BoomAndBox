@@ -15,6 +15,7 @@ public class DashingSystem : MonoBehaviour
     [HideInInspector] private PlayerMovementSystem pm;
     [HideInInspector] private ThrowingSystem tr;
     [HideInInspector] private Transform currentTarget;
+    [HideInInspector] public Player playerScript;
     //Inputs
     [HideInInspector] private PlayerInputController myInputs;
     //Feedback
@@ -29,6 +30,7 @@ public class DashingSystem : MonoBehaviour
     
     private void Awake()
     {
+        playerScript = GetComponent<Player>();
         m_Rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovementSystem>();
         tr = GetComponent<ThrowingSystem>();
@@ -61,14 +63,17 @@ public class DashingSystem : MonoBehaviour
 
     private void DoDash()
     {
-        if (currentTarget != null)
+        if (playerScript.CanDash())
         {
-            // Can't dash when companion is in mode: comeback, attached
-            if (tr.companion.CanDash() && !pm.isDashing)
+            if (currentTarget != null)
             {
-                pm.isDashing = true;
-                tr.companion.SetNewState(ECompanionState.RETAINED);
-                playerFeedbackController.PlayDashFeedback();
+                // Can't dash when companion is in mode: comeback, attached
+                if (tr.companion.CanDash() && !pm.isDashing)
+                {
+                    pm.isDashing = true;
+                    tr.companion.SetNewState(ECompanionState.RETAINED);
+                    playerFeedbackController.PlayDashFeedback();
+                }
             }
         }
     }

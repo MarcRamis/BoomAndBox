@@ -42,12 +42,7 @@ public class Cheats : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player");
         }
 
-        //if(Invencibility_Event == null)
-        //    Invencibility_Event = new InvencibilityEvent();
-        //if (CheckPoint_Event == null)
-        //    CheckPoint_Event = new TeleporttEvent();
-        //if(Restart_Event == null)
-        //    Restart_Event = new UnityEvent();
+        player.GetComponent<Player>().dashOnboarding = true;
 
     }
 
@@ -105,4 +100,10 @@ public class Cheats : MonoBehaviour
         }
         
     }
+
+    public void GiveDashToPlayer()
+    {
+        player.GetComponent<Player>().dashOnboarding = false;
+    }
+
 }

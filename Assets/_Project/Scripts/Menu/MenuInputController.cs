@@ -13,6 +13,7 @@ public class MenuInputController : MonoBehaviour, PlayerInputActions.IUIActions
 
     // --- Actions
     [HideInInspector] public Action onPauseInput;
+    [HideInInspector] public Action onContinueTextInput;
 
 
     private InputAction escapeMenu;
@@ -87,6 +88,14 @@ public class MenuInputController : MonoBehaviour, PlayerInputActions.IUIActions
             return;
 
         onPauseInput?.Invoke();
+    }
+
+    public void OnContinueText(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+
+        onContinueTextInput?.Invoke();
     }
 
     private void OnDisable()

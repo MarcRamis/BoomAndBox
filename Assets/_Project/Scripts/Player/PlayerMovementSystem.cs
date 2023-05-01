@@ -4,7 +4,8 @@ using UnityEngine;
 using TMPro;
 using MoreMountains.Feedbacks;
 using UnityEngine.InputSystem;
-public enum EMoveState { WALKING, DASHING, AIMING, SLIDING, AIR }
+
+public enum EMoveState { WALKING, DASHING, AIMING, SLIDING, AIR, COMBAT }
 public enum EAnimState { IDLE, RUNNING }
 
 [RequireComponent(typeof(PlayerInput))]
@@ -15,6 +16,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [HideInInspector] public Rigidbody playerRigidbody;
     [SerializeField] private CapsuleCollider playerCollider;
+    [HideInInspector] public Player playerScript;
     
     [Header("Movement")]
     [SerializeField] private float walkSpeed;
@@ -29,6 +31,7 @@ public class PlayerMovementSystem : MonoBehaviour
     [HideInInspector] public Vector3 moveDirection;
     [HideInInspector] public bool isDashing;
     [HideInInspector] public bool isAiming;
+    [HideInInspector] public bool isCombat;
     [HideInInspector] public bool justHitGround;
     
     [Header("Stairs")]
@@ -69,7 +72,7 @@ public class PlayerMovementSystem : MonoBehaviour
     // this variable exists because setting to true fall instantly wasn't pretty satisfying
     // Also it helps to "hide" partially a problem when u are grounded and sloping on a surface
     [HideInInspector] private float timeToSetFall = 0.15f;
-    [SerializeField] private float fallingthreshold = 0.5f;
+    //[SerializeField] private float fallingthreshold = 0.5f;
 
     //Inputs
     [HideInInspector] public PlayerInputController myInputs;
@@ -103,7 +106,8 @@ public class PlayerMovementSystem : MonoBehaviour
         /* References into the scripts, variable initialization 
          * Reference to components
          * (Important) This method is executed although the script is disabled*/
-
+        
+        playerScript = GetComponent<Player>();
         playerRigidbody = GetComponent<Rigidbody>();
         myInputs = GetComponent<PlayerInputController>();
         playerFeedbackController = GetComponent<PlayerFeedbackController>();
@@ -137,10 +141,9 @@ public class PlayerMovementSystem : MonoBehaviour
         MyInputDirection();
         StartCoyoteTime();
         SpeedControl();
+
         HandleMovementState();
         HandleAnimState();
-
-        // Handle drag
         HandleDrag();
     }
 
@@ -150,7 +153,6 @@ public class PlayerMovementSystem : MonoBehaviour
          * It doesn't depends on the machine is being executed.
          * Here goes: physics movement*/
 
-        
 
         MovePlayer();
         RotateModel();
@@ -186,39 +188,40 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void DoJump()
     {
-        // Jump on ground
-        // Only can jump when is grounded or in coyote time
-        if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
+        if (playerScript.CanJump())
         {
-            coyoteTimeCounter = 0f;
-            readyToJump = false;
+            // Jump on ground
+            // Only can jump when is grounded or in coyote time
+            if ((readyToJump && isGrounded) || (readyToJump && coyoteTimeCounter > 0f))
+            {
+                coyoteTimeCounter = 0f;
+                readyToJump = false;
 
-            ApplyJumpForce();
-            playerFeedbackController.PlayJumpFeedback();
+                ApplyJumpForce();
+                playerFeedbackController.PlayJumpFeedback();
 
-            Invoke(nameof(ResetJump), jumpCooldown);
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
+
+            // Double Jump in air
+            /* Only can jump when jump cooldown is ready to prevent the double jump spam.
+             * There is a counter of double jumps in air the player can make to change if it's necessary.
+
+             * Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in 
+               because it mustn't count.*/
+            else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
+            {
+                isDoubleJumping = true;
+
+                ApplyJumpForce();
+                playerFeedbackController.PlayDoubleJumpFeedback();
+
+                currentDoubleJumps--;
+                timeInAir = 0;
+
+                Invoke(nameof(ResetDoubleJump), jumpCooldown);
+            }
         }
-
-        // Double Jump in air
-        /* Only can jump when jump cooldown is ready to prevent the double jump spam.
-         * There is a counter of double jumps in air the player can make to change if it's necessary.
-
-         * Coyote time is applied but not really necessary. Only to prevent the player doesn't double jump when in 
-           because it mustn't count.*/
-        else if (readyToJump && landing && currentDoubleJumps > 0 && !isDashing && coyoteTimeCounter <= 0f)
-        {
-            isDoubleJumping = true;
-
-            ApplyJumpForce();
-            playerFeedbackController.PlayDoubleJumpFeedback();
-
-            currentDoubleJumps--;
-            timeInAir = 0;
-
-            Invoke(nameof(ResetDoubleJump), jumpCooldown);
-        }
-
-
     }
 
     private void MovePlayer()
