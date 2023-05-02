@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, IDamageable
 
     // Internal variables
     private bool justReceivedDamage = false;
-    private bool godMode = true;
+    private bool godMode;
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
