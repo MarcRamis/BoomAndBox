@@ -8,6 +8,7 @@ using MoreMountains.Feedbacks;
 public class Dron : Enemy
 {
     [SerializeField] private Transform wheelModel;
+
     [SerializeField] private float multiplierWheelSpeed;
 
     // Constant variables 
@@ -65,9 +66,9 @@ public class Dron : Enemy
     
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player" && rigidbody.velocity.magnitude > 0.1f)
+        if (collision.gameObject.tag == "Player" && rigidbody.velocity.magnitude > 0.3f)
         {
-            //collision.gameObject.GetComponent<IDamageable>().Damage(1);
+            collision.gameObject.GetComponent<IDamageable>().Damage(1);
         }
     }
     

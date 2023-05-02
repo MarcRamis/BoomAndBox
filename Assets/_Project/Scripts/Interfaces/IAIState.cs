@@ -4,7 +4,9 @@
     CHASE_PLAYER,
     CHARGE,
     RECEIVE_DAMAGE,
-    KEEP_DISTANCE
+    KEEP_DISTANCE,
+    IDLE,
+    SEEK
 }
 
 public interface IAIState
