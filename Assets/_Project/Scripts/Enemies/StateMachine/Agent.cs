@@ -30,9 +30,9 @@ public abstract class Agent : MonoBehaviour
         stateMachine.RegisterState(new AIIdleState());
         stateMachine.RegisterState(new AISeekState());
         stateMachine.ChangeState(initialState);
-        
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerScript = player.GetComponent<Player>();
+
+        player = ReferenceSingleton.Instance.player;
+        playerScript = ReferenceSingleton.Instance.playerScript;
 
         feedbackController = GetComponent<AgentFeedbackController>();
     }
