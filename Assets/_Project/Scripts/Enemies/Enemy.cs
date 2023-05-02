@@ -54,7 +54,6 @@ public abstract class Enemy : Agent, IDamageable
     public virtual void Init()
     {
         Health = health;
-        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public virtual void Damage(int damageAmount)

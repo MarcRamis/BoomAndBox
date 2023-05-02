@@ -44,8 +44,8 @@ public class AIRandomWalkState : IAIState
 
             timer = agent.config.maxTimeRandomWalk;
         }
-
-        agent.navMesh.destination = currentTarget;
+        
+        agent.ChangeTargetDestination(currentTarget);
     }
 
     // In order to get a random position around the agent i had to
@@ -65,13 +65,6 @@ public class AIRandomWalkState : IAIState
         }
         
         return finalPosition;
-    }
-    private void ActivatePhysics(Agent agent)
-    {
-        agent.rigidbody.isKinematic = true;
-        agent.navMesh.enabled = true;
-        agent.navMesh.angularSpeed = 10000;
-        agent.transform.rotation = Quaternion.identity;
     }
 
 }

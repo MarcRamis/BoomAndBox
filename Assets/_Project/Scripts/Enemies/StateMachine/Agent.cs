@@ -14,25 +14,27 @@ public abstract class Agent : MonoBehaviour
     [HideInInspector] public Player playerScript;
     [HideInInspector] public AIManager manager;
     [HideInInspector] public Vector3 direction;
-    
+
     protected void Awake()
     {
         navMesh = GetComponent<NavMeshAgent>();
-        
+
+        manager = GetComponent<AIManager>();
+
         stateMachine = new AIStateMachine(this);
         stateMachine.RegisterState(new AIChasePlayerState());
         stateMachine.RegisterState(new AIRandomWalkState());
         stateMachine.RegisterState(new AIDronChargeState());
         stateMachine.RegisterState(new AIReceiveDamage());
         stateMachine.RegisterState(new AIKeepDistance());
+        stateMachine.RegisterState(new AIIdleState());
+        stateMachine.RegisterState(new AISeekState());
         stateMachine.ChangeState(initialState);
         
         player = GameObject.FindGameObjectWithTag("Player");
         playerScript = player.GetComponent<Player>();
 
         feedbackController = GetComponent<AgentFeedbackController>();
-        
-        manager = GetComponent<AIManager>();
     }
     protected void Start()
     {
@@ -53,5 +55,10 @@ public abstract class Agent : MonoBehaviour
         dir = dir.normalized;
         
         transform.forward = Vector3.Slerp(transform.forward, dir, Time.fixedDeltaTime * speedRotation);
+    }
+    
+    public void ChangeTargetDestination(Vector3 pos)
+    {
+        navMesh.destination = pos;
     }
 }

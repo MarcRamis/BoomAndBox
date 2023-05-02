@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIManager : MonoBehaviour
 {
+    [SerializeField] public Transform[] seekTargets;
+    
     public virtual void OnEnter(Agent agent)
     {
 
