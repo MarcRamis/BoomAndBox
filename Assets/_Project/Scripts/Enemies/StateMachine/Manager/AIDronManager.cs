@@ -22,7 +22,7 @@ public class AIDronManager : AIManager
                 break;
             case EAIState.IDLE:
 
-                Invoke(nameof(IdleToSeek), 1f);
+                Invoke(nameof(IdleToSeek), 0.8f);
 
                 break;
             case EAIState.SEEK:
@@ -38,7 +38,6 @@ public class AIDronManager : AIManager
         switch (agent.stateMachine.currentState)
         {
             case EAIState.RANDOM_WALK:
-
                 if (IsPlayerNear(agent, agent.config.maxRandomWalkSightRadiusDistance) /*&& agent.playerScript.beingTargettedBy == null*/)
                 {
                     agent.stateMachine.ChangeState(EAIState.CHASE_PLAYER);
@@ -93,8 +92,8 @@ public class AIDronManager : AIManager
 
                 break;
             case EAIState.SEEK:
-                
-                if (IsNear(agent, seekTargets[0], 1f))
+
+                if (IsNear(agent, seekTargets[0], 1.5f))
                 {
                     agent.stateMachine.ChangeState(EAIState.RANDOM_WALK);
                 }
@@ -118,7 +117,7 @@ public class AIDronManager : AIManager
 
     private bool IsNear(Agent agent, Transform target, float distance)
     {
-        return Vector3.Distance(target.position, agent.transform.position) < distance;
+        return Vector3.Distance(new Vector3(target.position.x, 0, target.position.z), new Vector3(agent.transform.position.x, 0, agent.transform.position.z)) < distance;
     }
 
     private void IdleToSeek()

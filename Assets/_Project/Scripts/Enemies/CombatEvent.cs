@@ -112,5 +112,9 @@ public class CombatEvent : MonoBehaviour
             }
         }
     }
-
+    private void OnDisable()
+    {
+        if (EventsSystem.current != null)
+            EventsSystem.current.onEnemyDeath -= OnEnemyDeath;
+    }
 }

@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float timeIsOpen = 4.0f;
     [SerializeField] private Transform spawnPos = null;
     [SerializeField] private GameObject enemyPref;
+    [SerializeField] private Transform enemyToGo;
 
     private bool onWait = false;
     private float time = 0.0f;
@@ -50,9 +51,9 @@ public class EnemySpawner : MonoBehaviour
     public void InstantiateEnemy()
     {
         enemy = Instantiate(enemyPref, spawnPos);
-        feedbackController.PlayEnemyMoveFeedback();
-        //StartCoroutine(MoveEnemy());
-        //enemy.GetComponent<NavMeshAgent>().enabled = true;
+        enemy.GetComponent<AIDronManager>().seekTargets[0] = enemyToGo;
+        //feedbackController.PlayEnemyMoveFeedback(); //Cambiar por un invoke que apunte a EnemySetNavMesh()
+        Invoke(nameof(EnemySetNavMesh), 0.2f);
     }
 
     public void EnemySetNavMesh()

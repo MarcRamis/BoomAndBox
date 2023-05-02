@@ -86,7 +86,14 @@ public class Player : MonoBehaviour, IDamageable
 
             if(Health <= 0)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Health = health;
+
+                if(EventsSystem.current != null)
+                {
+                    EventsSystem.current.PlayerDeath();
+                }
+
             }
         }
     }
