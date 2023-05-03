@@ -44,6 +44,8 @@ public class CombatSystem : MonoBehaviour
     private readonly int maxFrameBuffer = 10;
     private readonly int maxRythmCombo = 3;
     
+    public int combocounter;
+
     MTimer rythmMomentTimer;
     Combo rythmCombo;
 
@@ -63,6 +65,8 @@ public class CombatSystem : MonoBehaviour
     
     private void Update()
     {
+        combocounter = rythmCombo.GetComboCounter();
+
         Rythm();
         collisionSize = weaponCollider.size;
     }
@@ -160,8 +164,12 @@ public class CombatSystem : MonoBehaviour
         //{
         //    trailFillerList = FillTrail(trailList.First.Value, trailList.Last.Value);
         //}
-        
-        // Real collider
+
+        RealCollider(bo);
+    }
+
+    private void RealCollider(BufferObj bo)
+    {
         Collider[] hits = Physics.OverlapBox(bo.pos, bo.size / 2, bo.rot, hittableLayers, QueryTriggerInteraction.Ignore);
         Dictionary<long, Collider> colliderList = new Dictionary<long, Collider>();
 
@@ -172,12 +180,16 @@ public class CombatSystem : MonoBehaviour
             CollectColliders(hits, colliderList);
         }
 
-        foreach(Collider other in colliderList.Values)
+        Damage(colliderList);
+    }
+
+    private void Damage(Dictionary<long, Collider> colliderList)
+    {
+        foreach (Collider other in colliderList.Values)
         {
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(1);
                 HandleCombo(damageable);
                 player.feedbackController.PlayHit();
             }
@@ -190,7 +202,34 @@ public class CombatSystem : MonoBehaviour
 
     private void HandleCombo(IDamageable damageable)
     {
-        damageable.Knockback(15f);
+        switch (rythmCombo.GetComboCounter())
+        {
+            case 0:
+                Debug.Log("entro aqui");
+                damageable.Damage(1);
+                damageable.Knockback(3f);
+                break;
+
+            case 1:
+                damageable.Damage(2);
+                damageable.Knockback(5f);
+                break;
+
+            case 2:
+
+                damageable.Damage(5);
+                damageable.Knockback(5f);
+                break;
+                
+            case 3:
+                
+                damageable.Damage(10);
+                damageable.Knockback(15f);
+                break;
+
+            default:
+                break;
+        };
     }
 
     public void ShowWeapon()
