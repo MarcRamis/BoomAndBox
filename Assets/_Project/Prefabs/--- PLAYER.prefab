@@ -2966,8 +2966,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1085861683}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0045488626, y: -1.6678962, z: 0.1635696}
+  m_LocalRotation: {x: 0.08248928, y: -0.00022506711, z: 0.00000007078051, w: 0.9965919}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11360,10 +11360,13 @@ MonoBehaviour:
   hitOnStartCd: 0.2
   hitOnFinishCd: 0.55
   returnControlsAfterAttackCd: 0.55
-  attackImpulse: 50
+  attackImpulse: 20
   collisionSize: {x: 0, y: 0, z: 0}
   sizeSmall: 0
   attackIsReady: 1
+  canRythm: 0
+  rythmOnce: 1
+  combocounter: 0
 --- !u!1 &6449113727740359225
 GameObject:
   m_ObjectHideFlags: 0
@@ -12236,8 +12239,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.2601066, y: 0.8734171, z: 0.88160074}
-  m_Center: {x: -0.06286583, y: -0.0031140652, z: 1.2369387}
+  m_Size: {x: 3.1945024, y: 1.9570656, z: 2.2250795}
+  m_Center: {x: -0.530063, y: -0.11692787, z: 1.9086651}
 --- !u!1001 &3208315150353794884
 PrefabInstance:
   m_ObjectHideFlags: 0

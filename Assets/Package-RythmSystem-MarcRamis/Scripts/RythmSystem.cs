@@ -36,7 +36,7 @@ public class RythmSystem : MonoBehaviour
         //SetNewMode(rythmMode);
     }
     
-    private void Update()
+    private void FixedUpdate()
     {
         CheckIfMusicFinalized();
         ManageInputs(); // para testear rápido diferentes canciones

@@ -81,6 +81,7 @@ public class CombatSystem : MonoBehaviour
             
             if (rythmOnce)
             {
+                player.feedbackController.PlayRythmMoment();
                 rythmOnce = false;
                 // play feedback here
             }
@@ -92,6 +93,7 @@ public class CombatSystem : MonoBehaviour
     {
         canRythm = false;
         rythmOnce = true;
+        player.feedbackController.StopRythmMoment();
     }
 
     private void FixedUpdate()
@@ -113,6 +115,8 @@ public class CombatSystem : MonoBehaviour
                 if (canRythm)
                 {
                     rythmCombo.SumCombo();
+                    player.feedbackController.PlayRythmed();
+                    Invoke(nameof(StopFeedbackRythmed), 0.3f);
                 }
                 else
                 {
@@ -130,7 +134,12 @@ public class CombatSystem : MonoBehaviour
             }
         }
     }
-    
+
+    private void StopFeedbackRythmed()
+    {
+        player.feedbackController.StopRythmed();
+    }
+
     private void ResetAttack()
     {
         attackIsReady = true;
@@ -190,6 +199,8 @@ public class CombatSystem : MonoBehaviour
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
+                //damageable.Damage(1);
+                //damageable.Knockback(15f);
                 HandleCombo(damageable);
                 player.feedbackController.PlayHit();
             }
@@ -205,26 +216,28 @@ public class CombatSystem : MonoBehaviour
         switch (rythmCombo.GetComboCounter())
         {
             case 0:
-                Debug.Log("entro aqui");
+
                 damageable.Damage(1);
-                damageable.Knockback(3f);
+                damageable.Knockback(5f);
+                
                 break;
 
             case 1:
-                damageable.Damage(2);
+                damageable.Damage(1);
                 damageable.Knockback(5f);
                 break;
 
             case 2:
 
                 damageable.Damage(5);
-                damageable.Knockback(5f);
+                damageable.Knockback(10f);
                 break;
                 
             case 3:
-                
+
                 damageable.Damage(10);
                 damageable.Knockback(15f);
+                bool rythm = rythmCombo.ComboAccomplished();
                 break;
 
             default:

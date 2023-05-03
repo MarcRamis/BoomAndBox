@@ -48,6 +48,5 @@ public class Hittable : MonoBehaviour, IDamageable
 
     public void Knockback(float force)
     {
-        throw new NotImplementedException();
     }
 }

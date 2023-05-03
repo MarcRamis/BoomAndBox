@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerFeedbackController : FeedbackController
 {
@@ -28,6 +29,9 @@ public class PlayerFeedbackController : FeedbackController
     
     [Space]
     [SerializeField] private GameObject speedPs;
+    [SerializeField] private GameObject rythmFoot;
+    [SerializeField] private DecalProjector rythmShadow;
+    [SerializeField] private GameObject rythmCombo;
     [Space]
     [SerializeField] private Image cursor;
     [Space]
@@ -116,6 +120,30 @@ public class PlayerFeedbackController : FeedbackController
         playerCharacterAnimations.PlayAttack();
         //trailLeftHand.emitting = true;
         //trailRightHand.emitting = true;
+    }
+
+    /////////// RYTHM
+    public void PlayRythmMoment()
+    {
+        rythmFoot.SetActive(true);
+        rythmShadow.size = new Vector3(4,4, rythmShadow.size.z);
+    }
+
+    public void StopRythmMoment()
+    {
+        rythmFoot.SetActive(false);
+        rythmShadow.size = new Vector3(2, 2, rythmShadow.size.z);
+    }
+
+    /////////// RYTHM OPPORTUNITY ADQUIRED
+    public void PlayRythmed()
+    {
+        rythmCombo.SetActive(true);
+    }
+
+    public void StopRythmed()
+    {
+        rythmCombo.SetActive(false);
     }
 
     /////////// HIT IMPACT
