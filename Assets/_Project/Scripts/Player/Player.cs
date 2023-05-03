@@ -37,7 +37,7 @@ public class Player : MonoBehaviour, IDamageable
 
     // Internal variables
     private bool justReceivedDamage = false;
-    private bool godMode = true;
+    private bool godMode;
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
@@ -92,9 +92,15 @@ public class Player : MonoBehaviour, IDamageable
 
             if(Health <= 0)
             {
-                //Restart_Event?.Invoke();
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Health = health;
+
+                if(EventsSystem.current != null)
+                {
+                    EventsSystem.current.PlayerDeath();
+                }
+
                 JSON_Creator.Instance.LevelRestart();
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
     }

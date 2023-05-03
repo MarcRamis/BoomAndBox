@@ -17,6 +17,7 @@ public class EventsSystem : MonoBehaviour
     public event Action onCoinCollected;
     public event Action onCheckPointActivated;
     public event Action onEnemyDeath;
+    public event Action onPlayerDeath;
     public void CoinCollected()
     {
         if(onCoinCollected != null)
@@ -38,6 +39,14 @@ public class EventsSystem : MonoBehaviour
         if(onEnemyDeath != null)
         {
             onEnemyDeath();
+        }
+    }
+
+    public void PlayerDeath()
+    {
+        if(onPlayerDeath != null)
+        {
+            onPlayerDeath();
         }
     }
 }

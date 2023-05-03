@@ -97,6 +97,11 @@ public class CombatEvent : MonoBehaviour
             yield return null;
             for (int i = 0; i < enemySpawners.Length; i++)
             {
+                if(currentEnemiesSpawned >= enemyRounds[currentCombatRound - 1].numberEnemies)
+                {
+                    break;
+                }
+
                 EnemySpawner tempSpawner = enemySpawners[i].GetComponent<EnemySpawner>();
 
                 if (!tempSpawner.GetIsInUse())
@@ -107,5 +112,9 @@ public class CombatEvent : MonoBehaviour
             }
         }
     }
-
+    private void OnDisable()
+    {
+        if (EventsSystem.current != null)
+            EventsSystem.current.onEnemyDeath -= OnEnemyDeath;
+    }
 }

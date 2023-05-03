@@ -366,7 +366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Feedbacks:
   - {fileID: 1759863824}
-  InitializationMode: 2
+  InitializationMode: 1
   SafeMode: 3
   Direction: 0
   AutoChangeDirectionOnEnd: 0
@@ -650,10 +650,10 @@ GameObject:
   - component: {fileID: 8393787382673253117}
   - component: {fileID: 8393787382673253092}
   - component: {fileID: 6024203415204909238}
-  - component: {fileID: 6338881978650031064}
   - component: {fileID: 8393787382673253088}
   - component: {fileID: 8393787382673253091}
   - component: {fileID: 851537695}
+  - component: {fileID: 314070927}
   m_Layer: 11
   m_Name: Dron
   m_TagString: Enemy
@@ -717,7 +717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154cec5dfc9dc8040a00a0771480aa55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialState: 0
+  initialState: 5
   navMesh: {fileID: 0}
   config: {fileID: 11400000, guid: 82ec18ac56ab1d647bfb9865d1a85c3f, type: 2}
   rigidbody: {fileID: 8393787382673253117}
@@ -765,18 +765,6 @@ MonoBehaviour:
   trail2: {fileID: 8393787383875092838}
   trail3: {fileID: 8393787384749218677}
   hitPosition: {fileID: 1519023421}
---- !u!114 &6338881978650031064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8393787382673253103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f31357f8c91dd56418b1acc8ba73d380, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &8393787382673253088
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -828,6 +816,20 @@ CapsuleCollider:
   m_Height: 2.5760927
   m_Direction: 1
   m_Center: {x: 0, y: 0.26809502, z: 0}
+--- !u!114 &314070927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8393787382673253103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ceb18247d693449ada83cd6ed713a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seekTargets:
+  - {fileID: 0}
 --- !u!1 &8393787382936737282
 GameObject:
   m_ObjectHideFlags: 0
