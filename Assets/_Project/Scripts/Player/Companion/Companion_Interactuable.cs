@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Companion_Interactuable : MonoBehaviour, IInteractuable
 {
@@ -14,6 +15,9 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
     [SerializeField] private GameObject objectToPositionate;
     [SerializeField] private GameObject masterLevel;
 
+    [Header("Unity Event")]
+    [SerializeField] private UnityEvent End_Event;
+
     float elapsedTime;
 
     private void Awake()
@@ -22,6 +26,10 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
         //GameObject player = GameObject.FindGameObjectWithTag("Player");
         companionScript = companion.GetComponent<Companion>();
         playerScript = player.GetComponent<Player>();
+
+        if (End_Event == null)
+            End_Event = new UnityEvent();
+
     }
 
     public void InteractStarts()
@@ -53,6 +61,7 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
     {
         companion.SetActive(true);
         companionScript.SetNewState(ECompanionState.ATTACHED);
+        End_Event?.Invoke();
         Destroy(gameObject);
     }
 }

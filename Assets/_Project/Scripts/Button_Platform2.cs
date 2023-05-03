@@ -70,7 +70,7 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
                         break;
 
                     case PlatformAction.Activate:
-                        if (platformsToAppear[0] != null)
+                        if (platformsToAppear.Length > 0 && platformsToAppear[0] != null)
                         {
                             foreach (var platform in platformsToAppear)
                             {
@@ -135,5 +135,10 @@ public class Button_Platform2 : MonoBehaviour, IDamageable, IEvent
     public void EventAction(GameObject _gameobject)
     {
 
+    }
+
+    public void Knockback(float force)
+    {
+        throw new NotImplementedException();
     }
 }
