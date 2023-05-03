@@ -18,7 +18,6 @@ public class CombatSystem : MonoBehaviour
     [HideInInspector] public bool hitIsOn = false;
     
     [HideInInspector] private Player player;
-    [HideInInspector] private RythmSystem rythmSystem;
     
     [Header("References")]
     [SerializeField] private GameObject weaponGameObject;
@@ -36,27 +35,63 @@ public class CombatSystem : MonoBehaviour
     
     [HideInInspector] public bool attackIsReady = true;
     [HideInInspector] private bool hasHit = false;
-   
+    
     private bool rythmMoment;
+    public bool canRythm;
+    public bool rythmOnce = true; //variable that im using to show the feeback when is the moment of the ryhm
+    private bool rythmOnceMoment = true; //variable that im using to show the feeback that the player could reach at the rythm moment
+    private readonly float rythmOpportunityCd = 0.5f;
     private readonly int maxFrameBuffer = 10;
+    private readonly int maxRythmCombo = 3;
+    
+    MTimer rythmMomentTimer;
+    Combo rythmCombo;
 
     private void Awake()
     {
         player = GetComponent<Player>();
-        rythmSystem = GameObject.FindGameObjectWithTag("MainSoundtrack").GetComponent<RythmSystem>();
         
         player.myInputs.OnAttackPerformed += DoAttack;
+        
+        rythmMomentTimer = new MTimer();
+        rythmMomentTimer.SetTimeLimit(rythmOpportunityCd);
+        rythmMomentTimer.OnTimerEnd += ResetRythm;
+
+        rythmCombo = new Combo();
+        rythmCombo.SetMaxCombo(maxRythmCombo);
     }
     
     private void Update()
     {
+        Rythm();
         collisionSize = weaponCollider.size;
+    }
+    
+    private void Rythm()
+    {
+        rythmMoment = RythmSystem.instance.IsRythmBaseMoment();
+        if (rythmMoment)
+        {
+            canRythm = true;
+            rythmMomentTimer.StartTimer();
+            
+            if (rythmOnce)
+            {
+                rythmOnce = false;
+                // play feedback here
+            }
+        }
+        rythmMomentTimer.Update(Time.deltaTime);
+    }
+
+    private void ResetRythm()
+    {
+        canRythm = false;
+        rythmOnce = true;
     }
 
     private void FixedUpdate()
     {
-        rythmMoment = rythmSystem.IsRythmMoment();
-
         if (hitIsOn)
         {
             CheckTrail();
@@ -71,14 +106,13 @@ public class CombatSystem : MonoBehaviour
             {
                 attackIsReady = false;
                 
-                if (rythmMoment)
+                if (canRythm)
                 {
-                    //Debug.Log("Attack on rythm");
+                    rythmCombo.SumCombo();
                 }
                 else
                 {
-                    //Debug.Log("Attack NORMAL");
-                    
+                    rythmCombo.ComboFailed();
                 }
 
                 player.feedbackController.PlayAttack();
