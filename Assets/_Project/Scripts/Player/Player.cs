@@ -81,7 +81,16 @@ public class Player : MonoBehaviour, IDamageable
         {
             BlockInputsDamage();
             
-            JSON_Creator.Instance.PlayerDied();
+            //JSON creator events
+            if(damageAmount > 0)
+            {
+                JSON_Creator.Instance.PlayerGetsHit();
+            }
+            else
+            {
+                JSON_Creator.Instance.PlayerFall();
+            }
+            
             // Apply operations
             Health -= damageAmount;
             feedbackController.PlayReceiveDamageFeedback();
@@ -100,7 +109,7 @@ public class Player : MonoBehaviour, IDamageable
                     EventsSystem.current.PlayerDeath();
                 }
 
-                JSON_Creator.Instance.LevelRestart();
+                JSON_Creator.Instance.PlayerDeath();
             }
         }
     }

@@ -18,7 +18,7 @@ public class JSON_Creator : MonoBehaviour
     //CheeckPoint variables
     private double lastCheckPointTimer = 0.0f;
     private int lastCheckPointID = 0;
-    private int numberRestarts = 0;
+    private int numberDeaths = 0;
 
     private void Awake()
     {
@@ -58,7 +58,7 @@ public class JSON_Creator : MonoBehaviour
         //CheeckPoint variables
         lastCheckPointTimer = 0.0f;
         lastCheckPointID = 0;
-        numberRestarts = 0;
+        numberDeaths = 0;
     }
     public void InvencibilityEvent(bool _state)
     {
@@ -80,15 +80,17 @@ public class JSON_Creator : MonoBehaviour
     {
         container.PuzzleAdd(_puzzleID, _puzzleElementOrder, timer);
     }
-    public void PlayerDied()
+    public void PlayerGetsHit()
     {
-        container.DeathCountAdd(timer);
+        container.HitCountAdd(timer);
     }
-    public void LevelRestart()
+    public void PlayerDeath()
     {
-        numberRestarts++;
-
-        container.LevelRestartAdd(numberRestarts, timer);
+        container.PlayerDied(timer);
+    }
+    public void PlayerFall()
+    {
+        container.PlayerFell(timer);
     }
     public void CreateJSON()
     {

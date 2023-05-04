@@ -62,7 +62,7 @@ public class Cheats : MonoBehaviour
             else if (Input.GetKeyDown(restartLevel))
             {
                 //Restart_Event?.Invoke();
-                JSON_Creator.Instance.LevelRestart();
+                JSON_Creator.Instance.PlayerDeath();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
             else if (Input.GetKeyDown(nextCheckPoint))

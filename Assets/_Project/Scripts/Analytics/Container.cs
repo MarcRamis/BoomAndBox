@@ -51,17 +51,24 @@ public struct Puzzle
 
 }
 [System.Serializable]
-public struct DeathCount
+public struct HitCount
 {
     public int idNumber;
     public double timeInGame;
 
 }
 [System.Serializable]
-public struct LevelRestart
+public struct PlayerDeaths
 {
     public int idNumber;
     public double timeInGame; 
+
+}
+[System.Serializable]
+public struct PlayerFall
+{
+    public int idNumber;
+    public double timeInGame;
 
 }
 [System.Serializable]
@@ -72,11 +79,16 @@ public class Container
     public List<Teleport> teleports = new List<Teleport>();
     public List<CheckPoints> checkPointsList = new List<CheckPoints>();
     public List<Puzzle> puzzleList = new List<Puzzle>();
-    public List<DeathCount> deathList = new List<DeathCount>();
-    public List<LevelRestart> levelRestartList = new List<LevelRestart>();
+    public List<HitCount> hitList = new List<HitCount>();
+    public List<PlayerDeaths> levelDeathsList = new List<PlayerDeaths>();
+    public List<PlayerFall> playerFallsList = new List<PlayerFall>();
     public double endTimer = 0.0f;
 
+    private int numberOfHits = 0;
+
     private int numberOfDeaths = 0;
+
+    private int numberOfFalls = 0;
 
     public void InvencibilityAdd(bool _state, double _timeInGame)
     {
@@ -137,21 +149,31 @@ public class Container
 
         puzzleList.Add(_tempPuzzle);
     }
-    public void DeathCountAdd(double _timeInGame) 
+    public void HitCountAdd(double _timeInGame) 
+    {
+        numberOfHits++;
+        HitCount _tempHits = new HitCount();
+        _tempHits.idNumber = numberOfHits;
+        _tempHits.timeInGame = _timeInGame;
+
+        hitList.Add(_tempHits);
+    }
+    public void PlayerDied(double _timeGame)
     {
         numberOfDeaths++;
-        DeathCount _tempDeaths = new DeathCount();
-        _tempDeaths.idNumber = numberOfDeaths;
-        _tempDeaths.timeInGame = _timeInGame;
-
-        deathList.Add(_tempDeaths);
-    }
-    public void LevelRestartAdd(int _idNumber, double _timeGame)
-    {
-        LevelRestart _tempLevelRestart = new LevelRestart();
-        _tempLevelRestart.idNumber = _idNumber;
+        PlayerDeaths _tempLevelRestart = new PlayerDeaths();
+        _tempLevelRestart.idNumber = numberOfDeaths;
         _tempLevelRestart.timeInGame = _timeGame;
 
-        levelRestartList.Add(_tempLevelRestart);
+        levelDeathsList.Add(_tempLevelRestart);
+    }
+    public void PlayerFell(double _timeGame)
+    {
+        numberOfFalls++;
+        PlayerFall _tempLevelRestart = new PlayerFall();
+        _tempLevelRestart.idNumber = numberOfFalls;
+        _tempLevelRestart.timeInGame = _timeGame;
+
+        playerFallsList.Add(_tempLevelRestart);
     }
 }
