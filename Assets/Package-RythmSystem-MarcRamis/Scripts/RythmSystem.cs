@@ -21,7 +21,7 @@ public class RythmSystem : MonoBehaviour
     
     [HideInInspector] private AudioSource audioBase;
     [HideInInspector] public AudioSource audioExtraBase;
-    [HideInInspector] private float[] audioSamples = new float[512]; // Array para almacenar los datos de audio
+    [HideInInspector] private float[] audioSamples = new float[2048]; // Array para almacenar los datos de audio
     
     public ESimonMode simonMode = ESimonMode.EXAMPLE_SIMON;
 
