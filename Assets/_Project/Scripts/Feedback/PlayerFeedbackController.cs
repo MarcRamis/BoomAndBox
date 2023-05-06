@@ -19,6 +19,8 @@ public class PlayerFeedbackController : FeedbackController
     [SerializeField] private MMFeedbacks dashFeedback;
     [SerializeField] private MMFeedbacks receiveDamageFeedback;
     [SerializeField] private MMFeedbacks hitImpactFeedback;
+    [SerializeField] private MMFeedbacks attackFeedback;
+    [SerializeField] private MMFeedbacks rhythmFeedback;
 
     [Space]
     [SerializeField] private TrailRenderer trailLeftShoe;
@@ -32,6 +34,8 @@ public class PlayerFeedbackController : FeedbackController
     [SerializeField] private GameObject rythmFoot;
     [SerializeField] private DecalProjector rythmShadow;
     [SerializeField] private GameObject rythmCombo;
+    [SerializeField] private GameObject splashPrefab;
+
     [Space]
     [SerializeField] private Image cursor;
     [Space]
@@ -115,9 +119,10 @@ public class PlayerFeedbackController : FeedbackController
     }
 
     /////////// Attack
-    public void PlayAttack()
+    public void PlayAttack(int counter)
     {
-        playerCharacterAnimations.PlayAttack();
+        playerCharacterAnimations.PlayAttack(counter);
+        attackFeedback.PlayFeedbacks();
         //trailLeftHand.emitting = true;
         //trailRightHand.emitting = true;
     }
@@ -125,12 +130,15 @@ public class PlayerFeedbackController : FeedbackController
     /////////// RYTHM
     public void PlayRythmMoment()
     {
+
+        splashPrefab.SetActive(true);
         rythmFoot.SetActive(true);
         rythmShadow.size = new Vector3(4,4, rythmShadow.size.z);
     }
 
     public void StopRythmMoment()
     {
+        splashPrefab.SetActive(false);
         rythmFoot.SetActive(false);
         rythmShadow.size = new Vector3(2, 2, rythmShadow.size.z);
     }
@@ -138,6 +146,7 @@ public class PlayerFeedbackController : FeedbackController
     /////////// RYTHM OPPORTUNITY ADQUIRED
     public void PlayRythmed()
     {
+        rhythmFeedback.PlayFeedbacks();
         rythmCombo.SetActive(true);
     }
 
