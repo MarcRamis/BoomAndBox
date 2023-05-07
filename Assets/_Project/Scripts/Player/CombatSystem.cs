@@ -77,14 +77,19 @@ public class CombatSystem : MonoBehaviour
 
     private void Update()
     {
-        combocounter = rythmCombo.GetComboCounter();
+        if (player.CanCombat())
+        {
+            combocounter = rythmCombo.GetComboCounter();
+            Rythm();
+        }
 
-        Rythm();
         attackTimer.Update(Time.deltaTime);
+        rythmMomentTimer.Update(Time.deltaTime);
     }
     
     private void Rythm()
     {
+        if(player.CanCombat())
         rythmMoment = RythmSystem.instance.IsRythmBaseMoment();
         if (rythmMoment)
         {
@@ -98,7 +103,6 @@ public class CombatSystem : MonoBehaviour
                 // play feedback here
             }
         }
-        rythmMomentTimer.Update(Time.deltaTime);
     }
 
     private void ResetRythm()

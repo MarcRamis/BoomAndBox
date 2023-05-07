@@ -115,6 +115,11 @@ public class ThrowingSystem : MonoBehaviour
 
     public void NotMode()
     {
+        if (isAiming)
+        {
+            SwapAim();
+            playerFeedbackController.StopAimingFeedback();
+        }
         companion.gameObject.SetActive(false);
     }
     
