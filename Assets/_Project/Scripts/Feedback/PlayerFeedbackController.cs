@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class PlayerFeedbackController : FeedbackController
 {
     [SerializeField] private AudioClip receiveDamageSound;
+    [SerializeField] private AudioClip attackSound;
     
     [Header("Visual Effects")]
     [Space]
@@ -121,6 +122,7 @@ public class PlayerFeedbackController : FeedbackController
     /////////// Attack
     public void PlayAttack(int counter)
     {
+        PlaySoundEffect(attackSound, 1.5f);
         playerCharacterAnimations.PlayAttack(counter);
         attackFeedback.PlayFeedbacks();
         //trailLeftHand.emitting = true;
