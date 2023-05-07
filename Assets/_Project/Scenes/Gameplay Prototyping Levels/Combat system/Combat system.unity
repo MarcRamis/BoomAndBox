@@ -691,6 +691,22 @@ Transform:
   m_Father: {fileID: 1062130084}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &387427365 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5335073555746238997, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+  m_PrefabInstance: {fileID: 871937034}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &387427369 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5403513547559355750, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+  m_PrefabInstance: {fileID: 871937034}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387427365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b088ca87b0320c74cb0c2f358982de32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &469334109 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4239078511182192372, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
@@ -1129,7 +1145,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: d29b27771544bd54d8ee9d995d8afa70, type: 3}
     - target: {fileID: 1751291484, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000007078051
+      value: 0.00000006705522
       objectReference: {fileID: 0}
     - target: {fileID: 1813537884, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2164,9 +2180,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 719810781}
     - target: {fileID: 8312429068673006721, guid: 5a784db529d6dbb4598911b15f5a2ea5, type: 3}
+      propertyPath: companion
+      value: 
+      objectReference: {fileID: 387427365}
+    - target: {fileID: 8312429068673006721, guid: 5a784db529d6dbb4598911b15f5a2ea5, type: 3}
       propertyPath: playerScript
       value: 
       objectReference: {fileID: 469334109}
+    - target: {fileID: 8312429068673006721, guid: 5a784db529d6dbb4598911b15f5a2ea5, type: 3}
+      propertyPath: companionScript
+      value: 
+      objectReference: {fileID: 387427369}
     - target: {fileID: 8312429068673006735, guid: 5a784db529d6dbb4598911b15f5a2ea5, type: 3}
       propertyPath: m_Name
       value: ReferenceSingleton
