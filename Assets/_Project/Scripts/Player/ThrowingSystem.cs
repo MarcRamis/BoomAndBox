@@ -108,11 +108,11 @@ public class ThrowingSystem : MonoBehaviour
             companion.SetNewState(ECompanionState.ATTACHED);
             companion.ResetLocalPosition(Vector3.zero);
         }
-
+        
         // timer to throw again
         Invoke(nameof(ResetThrowCooldownWithoutFeedback), throwCooldown);
     }
-
+    
     public void NotMode()
     {
         if (isAiming)

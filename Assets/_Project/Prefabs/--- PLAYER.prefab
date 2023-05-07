@@ -2395,7 +2395,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862171984}
-  m_LocalRotation: {x: 0.0824893, y: -0.00022506711, z: 0.00000007078051, w: 0.9965919}
+  m_LocalRotation: {x: 0.0824893, y: -0.00022506711, z: 0.00000006705522, w: 0.9965919}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3050,7 +3050,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1085861683}
-  m_LocalRotation: {x: 0.0824893, y: -0.00022506711, z: 0.00000007078051, w: 0.9965919}
+  m_LocalRotation: {x: 0.0824893, y: -0.00022506711, z: 0.00000006705522, w: 0.9965919}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9487,7 +9487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1cba05e4f75e82489426a0f40143740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Active: 1
+  Active: 0
   Label: Color Adjustments URP
   Chance: 100
   Timing:
@@ -9620,7 +9620,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   RemapSaturationZero: 0
-  RemapSaturationOne: 100
+  RemapSaturationOne: 0
   ShakeContrast:
     serializedVersion: 2
     m_Curve:
@@ -9655,7 +9655,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   RemapContrastZero: 0
-  RemapContrastOne: 100
+  RemapContrastOne: 0
   ColorFilterMode: 0
   ColorFilterGradient:
     serializedVersion: 2
@@ -11169,7 +11169,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6449113727418759626}
-  m_LocalRotation: {x: 0.03128959, y: 0.6550528, z: -0.027167397, w: 0.7544459}
+  m_LocalRotation: {x: 0.031289585, y: 0.6550528, z: -0.027167397, w: 0.7544459}
   m_LocalPosition: {x: -9.049465, y: -1.7299998, z: -2.3687215}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11437,7 +11437,7 @@ MonoBehaviour:
   orientation: {fileID: 6449113727587546354}
   fullOrientation: {fileID: 1258591283}
   health: 5
-  modeState: 2
+  modeState: 0
   cameraManager: {fileID: 6449113727418759622}
   dashOnboarding: 0
   throwingSystem: {fileID: 0}
@@ -12801,7 +12801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1687118924408352, guid: ffd9cc5c4e14f5f4db662f3cf891083a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4201597293143198, guid: ffd9cc5c4e14f5f4db662f3cf891083a, type: 3}
       propertyPath: m_RootOrder

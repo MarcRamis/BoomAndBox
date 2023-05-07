@@ -24,6 +24,12 @@ public class DronFeedbackController : AgentFeedbackController
     
     [SerializeField] private Transform hitPosition;
 
+    private void Awake()
+    {
+        walkFeedback.Initialization();
+        runFeedback.Initialization();
+    }
+
     /////////// TAKE DAMAGE
     public override void PlayTakeDamage()
     {
