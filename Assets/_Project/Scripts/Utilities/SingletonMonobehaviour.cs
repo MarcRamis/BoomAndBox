@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class SingletonMonobehaviour<T> : MonoBehaviour where T : Component
 {
-    private static T instance;
+    protected static T instance;
 
     public static T Instance
     {
