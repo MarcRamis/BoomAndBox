@@ -26,7 +26,10 @@ public class AIDronManager : AIManager
 
                 break;
             case EAIState.SEEK:
-                
+                if(!agent.navMesh.enabled)
+                {
+                    agent.navMesh.enabled = true;
+                }
                 agent.ChangeTargetDestination(seekTargets[0].position);
 
                 break;

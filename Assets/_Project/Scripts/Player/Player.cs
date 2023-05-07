@@ -4,7 +4,7 @@ using UnityEngine;
 using MoreMountains.Feedbacks;
 using UnityEngine.SceneManagement;
 
-public enum EPlayerModeState { REGULAR, AIMING, COMBAT, COMPANION_TRANSFORMATION }
+public enum EPlayerModeState { REGULAR, ONBOARDING, AIMING, COMBAT, COMPANION_TRANSFORMATION }
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -58,6 +58,7 @@ public class Player : MonoBehaviour, IDamageable
     private void Start()
     {
         SetNewState(modeState);
+        throwingSystem.NotMode();
     }
 
     // Update
@@ -135,7 +136,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool CanJump()
     {
-        return modeState == EPlayerModeState.REGULAR;
+        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.ONBOARDING;
     }
     
     public bool CanCombat()
@@ -164,6 +165,9 @@ public class Player : MonoBehaviour, IDamageable
                 throwingSystem.NotMode();
                 break;
             case EPlayerModeState.COMPANION_TRANSFORMATION:
+                break;
+            case EPlayerModeState.ONBOARDING:
+                combatSystem.HideWeapon();
                 break;
         }
     }
