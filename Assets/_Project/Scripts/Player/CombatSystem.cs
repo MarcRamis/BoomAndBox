@@ -100,7 +100,6 @@ public class CombatSystem : MonoBehaviour
             {
                 player.feedbackController.PlayRythmMoment();
                 rythmOnce = false;
-                // play feedback here
             }
         }
     }
@@ -115,6 +114,7 @@ public class CombatSystem : MonoBehaviour
     private void ResetCounterAttack()
     {
         attackcounter = 0;
+        rythmCombo.GetComboCounter();
     }
 
     private void FixedUpdate()
