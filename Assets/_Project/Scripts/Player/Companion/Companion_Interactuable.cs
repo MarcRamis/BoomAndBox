@@ -13,7 +13,7 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
     [SerializeField] private GameObject player;
     private Player playerScript;
     [SerializeField] private GameObject objectToPositionate;
-    [SerializeField] private GameObject masterLevel;
+    //[SerializeField] private GameObject masterLevel;
 
     [Header("Unity Event")]
     [SerializeField] private UnityEvent End_Event;
@@ -53,7 +53,7 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
         triggerCollider2.enabled = false;
         bubbleControl.SetActive(false);
         playerScript.currentInteraction = null;
-        masterLevel.GetComponent<IEvent>().EventAction(this.gameObject);
+        //masterLevel.GetComponent<IEvent>().EventAction(this.gameObject);
         StartCoroutine(InterpolationUtils.Interpolate(gameObject.transform, gameObject.transform.position, objectToPositionate.transform.position, 0.1f, OnInterpolationFinished));
     }
 
