@@ -22,6 +22,8 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
 
     private void Awake()
     {
+        companionScript = ReferenceSingleton.Instance.companionScript;
+        playerScript = ReferenceSingleton.Instance.playerScript;
         //companion = GameObject.FindGameObjectWithTag("Companion");
         //GameObject player = GameObject.FindGameObjectWithTag("Player");
         companionScript = companion.GetComponent<Companion>();

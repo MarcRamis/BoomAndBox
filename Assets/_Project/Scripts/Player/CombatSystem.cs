@@ -248,25 +248,29 @@ public class CombatSystem : MonoBehaviour
             case 0:
 
                 damageable.Damage(1);
-                damageable.Knockback(5f);
-                
+                damageable.Knockback(3f);
+                weaponFeedbackController.PlayHitImpact(0);
+
                 break;
 
             case 1:
                 damageable.Damage(1);
-                damageable.Knockback(5f);
+                damageable.Knockback(3f);
+                weaponFeedbackController.PlayHitImpact(0);
                 break;
 
             case 2:
 
                 damageable.Damage(5);
-                damageable.Knockback(10f);
+                damageable.Knockback(5f);
+                weaponFeedbackController.PlayHitImpact(1);
                 break;
                 
             case 3:
-
+                
                 damageable.Damage(10);
                 damageable.Knockback(15f);
+                weaponFeedbackController.PlayHitImpact(2);
                 bool rythm = rythmCombo.ComboAccomplished();
                 break;
 
