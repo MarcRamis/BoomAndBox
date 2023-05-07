@@ -1145,7 +1145,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: d29b27771544bd54d8ee9d995d8afa70, type: 3}
     - target: {fileID: 1751291484, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000006705522
+      value: 0.00000007078051
       objectReference: {fileID: 0}
     - target: {fileID: 1813537884, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2113,14 +2113,6 @@ PrefabInstance:
     - target: {fileID: 7645945245145995673, guid: 4b3cd63933112ce47944c6e173b62383, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7645945245145995678, guid: 4b3cd63933112ce47944c6e173b62383, type: 3}
-      propertyPath: buttonSequences.Array.data[1].instrument.threshold
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7645945245145995678, guid: 4b3cd63933112ce47944c6e173b62383, type: 3}
-      propertyPath: buttonSequences.Array.data[1].instrument.multiplierNeeded
-      value: 100000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b3cd63933112ce47944c6e173b62383, type: 3}

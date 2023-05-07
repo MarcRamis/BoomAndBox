@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Project/Scenes/Gameplay Prototyping Levels/Level 1 - MARC TEST.unity
     guid: ad55caafca0f37a458280dc5f74df4c7
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Gameplay Prototyping Levels/Combat system/Combat
       system.unity
     guid: 7b3c370365fb845469d50f2f10641b5e
