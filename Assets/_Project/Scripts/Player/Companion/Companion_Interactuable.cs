@@ -8,9 +8,8 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
     [SerializeField] private GameObject bubbleControl;
     [SerializeField] private BoxCollider triggerCollider;
     [SerializeField] private BoxCollider triggerCollider2;
-    [SerializeField] private GameObject companion;
+    [HideInInspector] private GameObject companion;
     private Companion companionScript;
-    [SerializeField] private GameObject player;
     private Player playerScript;
     [SerializeField] private GameObject objectToPositionate;
     //[SerializeField] private GameObject masterLevel;
@@ -22,12 +21,9 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
 
     private void Awake()
     {
+        companion = ReferenceSingleton.Instance.companion;
         companionScript = ReferenceSingleton.Instance.companionScript;
         playerScript = ReferenceSingleton.Instance.playerScript;
-        //companion = GameObject.FindGameObjectWithTag("Companion");
-        //GameObject player = GameObject.FindGameObjectWithTag("Player");
-        companionScript = companion.GetComponent<Companion>();
-        playerScript = player.GetComponent<Player>();
 
         if (End_Event == null)
             End_Event = new UnityEvent();
@@ -56,14 +52,25 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
         bubbleControl.SetActive(false);
         playerScript.currentInteraction = null;
         //masterLevel.GetComponent<IEvent>().EventAction(this.gameObject);
+        Invoke(nameof(ShowCompanion), 0.05f);
         StartCoroutine(InterpolationUtils.Interpolate(gameObject.transform, gameObject.transform.position, objectToPositionate.transform.position, 0.1f, OnInterpolationFinished));
+        
     }
 
     private void OnInterpolationFinished()
     {
-        companion.SetActive(true);
         companionScript.SetNewState(ECompanionState.ATTACHED);
         End_Event?.Invoke();
         Destroy(gameObject);
     }
+
+    private void ShowCompanion()
+    {
+        companion.SetActive(true);
+        Debug.Log("ShowCompanion");
+        Debug.Log(companion.activeSelf);
+        Debug.Log(companion.transform.position);
+        Debug.Log(playerScript.transform.position);
+    }
+
 }

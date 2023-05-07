@@ -120,12 +120,12 @@ public class ThrowingSystem : MonoBehaviour
             SwapAim();
             playerFeedbackController.StopAimingFeedback();
         }
-        companion.gameObject.SetActive(false);
+        objectToThrow.SetActive(false);
     }
     
     public void YesMode()
     {
-        companion.gameObject.SetActive(true);
+        objectToThrow.SetActive(true);
     }
 
     private void DoThrow()

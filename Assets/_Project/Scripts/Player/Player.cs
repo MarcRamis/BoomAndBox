@@ -53,12 +53,10 @@ public class Player : MonoBehaviour, IDamageable
         
         myInputs.OnInteractPerformed += DoInteract;
         
-        Health = health;        
-    }
-    private void Start()
-    {
+        Health = health;
+
         SetNewState(modeState);
-        throwingSystem.NotMode();
+        
     }
 
     // Update
