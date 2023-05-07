@@ -104,7 +104,7 @@ public class PlayerFeedbackController : FeedbackController
     public void PlayReceiveDamageFeedback()
     {
         receiveDamageFeedback.PlayFeedbacks();
-        //PlaySoundEffect(receiveDamageSound);
+        PlaySoundEffect(receiveDamageSound, 0.5f);
         playerCharacterAnimations.PlayReceiveDamageAnimation();
     }
 

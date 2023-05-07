@@ -21,6 +21,14 @@ public class FeedbackController : MonoBehaviour
     // When a method is declared as 'virtual', it means that it can be redefined in a derived class 
     // using the 'override' keyword. If a derived class does not provide an implementation for 
     // the virtual method, the base class implementation is used.
+    public virtual void PlaySoundEffect(AudioClip sound, float volume)
+    {
+        float tmpVolume = audioSource.volume;
+        audioSource.volume = volume;
+        audioSource.PlayOneShot(sound);
+        audioSource.volume = tmpVolume;
+    }
+    
     public virtual void PlaySoundEffect(AudioClip sound)
     {
         audioSource.PlayOneShot(sound);
