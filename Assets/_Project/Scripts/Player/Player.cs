@@ -37,6 +37,7 @@ public class Player : MonoBehaviour, IDamageable
     // Internal variables
     private bool justReceivedDamage = false;
     private bool godMode;
+    private bool canMove = true;
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
@@ -52,10 +53,13 @@ public class Player : MonoBehaviour, IDamageable
         
         myInputs.OnInteractPerformed += DoInteract;
         
-        Health = health;
+        Health = health;        
+    }
+    private void Start()
+    {
         SetNewState(modeState);
     }
-    
+
     // Update
     private void Update()
     {
@@ -74,7 +78,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (!justReceivedDamage && !godMode)
         {
-            BlockInputsDamage();
+            BlockInputsWithTime(1f);
             
             // Apply operations
             Health -= damageAmount;
@@ -123,10 +127,10 @@ public class Player : MonoBehaviour, IDamageable
     {
         return (modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING ) && !dashOnboarding;
     }
-
+    
     public bool CanMove()
     {
-        return modeState == EPlayerModeState.REGULAR;
+        return canMove;
     }
 
     public bool CanJump()
@@ -134,7 +138,7 @@ public class Player : MonoBehaviour, IDamageable
         return modeState == EPlayerModeState.REGULAR;
     }
     
-    public bool CanAttack()
+    public bool CanCombat()
     {
         return modeState == EPlayerModeState.COMBAT;
     }
@@ -177,11 +181,29 @@ public class Player : MonoBehaviour, IDamageable
         cameraManager.LockCamera();
     }
 
+    public void BlockMovement()
+    {
+        playerRigidbody.velocity = Vector3.zero;
+        canMove = false;
+    }
+
+    public void AllowMovement()
+    {
+        canMove = true;
+    }
+    
+    public void BlockMovementWithTime(float time)
+    {
+        BlockMovement();
+        Invoke(nameof(AllowMovement), time);
+    }
+
     public void AllowInputs()
     {
         myInputs.EnableGameActions();
         cameraManager.UnlockCamera();
     }
+
 
     public void BlockInputsDamage()
     {

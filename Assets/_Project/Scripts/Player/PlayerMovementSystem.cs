@@ -154,8 +154,12 @@ public class PlayerMovementSystem : MonoBehaviour
          * Here goes: physics movement*/
 
 
-        MovePlayer();
-        RotateModel();
+        if (playerScript.CanMove())
+        {
+            MovePlayer();
+            RotateModel();
+        }
+        
         //StepOffset();
         
         OnLand();

@@ -41,8 +41,8 @@ public class PlayerCharacterAnimations : MonoBehaviour
         // this variable works as the inverse because is setted to false when you press the input. 
         // I make it negative in order to get the current "input pressed"
         playerAnimator.SetBool("PressedInputJump", !playerMovementSystem.readyToJump);
-
-        playerAnimator.SetBool("isCombat", player.CanAttack());
+        
+        playerAnimator.SetBool("isCombat", player.CanCombat());
         playerAnimator.SetBool("ReadyToAttack", combatSystem.attackIsReady);
         
         playerAnimator.SetBool("ReadyToThrow", throwingSystem.readyToThrow);
@@ -54,8 +54,9 @@ public class PlayerCharacterAnimations : MonoBehaviour
         playerAnimator.SetTrigger("ReceiveDamage");
     }
 
-    public void PlayAttack()
+    public void PlayAttack(int counter)
     {
+        playerAnimator.SetInteger("counterAttack", counter);
         playerAnimator.SetTrigger("MakeAttack");
     }
 }
