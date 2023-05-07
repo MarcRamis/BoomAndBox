@@ -25,5 +25,6 @@ MonoBehaviour:
   idleAngularSpeed: 100
   chargeForce: 200
   timePreparingToCharge: 2
-  maxDistanceToChaseState: 8
-  isCharging: 0
+  maxDistanceToChaseState: 12
+  rotationSpeed: 10
+  isNearlyCharge: 0

@@ -47,6 +47,7 @@ public class CombatSystem : MonoBehaviour
     
     public int combocounter;
     public int attackcounter;
+    public int maxAttackCounter;
 
     private MTimer rythmMomentTimer;
     private MTimer attackTimer;
@@ -155,7 +156,7 @@ public class CombatSystem : MonoBehaviour
     {
         attackcounter++;
 
-        if (attackcounter >= 2)
+        if (attackcounter >= maxAttackCounter)
         {
             attackcounter = 0;
         }

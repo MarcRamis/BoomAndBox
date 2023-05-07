@@ -1077,7 +1077,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1085861684, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000006705522
+      value: 0.00000007078051
       objectReference: {fileID: 0}
     - target: {fileID: 1751291484, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1102,6 +1102,10 @@ PrefabInstance:
     - target: {fileID: 1982559292, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: returnAttackCd
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1982559292, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: maxAttackCounter
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1982559292, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: returnControlsAfterAttackCd

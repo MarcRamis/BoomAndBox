@@ -75,7 +75,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (!justReceivedDamage && !godMode)
         {
-            BlockInputsDamage();
+            BlockInputsWithTime(1f);
             
             // Apply operations
             Health -= damageAmount;
