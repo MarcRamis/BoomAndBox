@@ -19,6 +19,11 @@ public class SoundtrackVictorSong : SoundtrackManager
         loopSong.Add(audioSources[0]);
         loopSong.Add(audioSources[1]);
 
+        audioSources[0].volume = 0.25f;
+        audioSources[1].volume = 1f;
+        audioSources[2].volume = 0.6f;
+        audioSources[3].volume = 0.1f;
+
         audioSources[0].Stop();
         audioSources[1].Stop();
 
