@@ -11772,7 +11772,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1982559306}
   audioFeedbacks: []
-  receiveDamageSound: {fileID: 8300000, guid: 92c3bc6a3c1b00d45a8ee7930f479e01, type: 3}
+  receiveDamageSound: {fileID: 8300000, guid: 7bee8f1e8a96645489609b2bd309993b, type: 3}
   attackSound: {fileID: 8300000, guid: 6757c779d7951e848bf86e601d03aa5c, type: 3}
   jumpFeedback: {fileID: 1066584040459466906}
   doubleJumpFeedback: {fileID: 624070227}
@@ -13878,7 +13878,7 @@ MonoBehaviour:
   audioSource: {fileID: 1655306876}
   audioFeedbacks: []
   hitSound: {fileID: 8300000, guid: 78a32b6a4f1dfbf48b8e7950291c0a57, type: 3}
-  beingThrownSound: {fileID: 0}
+  beingThrownSound: {fileID: 8300000, guid: 451d0e920f6a0404fa8f9528ecf7dfd9, type: 3}
   companionAudioSource: {fileID: 0}
   comebackFeedback: {fileID: 8663891436926828339}
   exclamationFeedback: {fileID: 3208315151418121012}

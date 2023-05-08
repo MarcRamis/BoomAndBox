@@ -182,6 +182,7 @@ public class ThrowingSystem : MonoBehaviour
     {
         // effect
         playerFeedbackController.PlayThrowFeedback();
+        companion.feedbackController.PlayBeingThrownFeedback();
 
         // Preferences
         objectToThrow.transform.SetParent(null);

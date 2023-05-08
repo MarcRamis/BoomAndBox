@@ -495,6 +495,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dron (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8393787382673253103, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
 --- !u!1 &196994202
@@ -881,6 +885,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dron
       objectReference: {fileID: 0}
+    - target: {fileID: 8393787382673253103, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8393787382936737308, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
       propertyPath: m_Parameters.widthMultiplier
       value: 0.2
@@ -1131,6 +1139,34 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.00000007078051
       objectReference: {fileID: 0}
+    - target: {fileID: 1542181892, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: Sfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 451d0e920f6a0404fa8f9528ecf7dfd9, type: 3}
+    - target: {fileID: 1542181892, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: Active
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542181892, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: MaxPitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542181892, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: MinPitch
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542181892, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: MaxVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542181892, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: MinVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655306871, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
+      propertyPath: beingThrownSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 451d0e920f6a0404fa8f9528ecf7dfd9, type: 3}
     - target: {fileID: 1751291484, guid: 3abd72bea632eba4fbc3588b8ee0b64e, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.00000006705522
@@ -1465,6 +1501,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
+--- !u!1 &1507364550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8393787382673253103, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
+  m_PrefabInstance: {fileID: 562422405}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1638330459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1527,6 +1568,10 @@ PrefabInstance:
     - target: {fileID: 8393787382673253103, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
       propertyPath: m_Name
       value: Dron (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8393787382673253103, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
@@ -1671,6 +1716,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1729881599 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8393787382673253092, guid: 4ff6d09eef291dd48b91afb896dffdb4, type: 3}
+  m_PrefabInstance: {fileID: 1638330459}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154cec5dfc9dc8040a00a0771480aa55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1223497631410387454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1880,10 +1936,74 @@ PrefabInstance:
       propertyPath: m_Name
       value: CombatEvent
       objectReference: {fileID: 0}
+    - target: {fileID: 6776517437759087082, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 469334109}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemy.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemy.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemy.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemy.Array.data[2]
+      value: 
+      objectReference: {fileID: 1729881599}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemy.Array.data[3]
+      value: 
+      objectReference: {fileID: 1729881599}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemy.Array.data[4]
+      value: 
+      objectReference: {fileID: 1729881599}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemy.Array.data[5]
+      value: 
+      objectReference: {fileID: 1729881599}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemyRounds.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemySpawners.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemySpawners.Array.data[0]
+      value: 
+      objectReference: {fileID: 1507364550}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemySpawners.Array.data[1]
+      value: 
+      objectReference: {fileID: 1507364550}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemySpawners.Array.data[2]
+      value: 
+      objectReference: {fileID: 1507364550}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemySpawners.Array.data[3]
+      value: 
+      objectReference: {fileID: 1507364550}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemyRounds.Array.data[0].numberEnemies
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776517437759087087, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
+      propertyPath: enemyRounds.Array.data[1].numberEnemies
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: caf50a5e3c44a5e41af86c3f5231a561, type: 3}
 --- !u!1001 &7977107683884133101
@@ -1896,6 +2016,10 @@ PrefabInstance:
     - target: {fileID: 7645945245145995672, guid: 4b3cd63933112ce47944c6e173b62383, type: 3}
       propertyPath: m_Name
       value: MainSoundtrack
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645945245145995672, guid: 4b3cd63933112ce47944c6e173b62383, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7645945245145995673, guid: 4b3cd63933112ce47944c6e173b62383, type: 3}
       propertyPath: m_RootOrder

@@ -85,7 +85,6 @@ public class Companion : MonoBehaviour
             if (state != ECompanionState.RETAINED && state != ECompanionState.COMEBACK)
             {
                 SetNewState(ECompanionState.RETAINED);
-                //startMoveSinPosition = transform.position;
                 Invoke(nameof(ResetRetainedState), timeRetained);
             }
         }
@@ -99,7 +98,6 @@ public class Companion : MonoBehaviour
     private void ResetRetainedState()
     {
         SetNewState(ECompanionState.COMEBACK);
-        //startMoveSinPosition = initialPosition;
     }
     public void HandleState()
     {
