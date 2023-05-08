@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class TutorialText : MonoBehaviour
 {
@@ -39,6 +40,9 @@ public class TutorialText : MonoBehaviour
     [Header("InputController")]
     [SerializeField] private MenuInputController inputsUI;
     [SerializeField] private Player player;
+
+    [Header("Events")]
+    [SerializeField] private UnityEvent EndTextEvent;
 
     private float timer = 0.0f;
     private bool startTimer = false;
@@ -81,6 +85,7 @@ public class TutorialText : MonoBehaviour
             {
                 OnDisable();
                 player.AllowInputs();
+                EndTextEvent?.Invoke();
                 Destroy(gameObject);
                 
             }

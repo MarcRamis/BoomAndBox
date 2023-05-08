@@ -1479,7 +1479,7 @@ MonoBehaviour:
   MaxPitch: 0.8
   MmSoundManagerTrack: 0
   ID: 0
-  AudioGroup: {fileID: 0}
+  AudioGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   RecycleAudioSource: {fileID: 0}
   Loop: 0
   Persistent: 0

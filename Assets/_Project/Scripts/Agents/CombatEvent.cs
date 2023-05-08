@@ -21,8 +21,11 @@ public class CombatEvent : MonoBehaviour
 
     public GameObject[] enemySpawners;
 
+    [SerializeField] private bool isOnboarding = false;
+
     [Header("Events")]
     [SerializeField] private UnityEvent EndCombatEvent;
+    [SerializeField] private UnityEvent StartOnboardingEvent;
 
     private bool combatZoneActivated = false;
     private int currentCombatRound = 0;
@@ -50,7 +53,16 @@ public class CombatEvent : MonoBehaviour
                 else
                 {
                     enemiesDefeated = 0;
-                    StartRound();
+                    if(!isOnboarding)
+                    {
+                        StartRound();
+                    }
+                    else
+                    {
+                        isOnboarding = false;
+                        StartOnboardingEvent?.Invoke();
+                    }
+                    
                 }
                 
             }
