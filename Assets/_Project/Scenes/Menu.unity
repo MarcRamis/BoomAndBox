@@ -578,12 +578,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 290699625448586519, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1185397799579152082, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 68840c3a5be91ff459b2b316e261b59e, type: 3}
     - target: {fileID: 1452843228305493418, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834902504860151499, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.77903
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834902504860151499, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.77903
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834902504860151499, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.77903
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834902504860151499, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 54
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834902504860151499, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3825459726510623269, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
@@ -602,6 +626,41 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
       objectReference: {fileID: 1529529082}
+    - target: {fileID: 5703379999336765821, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
+      propertyPath: m_text
+      value: 'Gameplay Programmer & Producer
+
+        Marc Ramis Caldes
+
+
+        Lead
+        Artist & Concept
+
+        Aitor Garrido Garcia
+
+
+        3D Animator
+
+        Laura
+        Rodriguez Galan
+
+
+        3D Modeler
+
+        Pau Gallego Garcia
+
+
+        Level
+        Designer & Generalist Programmer
+
+        Alex Alcaide Arroyes
+
+
+        Music
+        Composer
+
+        Victor Yeste Villanueva'
+      objectReference: {fileID: 0}
     - target: {fileID: 5986495603021469310, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
