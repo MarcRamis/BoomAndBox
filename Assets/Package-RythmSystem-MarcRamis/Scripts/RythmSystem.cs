@@ -43,7 +43,7 @@ public class RythmSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        ManageInputs(); // para testear rápido diferentes canciones
+        //ManageInputs(); // para testear rápido diferentes canciones
 
         HandleRythmMode(rythmMode);
     }
