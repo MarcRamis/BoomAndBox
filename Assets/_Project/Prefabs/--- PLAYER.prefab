@@ -8531,7 +8531,7 @@ MonoBehaviour:
     Quantized: 0
     TargetBPM: 120
   DebugActive: 0
-  Sfx: {fileID: 8300000, guid: 0e2e920466865bb4cb2ad644ce2a8c7f, type: 3}
+  Sfx: {fileID: 8300000, guid: 451d0e920f6a0404fa8f9528ecf7dfd9, type: 3}
   RandomSfx: []
   TestButton: 0
   TestStopButton: 0
