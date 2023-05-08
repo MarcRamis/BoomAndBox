@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
+using System;
 
 public class CompanionFeedbackController : FeedbackController
 {
@@ -21,14 +22,21 @@ public class CompanionFeedbackController : FeedbackController
     [SerializeField] private TrailRenderer trailRenderer;
 
     [SerializeField] private GameObject prefabHitExplosion;
+    [SerializeField] private GameObject fakeShadow;
 
     /////////// COMEBACK
-    public void PlayComebackFeedback()
+    public void PlayComeback()
     {
         comebackFeedback.PlayFeedbacks();
     }
+    /////////// COMEBACKING
+    public void PlayComebacking()
+    {
+        comebackingFeedback.PlayFeedbacks();
+    }
+
     /////////// HIT
-    public void PlayHitFeedback(Vector3 contactPoint)
+    public void PlayHit(Vector3 contactPoint)
     {
         Instantiate(prefabHitExplosion, contactPoint, prefabHitExplosion.transform.rotation);
         PlaySoundEffect(hitSound);
@@ -38,5 +46,34 @@ public class CompanionFeedbackController : FeedbackController
     {
         beingThrownFeedback.PlayFeedbacks();
         //PlaySoundEffect(beingThrownSound);
+    }
+
+    /////////// THROW AGAIN
+    public void PlayThrowAgain()
+    {
+        exclamationFeedback.PlayFeedbacks();
+    }
+
+    /////////// Trail
+    public void PlayLargeTrail()
+    {
+        trailRenderer.endColor = throwLargeColor;
+        trailRenderer.startColor = throwLargeColor;
+    }
+
+    public void PlayShortTrail()
+    {
+        trailRenderer.endColor = throwDashColor;
+        trailRenderer.startColor = throwDashColor;
+    }
+    
+    /////////// Shadow
+    public void ShowShadow()
+    {
+        fakeShadow.SetActive(true);
+    }
+    public void HideShadow()
+    {
+        fakeShadow.SetActive(false);
     }
 }
