@@ -30,7 +30,7 @@ public class SimpleComputePersistent : MonoBehaviour
     public ComputeShader shader;
 
     public int maxObjectsSpawn = 68;
-    List<GameObject> objects;
+    public List<GameObject> objects;
     ComputeBuffer dataBuffer;
     GameObjectInfo[] data;
     public Transform[] targets;
@@ -58,6 +58,7 @@ public class SimpleComputePersistent : MonoBehaviour
         for (int i = 0; i < maxObjectsSpawn; i++)
         {
             GameObject newObj = Instantiate(prefab, transform);
+            newObj.GetComponent<BoidA>().simpleComputePersistent = this;
             Vector3 randomPosition = new Vector3(Random.Range(0.0f, 3.0f), Random.Range(0.0f, 3.0f), Random.Range(0.0f, 3.0f));
             newObj.transform.position = transform.position + randomPosition;
             objects.Add(newObj);
@@ -89,40 +90,45 @@ public class SimpleComputePersistent : MonoBehaviour
     {   
         //we generate the data array to pass data from CPU to GPU
         int numObjs = objects.Count;
-        int kernelHandle = shader.FindKernel("CSMain");
-        shader.SetBuffer(kernelHandle, "CoolerResult", dataBuffer);
-        shader.SetFloat("deltaTime", Time.deltaTime);
-        shader.SetInt("numobjs", numObjs);
-        shader.SetFloat("seekForce", seekForce);
-        shader.SetFloat("cohesionForce", cohesionForce);
-        shader.SetFloat("separateForce", separationForce);
-        shader.SetFloat("alignForce", alignForce);
-        shader.SetFloat("obstacleAvoidanceForce", obstacleAvoidanceForce);
-        shader.SetFloat("neighbourRadius", neighbourRadius);
-
-        int threadGroups = Mathf.CeilToInt(numObjs / 128.0f);
-
-        shader.Dispatch(kernelHandle, threadGroups, 1, 1);
-
-        dataBuffer.GetData(data);
-        for (int i = 0; i < numObjs; i++)
+        if (numObjs > 0)
         {
-            if (Vector3.Distance(data[i].position, data[i].target) < changeTargetDistance)
-            {
-                data[i].target = CalculateNewTarget(data[i].target);
-            }
-            
-            data[i].separation = Separation(i);
-            data[i].alignment = Alignment(i);
-            data[i].obstacleAvoidance = ObstacleAvoidance(i);
+            int kernelHandle = shader.FindKernel("CSMain");
+            shader.SetBuffer(kernelHandle, "CoolerResult", dataBuffer);
+            shader.SetFloat("deltaTime", Time.deltaTime);
+            shader.SetInt("numobjs", numObjs);
+            shader.SetFloat("seekForce", seekForce);
+            shader.SetFloat("cohesionForce", cohesionForce);
+            shader.SetFloat("separateForce", separationForce);
+            shader.SetFloat("alignForce", alignForce);
+            shader.SetFloat("obstacleAvoidanceForce", obstacleAvoidanceForce);
+            shader.SetFloat("neighbourRadius", neighbourRadius);
 
-            // Update gameobjects 
-            objects[i].transform.position = data[i].position;
-            Quaternion orientation = Quaternion.LookRotation(data[i].velocity, Vector3.up);
-            objects[i].transform.rotation = Quaternion.RotateTowards(objects[i].transform.rotation, orientation, rotationSpeed * Time.deltaTime);
+            int threadGroups = Mathf.CeilToInt(numObjs / 128.0f);
+
+            shader.Dispatch(kernelHandle, threadGroups, 1, 1);
+
+            dataBuffer.GetData(data);
+            for (int i = 0; i < numObjs; i++)
+            {
+                if (Vector3.Distance(data[i].position, data[i].target) < changeTargetDistance)
+                {
+                    data[i].target = CalculateNewTarget(data[i].target);
+                }
+
+                data[i].separation = Separation(i);
+                data[i].alignment = Alignment(i);
+                data[i].obstacleAvoidance = ObstacleAvoidance(i);
+
+                // Update gameobjects 
+                objects[i].transform.position = data[i].position;
+                Quaternion orientation = Quaternion.LookRotation(data[i].velocity, Vector3.up);
+                objects[i].transform.rotation = Quaternion.RotateTowards(objects[i].transform.rotation, orientation, rotationSpeed * Time.deltaTime);
+            }
+
+            dataBuffer.SetData(data);
         }
+
         
-        dataBuffer.SetData(data);
     }
 
     private Vector3 CalculateNewTarget(Vector3 currentTarget)
