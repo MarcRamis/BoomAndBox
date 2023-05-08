@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 6847176198744521095, guid: 782748edb2c475d47924995cf2949612, type: 3}
   shader: {fileID: 7200000, guid: b6657a51f459da241a6c07fe5b2fba44, type: 3}
-  maxObjectsSpawn: 169
+  maxObjectsSpawn: 4
+  objects: []
   targets:
   - {fileID: 0}
   - {fileID: 0}
@@ -57,8 +58,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   startTarget: {fileID: 0}
-  minVelocity: 6.5
-  maxVelocity: 6.8
+  minVelocity: 29.8
+  maxVelocity: 35.1
   seekForce: 9
   cohesionForce: 0.5
   separationForce: 2

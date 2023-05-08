@@ -978,7 +978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b581e86c012e2e24fb313b9cc52d9f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneNameToChangeOnPlay: Level 1 - Zone 2
+  sceneNameToChangeOnPlay: Level 1 - Zone 2 Final
 --- !u!1 &1769945133
 GameObject:
   m_ObjectHideFlags: 0

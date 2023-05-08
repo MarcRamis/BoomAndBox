@@ -253,21 +253,9 @@ PrefabInstance:
       value: AI_Gestor
       objectReference: {fileID: 0}
     - target: {fileID: 1950148006280078186, guid: ee28b629a29a2af4d914c7e1ac644dcf, type: 3}
-      propertyPath: maxVelocity
-      value: 35.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1950148006280078186, guid: ee28b629a29a2af4d914c7e1ac644dcf, type: 3}
-      propertyPath: minVelocity
-      value: 29.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1950148006280078186, guid: ee28b629a29a2af4d914c7e1ac644dcf, type: 3}
       propertyPath: startTarget
       value: 
       objectReference: {fileID: 1166195349}
-    - target: {fileID: 1950148006280078186, guid: ee28b629a29a2af4d914c7e1ac644dcf, type: 3}
-      propertyPath: maxObjectsSpawn
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 1950148006280078186, guid: ee28b629a29a2af4d914c7e1ac644dcf, type: 3}
       propertyPath: targets.Array.size
       value: 4
