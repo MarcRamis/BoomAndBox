@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, IDamageable
 
     // Internal variables
     private bool justReceivedDamage = false;
-    private bool godMode;
+    private bool godMode = false;
     private bool canMove = true;
 
     // Constant variables
@@ -81,6 +81,7 @@ public class Player : MonoBehaviour, IDamageable
             
             // Apply operations
             Health -= damageAmount;
+            Debug.Log(Health);
             feedbackController.PlayReceiveDamageFeedback();
             justReceivedDamage = true;
 
