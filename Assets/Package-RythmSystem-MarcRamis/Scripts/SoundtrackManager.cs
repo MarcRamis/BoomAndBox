@@ -60,6 +60,32 @@ public class SoundtrackManager : MonoBehaviour
         }
     }
 
+    public virtual void UpdateSequence()
+    {
+        CheckIfMusicFinalized();
+    }
+    public virtual void ReloadSong()
+    {
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.Play();
+        }
+    }
+
+    public virtual void CheckIfMusicFinalized()
+    {
+        foreach (AudioSource audioSource in audioSources)
+        {
+            if (audioSource.isPlaying)
+            {
+                return;
+            }
+            else
+            {
+                ReloadSong();
+            }
+        }
+    }
     public virtual void StartConfiguration()
     {
 

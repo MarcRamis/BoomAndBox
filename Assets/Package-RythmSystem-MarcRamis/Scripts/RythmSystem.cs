@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ESoundtracks { FIRST, SECOND, THIRD, FOURTH, COUNT}
+public enum ESoundtracks { FIRST, SECOND, COUNT}
 
 public enum ERythmMode { BASE, SIMON}
 public enum ESimonMode { EXAMPLE_SIMON, SIMONSAYS }
@@ -35,15 +35,17 @@ public class RythmSystem : MonoBehaviour
         SetNewState(soundtrackState);
         //SetNewMode(rythmMode);
     }
-    
+
+    private void Update()
+    {
+        soundtrackManager.UpdateSequence();
+    }
+
     private void FixedUpdate()
     {
-        CheckIfMusicFinalized();
         ManageInputs(); // para testear rápido diferentes canciones
 
         HandleRythmMode(rythmMode);
-
-
     }
 
     private void ManageInputs()
@@ -65,25 +67,13 @@ public class RythmSystem : MonoBehaviour
         {
             case ESoundtracks.FIRST:
 
-                InitSoundtrack(GetComponent<SoundtrackHiFiRush>());
+                InitSoundtrack(GetComponent<SoundtrackDaniSong>());
 
                 break;
 
             case ESoundtracks.SECOND:
 
-                InitSoundtrack(GetComponent<SoundtrackItsFunky>());
-
-                break;
-
-            case ESoundtracks.THIRD:
-
-                InitSoundtrack(GetComponent<SoundtrackZapslat>());
-                
-                break;
-                
-            case ESoundtracks.FOURTH:
-
-                InitSoundtrack(GetComponent<SoundtrackDaniSong>());
+                InitSoundtrack(GetComponent<SoundtrackVictorSong>());
 
                 break;
             case ESoundtracks.COUNT:
@@ -124,29 +114,6 @@ public class RythmSystem : MonoBehaviour
         }
 
         soundtrackManager.InitializeSequence();
-    }
-    
-    private void ReloadSong()
-    {
-        foreach (AudioSource audioSource in soundtrackManager.GetInstruments())
-        {
-            audioSource.Play();
-        }
-    }
-    
-    private void CheckIfMusicFinalized()
-    {
-        foreach (AudioSource audioSource in soundtrackManager.GetInstruments())
-        {
-            if (audioSource.isPlaying)
-            {
-                return;
-            }
-            else
-            {
-                ReloadSong();
-            }
-        }
     }
     
     private void SetNewState(ESoundtracks newState)

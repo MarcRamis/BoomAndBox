@@ -3,21 +3,20 @@
 public class SoundtrackDaniSong : SoundtrackManager
 {
     MTimer loopSongTimer;
-
-    private void Awake()
+    
+    public override void InitializeSequence()
     {
+        base.InitializeSequence();
+
         loopSongTimer = new MTimer();
         loopSongTimer.SetTimeLimit(2f);
         loopSongTimer.OnTimerEnd += LoopSong;
-    }
 
-    private void Start()
-    {
         StartSong();
         loopSongTimer.StartTimer();
     }
 
-    private void Update()
+    public override void UpdateSequence()
     {
         loopSongTimer.Update(Time.deltaTime);
     }
