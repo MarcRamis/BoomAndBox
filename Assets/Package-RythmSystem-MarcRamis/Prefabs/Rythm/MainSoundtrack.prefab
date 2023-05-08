@@ -286,8 +286,8 @@ MonoBehaviour:
     currentLoopControl: 0
     instrument:
       instrumentRef: {fileID: 0}
-      threshold: 0
-      multiplierNeeded: 0
+      threshold: 100
+      multiplierNeeded: 1000000
       intensity: 0
       canRythm: 0
       rythmOnce: 0
@@ -350,3 +350,5 @@ MonoBehaviour:
       rythmOnce: 1
       rythmOpportunityCd: 0.5
   currentIteration: 0
+  introSong: []
+  loopSong: []
