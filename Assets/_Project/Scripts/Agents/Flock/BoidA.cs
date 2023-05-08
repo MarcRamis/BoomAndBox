@@ -13,7 +13,7 @@ public class BoidA : MonoBehaviour, IDamageable
     private void OnDeath()
     {
         feedbackController.PlayDeath();
-        Invoke(nameof(Destroying), 0.5f);
+        Destroying();
     }
 
     public void Damage(int damageAmount)

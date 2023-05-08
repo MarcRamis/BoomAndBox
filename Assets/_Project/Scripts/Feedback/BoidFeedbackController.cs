@@ -7,6 +7,6 @@ public class BoidFeedbackController : FeedbackController
     /////////// DIE
     public void PlayDeath()
     {
-        Instantiate(explosionPrefab, transform);
+        Instantiate(explosionPrefab, transform.position, transform.rotation);
     }
 }
