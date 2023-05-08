@@ -67,10 +67,6 @@ public class Companion_Interactuable : MonoBehaviour, IInteractuable
     private void ShowCompanion()
     {
         companion.SetActive(true);
-        Debug.Log("ShowCompanion");
-        Debug.Log(companion.activeSelf);
-        Debug.Log(companion.transform.position);
-        Debug.Log(playerScript.transform.position);
     }
 
 }

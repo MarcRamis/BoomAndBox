@@ -8,17 +8,4 @@ public class ReferenceSingleton : SingletonMonobehaviour<ReferenceSingleton>
     public Player playerScript;
     public GameObject companion;
     public Companion companionScript;
-
-    public new void Awake()
-    {
-        if (instance == null)
-        {
-            //instance = this as T;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
 }

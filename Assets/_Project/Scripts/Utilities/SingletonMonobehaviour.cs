@@ -27,17 +27,12 @@ public class SingletonMonobehaviour<T> : MonoBehaviour where T : Component
             return instance;
         }
     }
-
+    
     protected virtual void Awake()
     {
         if (instance == null)
         {
             instance = this as T;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
         }
     }
 }
