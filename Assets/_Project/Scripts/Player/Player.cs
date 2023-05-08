@@ -81,7 +81,6 @@ public class Player : MonoBehaviour, IDamageable
             
             // Apply operations
             Health -= damageAmount;
-            Debug.Log(Health);
             feedbackController.PlayReceiveDamageFeedback();
             justReceivedDamage = true;
 
