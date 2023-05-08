@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8646201640079725941}
   - component: {fileID: 4634943989019384528}
   - component: {fileID: 7473255506040450586}
-  - component: {fileID: 2498976724294197062}
+  - component: {fileID: 9042001796896593030}
+  - component: {fileID: 2051708001699794030}
   m_Layer: 6
   m_Name: maceta
   m_TagString: Untagged
@@ -84,8 +85,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2498976724294197062
-MeshCollider:
+--- !u!54 &9042001796896593030
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8986557270937194447}
+  serializedVersion: 2
+  m_Mass: 0.2
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &2051708001699794030
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +111,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2440575457711717828, guid: bc6d9d8604736854ea537c72e482453f, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.4766525, y: 0.47665262, z: 0.39512584}
+  m_Center: {x: 0, y: 0, z: 0.19756292}
