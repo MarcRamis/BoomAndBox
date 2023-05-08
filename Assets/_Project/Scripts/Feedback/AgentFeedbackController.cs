@@ -47,4 +47,14 @@ public class AgentFeedbackController : FeedbackController
     public virtual void PlayRun()
     {
     }
+
+    /////////// NEARLY DEATH
+    public virtual void PlayNearlyDeath()
+    {
+    }
+    
+    /////////// MIDDLE DEATH
+    public virtual void PlayMiddleDeath()
+    {
+    }
 }

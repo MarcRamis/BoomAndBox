@@ -6,6 +6,7 @@ using MoreMountains.Feedbacks;
 
 public class DronFeedbackController : AgentFeedbackController
 {
+    [Space]
     [Header("Visual Effects")]
     [SerializeField] private MMFeedbacks damageFeedback;
     [SerializeField] private MMFeedbacks dieFeedback;
@@ -13,15 +14,20 @@ public class DronFeedbackController : AgentFeedbackController
     [SerializeField] private MMFeedbacks chargeFeedback;
     [SerializeField] private MMFeedbacks walkFeedback;
     [SerializeField] private MMFeedbacks runFeedback;
-    
+    [Space]
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private GameObject dronChargingPrefab;
     [SerializeField] private GameObject receiveHitPrefab;
-    
+    [Space]
     [SerializeField] private TrailRenderer trail1;
     [SerializeField] private TrailRenderer trail2;
     [SerializeField] private TrailRenderer trail3;
-    
+    [Space]
+    [SerializeField] private MeshRenderer[] mainMR;
+    [SerializeField] private Material materialWF;
+    [SerializeField] private Material materialYF;
+    [SerializeField] private Material materialOF;
+    [Space]
     [SerializeField] private Transform hitPosition;
 
     private void Awake()
@@ -88,5 +94,25 @@ public class DronFeedbackController : AgentFeedbackController
     public override void PlayRun()
     {
         runFeedback.PlayFeedbacks();
+    }
+
+    /////////// NEARLY DEATH
+    public override void PlayNearlyDeath()
+    {
+        ChangeMaterial(materialOF);
+    }
+
+    /////////// MIDDLE DEATH
+    public override void PlayMiddleDeath()
+    {
+        ChangeMaterial(materialYF);
+    }
+
+    private void ChangeMaterial(Material m)
+    {
+        foreach (MeshRenderer mr in mainMR)
+        {
+            mr.material = m;
+        }
     }
 }

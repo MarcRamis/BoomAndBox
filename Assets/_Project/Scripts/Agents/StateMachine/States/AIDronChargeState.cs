@@ -30,6 +30,7 @@ public class AIDronChargeState : IAIState
         nearlyCharge = preparingChargeTime * nearlyChargePecentage;
         
         DesactivatePhysiscs(agent);
+        agent.feedbackController.PlayPreparingCharge();
     }
     
     public void Exit(Agent agent)
@@ -54,9 +55,10 @@ public class AIDronChargeState : IAIState
         preparingChargeTimer.Update(Time.fixedDeltaTime);
 
         CalculateNearlyCharge(agent);
-
+        
         if (doCharge)
         {
+            agent.feedbackController.StopPreparingCharge();
             agent.feedbackController.PlayCharge();
             doCharge = false;
             DesactivatePhysiscs(agent);
@@ -69,6 +71,7 @@ public class AIDronChargeState : IAIState
         if (activatePhysics)
         {
             agent.feedbackController.StopCharge();
+            agent.feedbackController.PlayPreparingCharge();
             activatePhysics = false;
             ActivatePhysics(agent);
             

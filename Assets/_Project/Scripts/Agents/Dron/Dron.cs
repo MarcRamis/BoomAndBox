@@ -51,6 +51,15 @@ public class Dron : Enemy
         {
             stateMachine.ChangeState(EAIState.RECEIVE_DAMAGE);
             feedbackController.PlayTakeDamage();
+            
+            if (Health <= health / 2.3)
+            {
+                feedbackController.PlayNearlyDeath();
+            }
+            else if (Health <= health / 1.25)
+            {
+                feedbackController.PlayMiddleDeath();
+            }
         }
         
         base.Damage(damageAmount);
