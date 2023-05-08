@@ -23,7 +23,6 @@ public class Companion : MonoBehaviour
     [SerializeField] private GameObject prefabHitExplosion;
     [SerializeField] private Transform playerParent;
     [SerializeField] private Transform socketHand;
-    [SerializeField] private GameObject fakeShadow;
     
     [Header("Settings")]
     [SerializeField] private float maxDistanceToReturn;
@@ -34,16 +33,10 @@ public class Companion : MonoBehaviour
     [SerializeField] private float amplitude = 0.5f;
     [SerializeField] private float upDownSpeed = 1f;
 
-    [Header("Feedback")]
-    [SerializeField] private MMFeedbacks comebackingFeedback;
-    [SerializeField] private Color throwDashColor;
-    [SerializeField] private Color throwLargeColor;
-    [SerializeField] private TrailRenderer trailRenderer;
-
     //Feedback
-    [HideInInspector] private CompanionFeedbackController companionFeedbackController;
+    [HideInInspector] public CompanionFeedbackController feedbackController;
 
-    [SerializeField] public bool playerAiming;
+    [HideInInspector] public bool playerAiming;
     [HideInInspector] private Vector3 initialScale;
     [HideInInspector] private Quaternion initialRotation;
     [HideInInspector] private Vector3 initialPosition;
@@ -53,7 +46,7 @@ public class Companion : MonoBehaviour
     {
         companionRigidBody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();
-        companionFeedbackController = GetComponent<CompanionFeedbackController>();
+        feedbackController = GetComponent<CompanionFeedbackController>();
 
         initialScale = transform.localScale;
         initialRotation = transform.localRotation;
@@ -92,7 +85,6 @@ public class Companion : MonoBehaviour
             if (state != ECompanionState.RETAINED && state != ECompanionState.COMEBACK)
             {
                 SetNewState(ECompanionState.RETAINED);
-                //startMoveSinPosition = transform.position;
                 Invoke(nameof(ResetRetainedState), timeRetained);
             }
         }
@@ -106,7 +98,6 @@ public class Companion : MonoBehaviour
     private void ResetRetainedState()
     {
         SetNewState(ECompanionState.COMEBACK);
-        //startMoveSinPosition = initialPosition;
     }
     public void HandleState()
     {
@@ -121,20 +112,19 @@ public class Companion : MonoBehaviour
 
                 m_Collider.isTrigger = true;
 
-                trailRenderer.endColor = throwDashColor;
-                trailRenderer.startColor = throwDashColor;
+                feedbackController.PlayShortTrail();
 
                 transform.parent = playerParent;
 
                 if (!playerAiming)
                 {
                     transform.SetParent(playerParent);
-                    fakeShadow.SetActive(true);
+                    feedbackController.ShowShadow();
                 }
                 else
                 {
                     transform.SetParent(socketHand);
-                    fakeShadow.SetActive(false);
+                    feedbackController.HideShadow();
                 }
 
                 break;
@@ -147,10 +137,9 @@ public class Companion : MonoBehaviour
                 companionRigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 m_Collider.isTrigger = false;
 
-                trailRenderer.endColor = throwDashColor;
-                trailRenderer.startColor = throwDashColor;
+                feedbackController.PlayShortTrail();
 
-                fakeShadow.SetActive(false);
+                feedbackController.HideShadow();
 
                 break;
             case ECompanionState.THROW_LARGE:
@@ -161,10 +150,8 @@ public class Companion : MonoBehaviour
                 companionRigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 m_Collider.isTrigger = false;
 
-                trailRenderer.endColor = throwLargeColor;
-                trailRenderer.startColor = throwLargeColor;
-
-                fakeShadow.SetActive(false);
+                feedbackController.PlayLargeTrail();
+                feedbackController.HideShadow();
 
                 break;
             case ECompanionState.RETAINED:
@@ -177,14 +164,11 @@ public class Companion : MonoBehaviour
 
                 m_Collider.isTrigger = false;
 
-                trailRenderer.endColor = throwDashColor;
-                trailRenderer.startColor = throwDashColor;
+                feedbackController.PlayShortTrail();
 
                 ResetInitialProperties(false);
 
-                fakeShadow.SetActive(true);
-
-                //MoveUpDown();
+                feedbackController.ShowShadow();
 
                 break;
             case ECompanionState.COMEBACK:
@@ -195,10 +179,9 @@ public class Companion : MonoBehaviour
                 companionRigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
                 m_Collider.isTrigger = true;
 
-                trailRenderer.endColor = throwDashColor;
-                trailRenderer.startColor = throwDashColor;
-                
-                fakeShadow.SetActive(true);
+                feedbackController.PlayShortTrail();
+
+                feedbackController.ShowShadow();
 
                 break;
         }
@@ -209,7 +192,7 @@ public class Companion : MonoBehaviour
         Vector3 forceToAdd = forceDirection * force;
         companionRigidBody.AddForce(forceToAdd, ForceMode.Impulse);
 
-        companionFeedbackController.PlayBeingThrownFeedback();
+        feedbackController.PlayBeingThrownFeedback();
     }
 
     public void SetNewState(ECompanionState newState)
@@ -290,8 +273,8 @@ public class Companion : MonoBehaviour
         {
             collision.gameObject.GetComponent<IDamageable>().Damage(1);
         }
-        
-        companionFeedbackController.PlayHitFeedback(collision.GetContact(0).point);
+
+        feedbackController.PlayHit(collision.GetContact(0).point);
 
         if (state != ECompanionState.ATTACHED)
             SetNewState(ECompanionState.COMEBACK);

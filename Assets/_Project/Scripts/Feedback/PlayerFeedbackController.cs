@@ -168,7 +168,7 @@ public class PlayerFeedbackController : FeedbackController
         trailLeftHand.emitting = false;
         trailRightHand.emitting = false;
     }
-
+    
     private void LargeShoesTrail()
     {
         trailLeftShoe.emitting = true;

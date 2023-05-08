@@ -36,10 +36,6 @@ public class ThrowingSystem : MonoBehaviour
     //Feedback
     [HideInInspector] private PlayerFeedbackController playerFeedbackController;
 
-    [Header("Feedback")]
-    [SerializeField] private MMFeedbacks comebackFeedback;
-    [SerializeField] private MMFeedbacks exclamationFeedback;
-
     // Constant variables
     [HideInInspector] private const float targetNearDistance = 0.2f;
 
@@ -186,6 +182,7 @@ public class ThrowingSystem : MonoBehaviour
     {
         // effect
         playerFeedbackController.PlayThrowFeedback();
+        companion.feedbackController.PlayBeingThrownFeedback();
 
         // Preferences
         objectToThrow.transform.SetParent(null);
@@ -245,7 +242,7 @@ public class ThrowingSystem : MonoBehaviour
         companion.SetNewState(ECompanionState.ATTACHED);
         companion.ResetInitialProperties(true);
         elapsedTime = 0;
-        comebackFeedback.PlayFeedbacks();
+        companion.feedbackController.PlayComeback();
         
         // timer to throw again
         Invoke(nameof(ResetThrowCooldown), throwCooldown);
@@ -253,7 +250,8 @@ public class ThrowingSystem : MonoBehaviour
     private void ResetThrowCooldown()
     {
         readyToThrow = true;
-        exclamationFeedback.PlayFeedbacks();
+
+        companion.feedbackController.PlayThrowAgain();
     }
 
     private void ResetThrowCooldownWithoutFeedback()
