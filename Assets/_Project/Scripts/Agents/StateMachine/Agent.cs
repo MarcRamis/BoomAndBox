@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public abstract class Agent : MonoBehaviour
 {
+
     [Header("Agent Settings")]
     [SerializeField] public EAIState initialState;
     [HideInInspector] public AIStateMachine stateMachine;
@@ -15,21 +16,26 @@ public abstract class Agent : MonoBehaviour
     [HideInInspector] public AIManager manager;
     [HideInInspector] public Vector3 direction;
 
+    public bool isNavMeshAgent = true;
+
     protected void Awake()
     {
-        navMesh = GetComponent<NavMeshAgent>();
+        if (isNavMeshAgent)
+        {
+            navMesh = GetComponent<NavMeshAgent>();
 
-        manager = GetComponent<AIManager>();
+            manager = GetComponent<AIManager>();
 
-        stateMachine = new AIStateMachine(this);
-        stateMachine.RegisterState(new AIChasePlayerState());
-        stateMachine.RegisterState(new AIRandomWalkState());
-        stateMachine.RegisterState(new AIDronChargeState());
-        stateMachine.RegisterState(new AIReceiveDamage());
-        stateMachine.RegisterState(new AIKeepDistance());
-        stateMachine.RegisterState(new AIIdleState());
-        stateMachine.RegisterState(new AISeekState());
-        stateMachine.ChangeState(initialState);
+            stateMachine = new AIStateMachine(this);
+            stateMachine.RegisterState(new AIChasePlayerState());
+            stateMachine.RegisterState(new AIRandomWalkState());
+            stateMachine.RegisterState(new AIDronChargeState());
+            stateMachine.RegisterState(new AIReceiveDamage());
+            stateMachine.RegisterState(new AIKeepDistance());
+            stateMachine.RegisterState(new AIIdleState());
+            stateMachine.RegisterState(new AISeekState());
+            stateMachine.ChangeState(initialState);
+        }
 
         player = ReferenceSingleton.Instance.player;
         playerScript = ReferenceSingleton.Instance.playerScript;
