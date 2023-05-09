@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class PauseMenuLogic : MonoBehaviour
@@ -11,9 +12,19 @@ public class PauseMenuLogic : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] private Canvas canvas = null;
 
+    //[Header("EventSystem")]
+    //[SerializeField] private EventsSystem eventsSystem = null;
+
     [Header("InputController")]
     [SerializeField] private MenuInputController inputsUI;
     [HideInInspector] private Player player;
+
+    [Header("Pause-Menu")]
+    [SerializeField] private GameObject options;
+
+    [Header("Buttons")]
+    [SerializeField] private GameObject resumeButton;
+    [SerializeField] private GameObject sliderMaster;
 
     private bool isMenuOpen = false;
 
@@ -24,20 +35,19 @@ public class PauseMenuLogic : MonoBehaviour
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+            //if(eventsSystem == null)
+            //    eventsSystem = FindObjectOfType<EventsSystem>();
         }
     }
 
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    if (Input.anyKeyDown)
-    //    {
-    //        if (Input.GetKeyDown(openMenu))
-    //        {
-    //            TogglePauseMenuState();
-    //        }
-    //    }
-    //}
+    private void Update()
+    {
+        if(Input.GetButtonDown("Options") && isMenuOpen)
+        {
+            Debug.Log("start");
+        }
+    }
 
     public void TogglePauseMenuState()
     {
@@ -55,7 +65,8 @@ public class PauseMenuLogic : MonoBehaviour
         {
             if (player != null)
                 player.BlockInputs();
-
+            var eventSystem = EventSystem.current;
+            eventSystem.SetSelectedGameObject(resumeButton, new BaseEventData(eventSystem));
             canvas.gameObject.SetActive(true);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -74,6 +85,20 @@ public class PauseMenuLogic : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void Options()
+    {
+        var eventSystem = EventSystem.current;
+        eventSystem.SetSelectedGameObject(sliderMaster, new BaseEventData(eventSystem));
+        options.SetActive(true);
+    }
+
+    public void CloseOptions()
+    {
+        var eventSystem = EventSystem.current;
+        eventSystem.SetSelectedGameObject(resumeButton, new BaseEventData(eventSystem));
+        options.SetActive(false);
     }
 
     private void OnDestroy()
