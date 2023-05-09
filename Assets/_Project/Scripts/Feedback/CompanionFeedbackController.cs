@@ -39,7 +39,7 @@ public class CompanionFeedbackController : FeedbackController
     public void PlayHit(Vector3 contactPoint)
     {
         Instantiate(prefabHitExplosion, contactPoint, prefabHitExplosion.transform.rotation);
-        PlaySoundEffect(hitSound);
+        PlaySoundEffect(hitSound,1f,1.5f,0.8f,1.6f);
     }
     /////////// BEING THROW
     public void PlayBeingThrownFeedback()
