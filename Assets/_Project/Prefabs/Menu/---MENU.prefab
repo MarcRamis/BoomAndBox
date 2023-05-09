@@ -209,9 +209,9 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 8247008953049326840}
-    m_SelectOnDown: {fileID: 8247008953543629067}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 8247008953543629067}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
@@ -238,10 +238,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 290699625448586519}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 8247008952040080100}
+        m_TargetAssemblyTypeName: MenuLogic, Assembly-CSharp
+        m_MethodName: Credits
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -480,6 +480,7 @@ MonoBehaviour:
   eventsSystem: {fileID: 0}
   playButton: {fileID: 8247008953543629061}
   initMasterVolume: 0.4
+  timeToWait: 0.5
 --- !u!1 &1556610675411909805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1646,8 +1647,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7838956681790415583}
-        m_TargetAssemblyTypeName: OptionsLogic, Assembly-CSharp
+      - m_Target: {fileID: 8247008952040080100}
+        m_TargetAssemblyTypeName: MenuLogic, Assembly-CSharp
         m_MethodName: CloseOptions
         m_Mode: 1
         m_Arguments:
@@ -1780,10 +1781,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 290699625448586519}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 8247008952040080100}
+        m_TargetAssemblyTypeName: MenuLogic, Assembly-CSharp
+        m_MethodName: CloseCredits
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1942,8 +1943,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneNameToChangeOnPlay: Intro
+  timeToWait: 0.1
+  playMenu: {fileID: 1182563904228855883}
+  playButton: {fileID: 8247008953543629061}
   options: {fileID: 1452843228305493418}
   optionSlider: {fileID: 6307301062191765008}
+  audioMixer: {fileID: 24100000, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
+  credits: {fileID: 290699625448586519}
+  returnButton: {fileID: 7986281435453275008}
 --- !u!1 &8247008952368267866
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,7 +2162,7 @@ MonoBehaviour:
     m_SelectOnUp: {fileID: 8247008953543629067}
     m_SelectOnDown: {fileID: 8247008953049326840}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnRight: {fileID: 7077895403548637306}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2441,9 +2448,9 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 8247008952752909213}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 8247008953543629067}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnRight: {fileID: 7077895403548637306}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2649,10 +2656,10 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 8247008953049326840}
     m_SelectOnDown: {fileID: 8247008952752909213}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnRight: {fileID: 7077895403548637306}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}

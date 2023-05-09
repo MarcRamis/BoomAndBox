@@ -954,7 +954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 332095373}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1556442031
@@ -1120,6 +1120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneNameToChangeOnPlay: Level 1 - Zone 2 Final
+  timeToWait: 0.1
 --- !u!1 &1767061873
 GameObject:
   m_ObjectHideFlags: 0
