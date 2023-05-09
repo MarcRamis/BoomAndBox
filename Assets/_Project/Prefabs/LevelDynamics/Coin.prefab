@@ -267,8 +267,8 @@ MonoBehaviour:
   TestStopButton: 0
   PlayMethod: 2
   PoolSize: 10
-  MinVolume: 1
-  MaxVolume: 1.5
+  MinVolume: 0.4
+  MaxVolume: 0.8
   MinPitch: 0.84
   MaxPitch: 1.78
   SfxAudioMixerGroup: {fileID: 0}
