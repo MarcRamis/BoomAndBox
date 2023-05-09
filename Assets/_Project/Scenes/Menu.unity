@@ -346,7 +346,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -2273146209696275378, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   m_audioClip: {fileID: 8300000, guid: 38968c0202b756c49853c1f400f11ee1, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.35
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -567,34 +567,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 290699625448586519, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1452843228305493418, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3825459726510623269, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3825459726510623269, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5986495603021469310, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5986495603021469310, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5986495603021469310, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8247008952040080102, guid: 9fef8536833d5904d831f5a68434c607, type: 3}
       propertyPath: m_Name
       value: ---MENU

@@ -271,7 +271,7 @@ MonoBehaviour:
   MaxVolume: 0.8
   MinPitch: 0.84
   MaxPitch: 1.78
-  SfxAudioMixerGroup: {fileID: 0}
+  SfxAudioMixerGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   Priority: 128
 --- !u!1001 &7939109877107766249
 PrefabInstance:

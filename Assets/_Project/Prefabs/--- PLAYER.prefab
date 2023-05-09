@@ -10606,7 +10606,7 @@ MonoBehaviour:
   MaxVolume: 1
   MinPitch: 0.8
   MaxPitch: 1
-  SfxAudioMixerGroup: {fileID: 0}
+  SfxAudioMixerGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   Priority: 128
 --- !u!114 &1044785148
 MonoBehaviour:
@@ -10990,7 +10990,7 @@ MonoBehaviour:
   MaxVolume: 1
   MinPitch: 0.8
   MaxPitch: 1
-  SfxAudioMixerGroup: {fileID: 0}
+  SfxAudioMixerGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   Priority: 128
 --- !u!114 &256346966
 MonoBehaviour:
@@ -12028,7 +12028,7 @@ AudioSource:
   m_GameObject: {fileID: 6449113727613805789}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PauseMenuLogic : MonoBehaviour
 {
@@ -11,6 +15,7 @@ public class PauseMenuLogic : MonoBehaviour
 
     [Header("Canvas")]
     [SerializeField] private Canvas canvas = null;
+    [SerializeField] private Slider slider = null;
 
     [Header("InputController")]
     [SerializeField] private MenuInputController inputsUI;
@@ -19,11 +24,15 @@ public class PauseMenuLogic : MonoBehaviour
     [Header("Pause-Menu")]
     [SerializeField] private GameObject options;
 
+    [Header("Audio")]
+    [SerializeField] private AudioMixer audioMixer;
+
     [Header("Buttons")]
     [SerializeField] private GameObject resumeButton;
     [SerializeField] private GameObject sliderMaster;
 
     private bool isMenuOpen = false;
+    private float sound = 0.0f;
 
     private void Awake()
     {
@@ -33,6 +42,25 @@ public class PauseMenuLogic : MonoBehaviour
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         }
+
+        float value;
+        audioMixer.GetFloat("MasterVolume", out value);
+        sound = value;
+        slider.value = DecibelToLinear(sound);
+        //MasterMusicControl(sound);
+        //Debug.Log(DecibelToLinear(sound));
+
+    }
+
+    private void Start()
+    {
+        
+    }
+
+    private float DecibelToLinear(float dB)
+    {
+        float linear = Mathf.Pow(10.0f, dB / 20.0f);
+        return linear;
     }
 
     public void TogglePauseMenuState()
@@ -78,6 +106,11 @@ public class PauseMenuLogic : MonoBehaviour
         var eventSystem = EventSystem.current;
         eventSystem.SetSelectedGameObject(sliderMaster, new BaseEventData(eventSystem));
         options.SetActive(true);
+    }
+
+    public void MasterMusicControl(float _sliderValue)
+    {
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(_sliderValue) * 20.0f);
     }
 
     public void CloseOptions()
