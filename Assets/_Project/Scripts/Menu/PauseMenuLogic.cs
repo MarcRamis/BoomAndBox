@@ -12,12 +12,9 @@ public class PauseMenuLogic : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] private Canvas canvas = null;
 
-    //[Header("EventSystem")]
-    //[SerializeField] private EventsSystem eventsSystem = null;
-
     [Header("InputController")]
     [SerializeField] private MenuInputController inputsUI;
-    [HideInInspector] private Player player;
+    [SerializeField] private Player player;
 
     [Header("Pause-Menu")]
     [SerializeField] private GameObject options;
@@ -35,17 +32,6 @@ public class PauseMenuLogic : MonoBehaviour
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-
-            //if(eventsSystem == null)
-            //    eventsSystem = FindObjectOfType<EventsSystem>();
-        }
-    }
-
-    private void Update()
-    {
-        if(Input.GetButtonDown("Options") && isMenuOpen)
-        {
-            Debug.Log("start");
         }
     }
 
