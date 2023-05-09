@@ -28,7 +28,24 @@ public class FeedbackController : MonoBehaviour
         audioSource.PlayOneShot(sound);
         audioSource.volume = tmpVolume;
     }
-    
+
+    public virtual void PlaySoundEffect(AudioClip sound, float minVolume, float maxVolume, float minPitch, float maxPitch)
+    {
+        float randomVolume = Random.Range(minVolume,maxVolume);
+        float randomPitch = Random.Range(minPitch, maxPitch);
+        
+        float tmpVolume = audioSource.volume;
+        float tmpPitch = audioSource.pitch;
+
+        audioSource.volume = randomVolume;
+        audioSource.pitch = randomPitch;
+
+        audioSource.PlayOneShot(sound);
+        
+        audioSource.volume = tmpVolume;
+        audioSource.pitch = tmpPitch;
+    }
+
     public virtual void PlaySoundEffect(AudioClip sound)
     {
         audioSource.PlayOneShot(sound);

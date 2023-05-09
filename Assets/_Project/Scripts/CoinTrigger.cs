@@ -6,16 +6,14 @@ using MoreMountains.Feedbacks;
 
 public class CoinTrigger : MonoBehaviour
 {
-    [SerializeField] private GameObject pickFeedback;
-    [SerializeField] private MMFeedbacks soundFeedback;
+    [SerializeField] private CoinFeedbackController feedbackController;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.transform.tag == "Player" || other.transform.tag == "Companion")
         {
             EventsSystem.current.CoinCollected();
-            Instantiate(pickFeedback, transform.position, transform.rotation);
-            soundFeedback.PlayFeedbacks();
+            feedbackController.PlayTakenItem();
             Destroy(gameObject);
         }
     }
