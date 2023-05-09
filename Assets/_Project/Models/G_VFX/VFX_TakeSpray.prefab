@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.48584908, g: 0.71130383, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.9411794, b: 0.48627448, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5119,7 +5119,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.7122642, g: 0.88933796, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.9831489, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -6260,8 +6260,8 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0, g: 0.25339842, b: 1, a: 0}
-        key2: {r: 0.4772013, g: 1, b: 0.37264156, a: 0.039215688}
+        key1: {r: 1, g: 0.83413935, b: 0, a: 0}
+        key2: {r: 0, g: 0.25339842, b: 1, a: 0.039215688}
         key3: {r: 0.16666667, g: 1, b: 0, a: 0.039215688}
         key4: {r: 0.16666667, g: 1, b: 0, a: 0.039215688}
         key5: {r: 1, g: 1, b: 1, a: 0.039215688}
@@ -6269,7 +6269,7 @@ ParticleSystem:
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 27745
         ctime1: 52428
-        ctime2: 52659
+        ctime2: 53199
         ctime3: 45163
         ctime4: 45875
         ctime5: 65535
@@ -9795,7 +9795,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5112403345841327295
 Transform:
   m_ObjectHideFlags: 0
@@ -9906,7 +9906,7 @@ GameObject:
   - component: {fileID: 5112403345868107899}
   - component: {fileID: 5112403345868107846}
   m_Layer: 0
-  m_Name: CFXR3 Hit Ice B (Air) _Purple No Light
+  m_Name: VFX_TakeSpray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11190,10 +11190,10 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.41037738, g: 0.5668078, b: 1, a: 1}
-        key1: {r: 0.5801887, g: 0.9193304, b: 1, a: 0}
+        key0: {r: 1, g: 0.9571712, b: 0.41176474, a: 1}
+        key1: {r: 0.9691726, g: 1, b: 0.5803922, a: 0}
         key2: {r: 1, g: 1, b: 1, a: 0.039215688}
-        key3: {r: 0, g: 0.24578038, b: 0.5660378, a: 0.039215688}
+        key3: {r: 0.98039216, g: 0.8779417, b: 0, a: 0.039215688}
         key4: {r: 1, g: 0.017601715, b: 0, a: 0.039215688}
         key5: {r: 1, g: 1, b: 1, a: 0.039215688}
         key6: {r: 1, g: 1, b: 1, a: 0}
@@ -11201,7 +11201,7 @@ ParticleSystem:
         ctime0: 7859
         ctime1: 18519
         ctime2: 30410
-        ctime3: 38952
+        ctime3: 39128
         ctime4: 45875
         ctime5: 65535
         ctime6: 65535
@@ -16040,8 +16040,8 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0.5801887, g: 0.9193304, b: 1, a: 0}
-        key2: {r: 0.41037738, g: 0.5668078, b: 1, a: 0.039215688}
+        key1: {r: 1, g: 0.9881011, b: 0.5803922, a: 0}
+        key2: {r: 0.98094255, g: 1, b: 0.41176474, a: 0.039215688}
         key3: {r: 0.5801887, g: 0.9193304, b: 1, a: 0.039215688}
         key4: {r: 1, g: 0.017601715, b: 0, a: 0.039215688}
         key5: {r: 1, g: 1, b: 1, a: 0.039215688}
@@ -20813,19 +20813,19 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.41037738, g: 0.5668078, b: 1, a: 1}
-        key1: {r: 0.5801887, g: 0.9193304, b: 1, a: 0}
+        key0: {r: 1, g: 0.93051434, b: 0.41176474, a: 1}
+        key1: {r: 1, g: 0.9225398, b: 0.5803922, a: 0}
         key2: {r: 1, g: 1, b: 1, a: 0.039215688}
-        key3: {r: 0, g: 0.24578038, b: 0.5660378, a: 0.039215688}
-        key4: {r: 1, g: 0.017601715, b: 0, a: 0.039215688}
+        key3: {r: 0.990566, g: 0.8780049, b: 0.07008721, a: 0.039215688}
+        key4: {r: 0, g: 0.24578038, b: 0.5660378, a: 0.039215688}
         key5: {r: 1, g: 1, b: 1, a: 0.039215688}
         key6: {r: 1, g: 1, b: 1, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 7859
-        ctime1: 18519
+        ctime1: 18697
         ctime2: 30410
         ctime3: 36013
-        ctime4: 45875
+        ctime4: 36013
         ctime5: 65535
         ctime6: 65535
         ctime7: 0
