@@ -28,6 +28,8 @@ public class Cheats : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player");
         }
 
+        player.GetComponent<Player>().dashOnboarding = true;
+
     }
 
     // Update is called once per frame
@@ -74,4 +76,10 @@ public class Cheats : MonoBehaviour
         }
         
     }
+
+    public void GiveDashToPlayer()
+    {
+        player.GetComponent<Player>().dashOnboarding = false;
+    }
+
 }

@@ -3059,5 +3059,5 @@ MonoBehaviour:
   activated: 0
   timeBetweenShoots: 1.2
   timeToWaitBefStart: 0
-  projectile: {fileID: 7636463702901488244, guid: ba04173b10a82a448a4042d479e460e4, type: 3}
+  projectile: {fileID: 2762537526124608768, guid: b1775086b5809fe429d8095953705700, type: 3}
   projectileSpawnPoint: {fileID: 479757345920550444}

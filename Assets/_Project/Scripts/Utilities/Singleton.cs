@@ -1,4 +1,5 @@
 
+using UnityEngine;
 /// <summary>
 /// Singleton pattern.
 /// This class can be called from anywhere and only exists one instance at a time.

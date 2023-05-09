@@ -13,9 +13,10 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private Transform standPositionThrow;
     [SerializeField] private Transform toAttach;
     [SerializeField] public GameObject objectToThrow;
-    [HideInInspector] public Companion companion;
+    [SerializeField] public Companion companion;
     [HideInInspector] private PlayerMovementSystem pm;
-    
+    [HideInInspector] private Player player;
+
     [Header("Throw")]
     [SerializeField] private float throwForce;
     [SerializeField] private float throwLargeForce;
@@ -35,10 +36,6 @@ public class ThrowingSystem : MonoBehaviour
     //Feedback
     [HideInInspector] private PlayerFeedbackController playerFeedbackController;
 
-    [Header("Feedback")]
-    [SerializeField] private MMFeedbacks comebackFeedback;
-    [SerializeField] private MMFeedbacks exclamationFeedback;
-
     // Constant variables
     [HideInInspector] private const float targetNearDistance = 0.2f;
 
@@ -49,6 +46,7 @@ public class ThrowingSystem : MonoBehaviour
 
     private void Awake()
     {
+        player = GetComponent<Player>();
         pm = GetComponent<PlayerMovementSystem>();
         companion = objectToThrow.GetComponent<Companion>();
         myInputs = GetComponent<PlayerInputController>();
@@ -80,9 +78,12 @@ public class ThrowingSystem : MonoBehaviour
 
     private void DoAim()
     {
-        if (pm.isGrounded && companion.CanAim())
+        if (player.CanThrow())
         {
-            RestartCompanionPosition();
+            if (pm.isGrounded && companion.CanAim())
+            {
+                RestartCompanionPosition();
+            }
         }
     }
 
@@ -103,43 +104,61 @@ public class ThrowingSystem : MonoBehaviour
             companion.SetNewState(ECompanionState.ATTACHED);
             companion.ResetLocalPosition(Vector3.zero);
         }
-
+        
         // timer to throw again
         Invoke(nameof(ResetThrowCooldownWithoutFeedback), throwCooldown);
+    }
+    
+    public void NotMode()
+    {
+        if (isAiming)
+        {
+            SwapAim();
+            playerFeedbackController.StopAimingFeedback();
+        }
+        objectToThrow.SetActive(false);
+    }
+    
+    public void YesMode()
+    {
+        objectToThrow.SetActive(true);
     }
 
     private void DoThrow()
     {
-        // Throw BOX CHARACTER 
-        if (readyToThrow && companion.state != ECompanionState.NONE)
+        if (player.CanThrow())
         {
-            // Throw large
-            if (pm.isAiming)
+            // Throw BOX CHARACTER 
+            if (readyToThrow && companion.state != ECompanionState.NONE)
             {
-                // change state
-                companion.SetNewState(ECompanionState.THROW_LARGE);
-
-                // Do Throw
-                Throw(cam.transform.forward, throwLargeForce);
-            }
-            else
-            {
-                // Throw short -- dash
-                if (companion.state == ECompanionState.ATTACHED)
+                // Throw large
+                if (pm.isAiming)
                 {
                     // change state
-                    companion.SetNewState(ECompanionState.THROW);
-                    // Do Throw
-                    Throw(cam.transform.forward, throwForce);
-                }
-                else if (companion.state == ECompanionState.THROW)
-                {
-                    companion.SetNewState(ECompanionState.RETAINED);
-                }
+                    companion.SetNewState(ECompanionState.THROW_LARGE);
 
-                else if (companion.state == ECompanionState.RETAINED)
+                    // Do Throw
+                    Throw(cam.transform.forward, throwLargeForce);
+                }
+                else
                 {
-                    companion.SetNewState(ECompanionState.COMEBACK);
+                    // Throw short -- dash
+                    if (companion.state == ECompanionState.ATTACHED)
+                    {
+                        // change state
+                        companion.SetNewState(ECompanionState.THROW);
+                        // Do Throw
+                        Throw(cam.transform.forward, throwForce);
+                    }
+                    else if (companion.state == ECompanionState.THROW)
+                    {
+                        companion.SetNewState(ECompanionState.RETAINED);
+                    }
+
+                    else if (companion.state == ECompanionState.RETAINED)
+                    {
+                        companion.SetNewState(ECompanionState.COMEBACK);
+                    }
                 }
             }
         }
@@ -163,6 +182,7 @@ public class ThrowingSystem : MonoBehaviour
     {
         // effect
         playerFeedbackController.PlayThrowFeedback();
+        companion.feedbackController.PlayBeingThrownFeedback();
 
         // Preferences
         objectToThrow.transform.SetParent(null);
@@ -222,7 +242,7 @@ public class ThrowingSystem : MonoBehaviour
         companion.SetNewState(ECompanionState.ATTACHED);
         companion.ResetInitialProperties(true);
         elapsedTime = 0;
-        comebackFeedback.PlayFeedbacks();
+        companion.feedbackController.PlayComeback();
         
         // timer to throw again
         Invoke(nameof(ResetThrowCooldown), throwCooldown);
@@ -230,7 +250,8 @@ public class ThrowingSystem : MonoBehaviour
     private void ResetThrowCooldown()
     {
         readyToThrow = true;
-        exclamationFeedback.PlayFeedbacks();
+
+        companion.feedbackController.PlayThrowAgain();
     }
 
     private void ResetThrowCooldownWithoutFeedback()

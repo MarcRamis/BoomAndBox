@@ -8,13 +8,20 @@ public class PlayerCharacterAnimations : MonoBehaviour
     [Header("References")]
     [SerializeField] private Animator playerAnimator;
     private PlayerMovementSystem playerMovementSystem;
+    private CombatSystem combatSystem;
+    private Player player;
     private ThrowingSystem throwingSystem;
     private Rigidbody playerRb;
     
+    public GameObject[] weaponParent;
+    public Transform[] weaponPos;
+
     private void Start()
     {
+        player = GetComponent<Player>();
         playerRb = GetComponent<Rigidbody>();
         playerMovementSystem = GetComponent<PlayerMovementSystem>();
+        combatSystem = GetComponent<CombatSystem>();
         throwingSystem = GetComponent<ThrowingSystem>();
     }
 
@@ -34,8 +41,9 @@ public class PlayerCharacterAnimations : MonoBehaviour
         // this variable works as the inverse because is setted to false when you press the input. 
         // I make it negative in order to get the current "input pressed"
         playerAnimator.SetBool("PressedInputJump", !playerMovementSystem.readyToJump);
-
-
+        
+        playerAnimator.SetBool("isCombat", player.CanCombat());
+        playerAnimator.SetBool("ReadyToAttack", combatSystem.attackIsReady);
         
         playerAnimator.SetBool("ReadyToThrow", throwingSystem.readyToThrow);
         playerAnimator.SetBool("JustThrow", throwingSystem.justThrow);
@@ -44,5 +52,11 @@ public class PlayerCharacterAnimations : MonoBehaviour
     public void PlayReceiveDamageAnimation()
     {
         playerAnimator.SetTrigger("ReceiveDamage");
+    }
+
+    public void PlayAttack(int counter)
+    {
+        playerAnimator.SetInteger("counterAttack", counter);
+        playerAnimator.SetTrigger("MakeAttack");
     }
 }

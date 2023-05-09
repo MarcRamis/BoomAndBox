@@ -1,0 +1,354 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &337694777680541086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 337694777680541087}
+  - component: {fileID: 337694777680541084}
+  - component: {fileID: 337694777680541085}
+  - component: {fileID: 337694777680541083}
+  - component: {fileID: 337694777680541082}
+  - component: {fileID: 337694777680541080}
+  - component: {fileID: 6651125753086868616}
+  m_Layer: 0
+  m_Name: MainSoundtrack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &337694777680541087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337694777680541086}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 940.5738, y: 540.2822, z: 56.815083}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &337694777680541084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337694777680541086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bceff396fae81a46a6af767fd4e14b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundtrackManager: {fileID: 337694777680541080}
+  soundtrackPrefab: {fileID: 4662607948214100722, guid: 5a6f916e6c2ccde4ba2cd4621686a58a, type: 3}
+  soundtrackParent: {fileID: 337694777680541086}
+  soundtrackState: 1
+  rythmMode: 0
+  audioExtraBase: {fileID: 0}
+  simonMode: 0
+--- !u!114 &337694777680541085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337694777680541086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b588fe39c155ada419a5965315e9dbc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSources: []
+  audios:
+  - {fileID: 8300000, guid: ba132398abf9dd64f87e0fb3e6e3b7db, type: 3}
+  - {fileID: 8300000, guid: b82ad559c62672e47b576bc3d3ddc03c, type: 3}
+  buttonSequences: []
+  currentSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  baseSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  currentIteration: 0
+--- !u!114 &337694777680541083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337694777680541086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a66b34dbe0a1ac64495aeb02a5f65707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSources: []
+  audios:
+  - {fileID: 8300000, guid: cd21dd74a71a99648bcb45ecbf31fb76, type: 3}
+  - {fileID: 8300000, guid: f935a0df20de2114dabd860fc8e9d24d, type: 3}
+  - {fileID: 8300000, guid: 2d5248148e787184199d690bd9518f5c, type: 3}
+  buttonSequences: []
+  currentSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  baseSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  currentIteration: 0
+--- !u!114 &337694777680541082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337694777680541086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f5a48261d5d934483199c6469b9c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSources: []
+  audios:
+  - {fileID: 8300000, guid: 8a72eae413234ad499dbd47dde26a802, type: 3}
+  - {fileID: 8300000, guid: 67db31c127fd7b5458efe30a2cbc831d, type: 3}
+  - {fileID: 8300000, guid: ef2964fd73ace6648808e8bb1a82d86b, type: 3}
+  buttonSequences: []
+  currentSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  baseSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  currentIteration: 0
+--- !u!114 &337694777680541080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337694777680541086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 229add6f8fb1a964c88e99c187f21782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSources: []
+  audios:
+  - {fileID: 8300000, guid: 2ca813529635d224e809aaf79c229ec5, type: 3}
+  - {fileID: 8300000, guid: 24ec0030a2e93d749af4fbe1f5efad2e, type: 3}
+  - {fileID: 8300000, guid: 21cf1da5691fbd14996d12212a6125d9, type: 3}
+  - {fileID: 8300000, guid: 28372baf793d44a48ba443680a6ceeb9, type: 3}
+  - {fileID: 8300000, guid: 7e442243bd31a7b41bba3f41670883ee, type: 3}
+  buttonSequences:
+  - buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  - buttonSequence: 00000000
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 100
+      multiplierNeeded: 100000
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  currentSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  baseSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  currentIteration: 0
+--- !u!114 &6651125753086868616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337694777680541086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13d2d19044576b429cce34567c2d5b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSources: []
+  audios:
+  - {fileID: 8300000, guid: 41dfc32197b2bc244971fd7db961b484, type: 3}
+  - {fileID: 8300000, guid: 15151295777ce824481f3644c29dabb0, type: 3}
+  - {fileID: 8300000, guid: e25981a2acfebc34a99256f3c584eb8a, type: 3}
+  - {fileID: 8300000, guid: 7b6ae5b84e8c60c45ae4db39c5763565, type: 3}
+  buttonSequences:
+  - buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 0
+      rythmOpportunityCd: 0
+  - buttonSequence: 00000000
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 100
+      multiplierNeeded: 1000000
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 0
+      rythmOpportunityCd: 0
+  - buttonSequence: 00000000
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 0
+      rythmOpportunityCd: 0
+  - buttonSequence: 00000000
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 0
+      rythmOpportunityCd: 0
+  - buttonSequence: 00000000
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 0
+      rythmOpportunityCd: 0
+  currentSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  baseSequence:
+    buttonSequence: 
+    isCompleted: 0
+    currentLoopControl: 0
+    instrument:
+      instrumentRef: {fileID: 0}
+      threshold: 0
+      multiplierNeeded: 0
+      intensity: 0
+      canRythm: 0
+      rythmOnce: 1
+      rythmOpportunityCd: 0.5
+  currentIteration: 0
+  introSong: []
+  loopSong: []

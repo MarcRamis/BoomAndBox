@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7953904177592867727}
   - component: {fileID: 5297648219578953541}
   - component: {fileID: 1890643041865363077}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: barrera_seguridad
   m_TagString: Untagged
   m_Icon: {fileID: 0}

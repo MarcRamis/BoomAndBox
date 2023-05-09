@@ -14,12 +14,16 @@ public class ChekPointSystem : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player");
 
         playerScript = player.GetComponent<Player>();
+
+        if (EventsSystem.current != null)
+            EventsSystem.current.onPlayerDeath += SetPlayerPosToSpawn;
+
     }
 
     public void SetPlayerPosToSpawn()
     {
         player.transform.position = playerSpawn.position;
-        playerScript.Damage(1);
+        playerScript.Damage(0);
         //playerScript.BlockInputsToAllow();
 
     }
@@ -32,5 +36,12 @@ public class ChekPointSystem : MonoBehaviour
     {
         transform.GetChild(1).position = newPos.position;
     }
+
+    private void OnDestroy()
+    {
+        if (EventsSystem.current != null)
+            EventsSystem.current.onPlayerDeath -= SetPlayerPosToSpawn;
+    }
+
 }
 
