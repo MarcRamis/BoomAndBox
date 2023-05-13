@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CustomCombatEvent : MonoBehaviour
+public class CustomSimonEvent : MonoBehaviour
 {
     private Player player;
+    public SimonController simonController;
 
     private void Awake()
     {
@@ -15,10 +14,11 @@ public class CustomCombatEvent : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            player.SetNewState(EPlayerModeState.COMBAT);
+            player.SetNewState(EPlayerModeState.SIMON);
+            simonController.PlaySimon();
         }
     }
-
+    
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))

@@ -75,8 +75,8 @@ public class ThrowingSystem : MonoBehaviour
 
         InterpolateComeback();
     }
-
-    private void DoAim()
+    
+    public void DoAim()
     {
         if (player.CanThrow())
         {

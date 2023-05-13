@@ -39,14 +39,17 @@ public class SimonController : MonoBehaviour
 
     private void Awake()
     {
-        RythmController.instance.beat.OnBeat += Rythm;
-
-        PlaySimon();
         rythmPlayerTimer = new MTimer(buttonPressedEndCd);
+        
+    }
+
+    private void Start()
+    {
+        RythmController.instance.beat.OnBeat += Rythm;
         rythmPlayerTimer.OnTimerEnd += ButtonPressedTimerEnd;
     }
 
-    
+
     private void Update()
     {
         if (simonIsPlaying && mode == ESimonMode.SIMONSAYS)
@@ -270,7 +273,7 @@ public class SimonController : MonoBehaviour
         imgTest4.color = Color.white;
     }
 
-    protected void PlaySimon()
+    public void PlaySimon()
     {
         simonIsPlaying = true;
     }
