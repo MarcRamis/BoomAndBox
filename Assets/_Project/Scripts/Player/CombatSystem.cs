@@ -37,7 +37,6 @@ public class CombatSystem : MonoBehaviour
     [HideInInspector] public bool attackIsReady = true;
     [HideInInspector] private bool hasHit = false;
     
-    private bool rythmMoment;
     public bool canRythm;
     public bool rythmOnce = true; //variable that im using to show the feeback when is the moment of the ryhm
     private bool rythmOnceMoment = true; //variable that im using to show the feeback that the player could reach at the rythm moment
@@ -52,13 +51,15 @@ public class CombatSystem : MonoBehaviour
     private MTimer rythmMomentTimer;
     private MTimer attackTimer;
     private Combo rythmCombo;
-
+    
     private void Awake()
     {
         player = GetComponent<Player>();
         
         player.myInputs.OnAttackPerformed += DoAttack;
-        
+
+        RythmController.instance.beat.OnBeat += Rythm;
+
         rythmMomentTimer = new MTimer();
         rythmMomentTimer.SetTimeLimit(rythmOpportunityCd);
         rythmMomentTimer.OnTimerEnd += ResetRythm;
@@ -80,7 +81,6 @@ public class CombatSystem : MonoBehaviour
         if (player.CanCombat())
         {
             combocounter = rythmCombo.GetComboCounter();
-            Rythm();
         }
 
         attackTimer.Update(Time.deltaTime);
@@ -90,12 +90,10 @@ public class CombatSystem : MonoBehaviour
     private void Rythm()
     {
         if(player.CanCombat())
-        rythmMoment = RythmSystem.instance.IsRythmBaseMoment();
-        if (rythmMoment)
         {
             canRythm = true;
             rythmMomentTimer.StartTimer();
-            
+
             if (rythmOnce)
             {
                 player.feedbackController.PlayRythmMoment();

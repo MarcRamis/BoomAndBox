@@ -2,149 +2,101 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// this controls corresponds to the ps4 controller but xbox could be the same
-public enum EControlType { NONE, SQUARE, CROSS, TRIANGLE, CIRCLE, UP, DOWN, RIGHT, LEFT}
-
 public class SoundtrackManager : MonoBehaviour
 {
-    // this instruments are the list to contain every audioSource
-    // is separated from the button sequence because i want the button sequence to be modificable on inspector
-    // and the audio source need to be created and cleaned every time a song is played
-    [SerializeField] protected List<AudioSource> audioSources; 
-    
-    // those are the audios of every instrument that is played in the song
-    [SerializeField] protected AudioClip[] audios; 
-    
-    [SerializeField] protected ButtonsSequence[] buttonSequences; // all the sequence that will be played in this song
-    [SerializeField] protected ButtonsSequence currentSequence; // this only exists to get the current sequence of buttons that will be played
-    [SerializeField] protected ButtonsSequence baseSequence;
-    
+    [SerializeField] protected Instrument[] instruments;
+    [SerializeField] protected Instrument baseInstrument;
+
     [HideInInspector] protected float maxVolume = 0.5f;
     [HideInInspector] protected float minVolume = 0f;
     [HideInInspector] public int currentIteration = 0;
-
+    
     public virtual void InitializeSequence()
     {
-        bool firstOne = true;
-
-        foreach (ButtonsSequence sq in buttonSequences)
+        baseInstrument = instruments[1];
+        
+        foreach (Instrument i in instruments)
         {
-            if (!firstOne)
-            {
-                sq.SetInitControl();
-            }
-            else
-            {
-                firstOne = false;
-            }
+            i.beating.InitBeating();
         }
         
-        currentSequence = buttonSequences[1];
-        baseSequence = buttonSequences[1];
+        currentIteration = 0;
+        Configurate();
+    }
+
+    public virtual void UpdateSoundtracks()
+    {
+        CheckIfMusicFinalized();
+
+        foreach (Instrument i in instruments)
+        {
+            i.UpdateSpectrumIntensity();
+        }
+
+        foreach (Instrument i in instruments)
+        {
+            i.beating.UpdateBeating();
+        }
     }
 
     public virtual void RythmOn()
     {
-        bool firstOne = true;
-        
-        foreach(AudioSource audioSource in audioSources)
-        {
-            if (!firstOne)
-            {
-                audioSource.volume = maxVolume;
-            }
-            else
-            {
-                firstOne = false;
-            }
-        }
     }
-
-    public virtual void UpdateSequence()
-    {
-        CheckIfMusicFinalized();
-    }
-    public virtual void ReloadSong()
-    {
-        foreach (AudioSource audioSource in audioSources)
-        {
-            audioSource.Play();
-        }
-    }
-
-    public virtual void CheckIfMusicFinalized()
-    {
-        foreach (AudioSource audioSource in audioSources)
-        {
-            if (audioSource.isPlaying)
-            {
-                return;
-            }
-            else
-            {
-                ReloadSong();
-            }
-        }
-    }
-    public virtual void StartConfiguration()
-    {
-
-    }
-
-    public virtual void NextConfiguration()
-    {
-        currentIteration++;
-    }
-
     public virtual void RythmOff()
     {
-        bool firstOne = true;
+    }
 
-        foreach (AudioSource audioSource in audioSources)
+    public virtual void Configurate()
+    {
+        // Next configuration is called every time secuence controller of the simon game changes his current secuence to the next
+    }
+
+    public virtual void ConfigurateFinal()
+    {
+        // Called when the secuence in the simon game is finished
+    }
+
+    private void ReloadSong()
+    {
+        foreach (Instrument i in instruments)
         {
-            if (!firstOne)
+            if (i.instrumentRef != null)
             {
-                audioSource.volume = maxVolume;
-            }
-            else
-            {
-                firstOne = false;
+                i.instrumentRef.Play();
+                i.beating.StartBeating();
             }
         }
     }
 
-    public void SetInstrumentOn(AudioSource audioSource)
+    public void SumConfiguration()
     {
-        audioSource.volume = maxVolume;
-    }
-    public void SetInstrumentOff(AudioSource audioSource)
-    {
-        audioSource.volume = minVolume;
-    }
-    
-    public void SetAudioVolume(AudioSource audioSource, float volume)
-    {
-        audioSource.volume = volume;
+        // Sum aconfiguration is called every time secuence controller of the simon game changes his current secuence to the next
+        currentIteration++;
+        Configurate();
     }
 
-    public List<AudioSource> GetInstruments() { return audioSources; }
-    public AudioClip[] GetAudios() { return audios; }
-    public float GetThreshold() { return currentSequence.instrument.threshold; }
-    public float GetMultiplierNeeded() { return currentSequence.instrument.multiplierNeeded; }
-    public void AddAudioSource(AudioSource audioSource) { audioSources.Add(audioSource); }
-    public void SetInstrumentAudioSource(AudioSource audioSource, int index) 
+    public void CheckIfMusicFinalized()
     {
-        // starts at 1 for the inspector error
-        for (int i = 1; i < buttonSequences.Length; i++)
+        foreach (Instrument i in instruments)
         {
-            if (i == index + 1)
+            if (i.instrumentRef != null)
             {
-                buttonSequences[i].instrument.instrumentRef = audioSource;
-                break;
+                if (i.instrumentRef.isPlaying)
+                {
+                    return;
+                }
+                else
+                {
+                    ReloadSong();
+                }
             }
         }
     }
-    public ButtonsSequence GetCurrentSequence() { return currentSequence; }
-    public ButtonsSequence GetBaseSequence() { return baseSequence; }
-    public ButtonsSequence[] GetAllButtonsSequence() { return buttonSequences; }
+
+    public float GetThreshold() { return baseInstrument.threshold; }
+    public float GetMultiplierNeeded() { return baseInstrument.multiplierNeeded; }
+    public void SetBaseInstrument(Instrument newInstrument) { baseInstrument = newInstrument; }
+    public void SetBaseInstrument(int i) { baseInstrument = instruments[i]; }
+    public Instrument GetBaseInstrument() { return baseInstrument; }
+    public Instrument[] GetAllInstruments() { return instruments; }
 }

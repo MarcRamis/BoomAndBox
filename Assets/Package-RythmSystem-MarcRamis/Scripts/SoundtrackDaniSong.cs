@@ -1,82 +1,146 @@
-﻿using UnityEngine;
-
-public class SoundtrackDaniSong : SoundtrackManager
+﻿public class SoundtrackDaniSong : SoundtrackManager
 {
-    MTimer loopSongTimer;
-    
     public override void InitializeSequence()
     {
         base.InitializeSequence();
-
-        loopSongTimer = new MTimer();
-        loopSongTimer.SetTimeLimit(2f);
-        loopSongTimer.OnTimerEnd += LoopSong;
-
-        StartSong();
-        loopSongTimer.StartTimer();
     }
 
-    public override void UpdateSequence()
-    {
-        loopSongTimer.Update(Time.deltaTime);
-    }
+
+    /// First sequence
+    // rytming with clap 
+    // play hithat and bajo 
+
+    /// Second sequence
+    // rytming with piano 
+    // play solo kick and hi-hat
+    
+    /// Third Sequence
+    // rytming with bajo
+    // play hi-hat and kick
+
 
     public override void RythmOn()
     {
-    }
-
-    public override void RythmOff()
-    {
-    }
-
-    public override void StartConfiguration()
-    {
-        SetInstrumentOff(audioSources[2]);
-        SetInstrumentOff(audioSources[3]);
-        SetInstrumentOff(audioSources[4]);
-
-        NextConfiguration();
-
-        loopSongTimer.StartTimer();
-    }
-
-    private void StartSong()
-    {
-        SetInstrumentOff(audioSources[2]);
-        SetInstrumentOff(audioSources[3]);
-        SetInstrumentOff(audioSources[4]);
-
-        SetAudioVolume(audioSources[0], maxVolume);
-        SetAudioVolume(audioSources[1], 0.3f);
-    }
-    private void LoopSong()
-    {
-        SetAudioVolume(audioSources[2], 0.3f);
-        SetAudioVolume(audioSources[3], 0.3f);
-        SetAudioVolume(audioSources[4], 0.3f);
-    }
-
-    public override void NextConfiguration()
-    {
-        base.NextConfiguration();
-        
+        base.RythmOn();
+       
         switch (currentIteration)
         {
+            case 0:
+                
+                instruments[2].SetAudioVolume(0.6f);
+                instruments[3].SetAudioVolume(0.6f);
+
+                break;
+
             case 1:
-                
-                SetAudioVolume(audioSources[0], maxVolume);
-                SetAudioVolume(audioSources[1], 0.2f);
-                
+
+                instruments[3].SetAudioVolume(0.6f);
+                instruments[4].SetAudioVolume(0.6f);
+
                 break;
 
             case 2:
-                break;
 
-            case 3:
+                instruments[3].SetAudioVolume(0.6f);
+                instruments[4].SetAudioVolume(0.6f);
+
                 break;
 
             default:
                 break;
         }
+    }
+
+    public override void RythmOff()
+    {
+        base.RythmOff();
+        switch (currentIteration)
+        {
+            case 0:
+                
+                instruments[2].SetAudioVolume(0f);
+                instruments[3].SetAudioVolume(0f);
+
+                break;
+
+            case 1:
+
+                instruments[3].SetAudioVolume(0f);
+                instruments[4].SetAudioVolume(0f);
+
+                break;
+
+            case 2:
+
+                instruments[3].SetAudioVolume(0f);
+                instruments[4].SetAudioVolume(0f);
+
+                break;
+
+            default:
+                break;
+        }
+    }
+    
+    public override void Configurate()
+    {
+        NoVolume();
+
+        switch (currentIteration)
+        {
+            case 0:
+
+                instruments[1].SetAudioVolume(1f);
+                instruments[2].SetAudioVolume(0.6f);
+                instruments[3].SetAudioVolume(0.6f);
+
+                break;
+
+            case 1:
+
+                instruments[5].SetAudioVolume(1f);
+                instruments[3].SetAudioVolume(0.6f);
+                instruments[4].SetAudioVolume(0.6f);
+
+                baseInstrument = instruments[5];
+
+                break;
+
+
+            case 2:
+
+                instruments[2].SetAudioVolume(1f);
+                instruments[3].SetAudioVolume(0.6f);
+                instruments[4].SetAudioVolume(0.6f);
+
+                baseInstrument = instruments[2];
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void NoVolume()
+    {
+        instruments[1].SetAudioVolume(0f);
+        instruments[2].SetAudioVolume(0f);
+        instruments[3].SetAudioVolume(0f);
+        instruments[4].SetAudioVolume(0f);
+        instruments[5].SetAudioVolume(0f);
+    }
+    private void MaxVolume()
+    {
+        instruments[1].SetAudioVolume(1f);
+        instruments[2].SetAudioVolume(1f);
+        instruments[3].SetAudioVolume(1f);
+        instruments[4].SetAudioVolume(1f);
+        instruments[5].SetAudioVolume(1f);
+    }
+
+    public override void ConfigurateFinal()
+    {
+        MaxVolume();
     }
 }

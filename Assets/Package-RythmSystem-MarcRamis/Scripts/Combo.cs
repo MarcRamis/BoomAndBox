@@ -5,7 +5,7 @@
     
     public int GetComboCounter() { return comboCounter; }
     public void SetMaxCombo(int _maxCombo) { maxCombo = _maxCombo; }
-    public void SumCombo() { if (comboCounter < maxCombo) comboCounter++; }
+    public void SumCombo() { comboCounter++; }
     public void ComboFailed() { comboCounter = 0; }
     public bool ComboAccomplished()
     {
