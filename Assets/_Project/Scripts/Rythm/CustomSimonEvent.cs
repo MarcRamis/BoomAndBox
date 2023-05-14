@@ -4,6 +4,9 @@ public class CustomSimonEvent : MonoBehaviour
 {
     private Player player;
     public SimonController simonController;
+    
+    public delegate void OnTriggerEvent();
+    public OnTriggerEvent OnTrigger;
 
     private void Awake()
     {
@@ -15,7 +18,7 @@ public class CustomSimonEvent : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player.SetNewState(EPlayerModeState.SIMON);
-            simonController.PlaySimon();
+            OnTrigger?.Invoke();
         }
     }
     
