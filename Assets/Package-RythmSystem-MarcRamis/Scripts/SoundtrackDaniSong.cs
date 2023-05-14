@@ -1,8 +1,8 @@
 ﻿public class SoundtrackDaniSong : SoundtrackManager
 {
-    public override void InitializeSequence()
+    public override void InitializeSoundtracks()
     {
-        base.InitializeSequence();
+        base.InitializeSoundtracks();
     }
 
 

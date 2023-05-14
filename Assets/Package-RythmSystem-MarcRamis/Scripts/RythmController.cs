@@ -28,7 +28,7 @@ public class RythmController : MonoBehaviour
 
     private void Start()
     {
-        soundtrackManager.InitializeSequence();
+        soundtrackManager.InitializeSoundtracks();
     }
 
     private void Update()

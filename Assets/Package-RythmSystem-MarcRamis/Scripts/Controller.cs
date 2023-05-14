@@ -47,7 +47,7 @@ public class Controller : MonoBehaviour
                 attackIsReady = false;
                 Invoke(nameof(ResetAttack), attackCd);
                 
-                if (canRythm)
+                if (canRythm )
                 {
                     Debug.Log("Rythm Time!");
                     PlayCheckRythmMomentFeedback();                    

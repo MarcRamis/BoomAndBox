@@ -13,8 +13,12 @@ public static class SpectrumOperations
         {
             sum += Mathf.Abs(instrument.audioSamples[i]);
         }
-
+        
+        // Obtener medida de intensidad promedio del ritmo 
         instrument.intensity = sum / instrument.audioSamples.Length;
+
+        // Se multplica por un factor porque los valores pueden ser muy pequeños y la constante con la 
+        // que poder comprender cuando es el momento de mayor intensidad podría ser difícil de encontrar
         instrument.intensity *= instrument.multiplierNeeded;
 
         return instrument.intensity;

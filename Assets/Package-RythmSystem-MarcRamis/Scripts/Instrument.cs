@@ -24,6 +24,9 @@ public class Instrument
     
     public void SetAudioVolume(float volume)
     {
-        instrumentRef.volume = volume;
+        if (instrumentRef != null)
+        {
+            instrumentRef.volume = volume;
+        }
     }
 }

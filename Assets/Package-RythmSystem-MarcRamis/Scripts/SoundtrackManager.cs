@@ -11,7 +11,7 @@ public class SoundtrackManager : MonoBehaviour
     [HideInInspector] protected float minVolume = 0f;
     [HideInInspector] public int currentIteration = 0;
     
-    public virtual void InitializeSequence()
+    public virtual void InitializeSoundtracks()
     {
         baseInstrument = instruments[1];
         

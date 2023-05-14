@@ -12907,6 +12907,7 @@ MonoBehaviour:
   throwingSystem: {fileID: 1797760265}
   simonController: {fileID: 1118486723}
   graffiti: {fileID: 932143881}
+  simonEvent: {fileID: 1168444076}
 --- !u!43 &677647440
 Mesh:
   m_ObjectHideFlags: 0
