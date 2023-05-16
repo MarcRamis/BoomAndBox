@@ -5,10 +5,16 @@ using UnityEngine.Rendering.Universal;
 
 public class Simon : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private ThrowingSystem throwingSystem;
     [SerializeField] private SimonController simonController;
     [SerializeField] private DecalProjector graffiti;
     [SerializeField] private CustomSimonEvent simonEvent;
+    
+    [Header("Targets")]
+    [Space]
+    [SerializeField] private Transform[] graffitiTargets;
+    [HideInInspector] private Transform currentTarget;
 
     private void Start()
     {
@@ -23,10 +29,11 @@ public class Simon : MonoBehaviour
         simonController.OnStart += StartSimon;
         simonController.OnFinished += Finished;
     }
-
+    
     private void CorrectButton()
     {
-
+        currentTarget = MathUtils.Randomize.GetRandomTarget(graffitiTargets);
+        throwingSystem.ThrowLarge(currentTarget.position, 50f);
     }
     private void WrongButton()
     {

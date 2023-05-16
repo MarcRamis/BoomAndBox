@@ -19,7 +19,6 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Settings")]
     [SerializeField] private int health;
     [SerializeField] public EPlayerModeState modeState = EPlayerModeState.REGULAR;
-    [SerializeField] CameraManager cameraManager;
     [HideInInspector] public bool dashOnboarding = false;
     
     [HideInInspector] public ThrowingSystem throwingSystem;
@@ -157,7 +156,6 @@ public class Player : MonoBehaviour, IDamageable
                 combatSystem.HideWeapon();
                 break;
             case EPlayerModeState.SIMON:
-                throwingSystem.DoAim();
                 break;
             case EPlayerModeState.COMBAT:
                 combatSystem.ShowWeapon();
@@ -181,7 +179,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         playerRigidbody.velocity = Vector3.zero;
         myInputs.DisableGameActions();
-        cameraManager.LockCamera();
+        CameraManager.Instance.LockCamera();
     }
 
     public void BlockMovement()
@@ -204,7 +202,7 @@ public class Player : MonoBehaviour, IDamageable
     public void AllowInputs()
     {
         myInputs.EnableGameActions();
-        cameraManager.UnlockCamera();
+        CameraManager.Instance.UnlockCamera();
     }
 
 

@@ -7,6 +7,8 @@ public class CustomSimonEvent : MonoBehaviour
     
     public delegate void OnTriggerEvent();
     public OnTriggerEvent OnTrigger;
+    
+    private bool onceTrigger;
 
     private void Awake()
     {
@@ -17,8 +19,16 @@ public class CustomSimonEvent : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            player.SetNewState(EPlayerModeState.SIMON);
-            OnTrigger?.Invoke();
+            if (!onceTrigger)
+            {
+                onceTrigger = true;
+                Invoke(nameof(ResetOnce), 0.1f);
+
+                player.throwingSystem.RestartCompanionPosition();
+                player.SetNewState(EPlayerModeState.SIMON);
+                OnTrigger?.Invoke();
+            }
+
         }
     }
     
@@ -26,7 +36,20 @@ public class CustomSimonEvent : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            player.SetNewState(EPlayerModeState.REGULAR);
+            if (!onceTrigger)
+            {
+                onceTrigger = true;
+                Invoke(nameof(ResetOnce), 0.1f);
+
+                player.throwingSystem.RestartCompanionPosition();
+                player.SetNewState(EPlayerModeState.REGULAR);
+            }
+;
         }
+    }
+
+    private void ResetOnce()
+    {
+        onceTrigger = false;
     }
 }
