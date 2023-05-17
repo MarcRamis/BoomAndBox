@@ -56,7 +56,7 @@ public class SoundtrackManager : MonoBehaviour
         // Called when the secuence in the simon game is finished
     }
 
-    private void ReloadSong()
+    protected virtual void ReloadSong()
     {
         foreach (Instrument i in instruments)
         {
@@ -75,7 +75,7 @@ public class SoundtrackManager : MonoBehaviour
         Configurate();
     }
 
-    public void CheckIfMusicFinalized()
+    protected virtual void CheckIfMusicFinalized()
     {
         foreach (Instrument i in instruments)
         {

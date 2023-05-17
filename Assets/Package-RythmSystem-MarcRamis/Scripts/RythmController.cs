@@ -38,7 +38,7 @@ public class RythmController : MonoBehaviour
         //ManageInputs(); // para testear rápido diferentes canciones
         
         beat.Update(soundtrackManager.GetBaseInstrument().IsIntensityGreater());
-        beat2.Update(soundtrackManager.GetAllInstruments()[2].IsIntensityGreater());
+        //beat2.Update(soundtrackManager.GetAllInstruments()[2].IsIntensityGreater());
     }
 
     private void ManageInputs()
