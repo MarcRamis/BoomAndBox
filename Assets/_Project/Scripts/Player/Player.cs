@@ -4,7 +4,7 @@ using UnityEngine;
 using MoreMountains.Feedbacks;
 using UnityEngine.SceneManagement;
 
-public enum EPlayerModeState { REGULAR, ONBOARDING, AIMING, COMBAT, COMPANION_TRANSFORMATION }
+public enum EPlayerModeState { REGULAR, ONBOARDING, SIMON, COMBAT, COMPANION_TRANSFORMATION }
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -19,7 +19,6 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Settings")]
     [SerializeField] private int health;
     [SerializeField] public EPlayerModeState modeState = EPlayerModeState.REGULAR;
-    [SerializeField] CameraManager cameraManager;
     [HideInInspector] public bool dashOnboarding = false;
     
     [HideInInspector] public ThrowingSystem throwingSystem;
@@ -119,12 +118,12 @@ public class Player : MonoBehaviour, IDamageable
     
     public bool CanThrow()
     {
-        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING;
+        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.SIMON;
     }
     
     public bool CanDash()
     {
-        return (modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING ) && !dashOnboarding;
+        return (modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.SIMON) && !dashOnboarding;
     }
     
     public bool CanMove()
@@ -147,7 +146,7 @@ public class Player : MonoBehaviour, IDamageable
         modeState = newState;
         HandleModeState();
     }
-
+    
     public void HandleModeState()
     {
         switch (modeState)
@@ -156,7 +155,7 @@ public class Player : MonoBehaviour, IDamageable
                 throwingSystem.YesMode();
                 combatSystem.HideWeapon();
                 break;
-            case EPlayerModeState.AIMING:
+            case EPlayerModeState.SIMON:
                 break;
             case EPlayerModeState.COMBAT:
                 combatSystem.ShowWeapon();
@@ -180,7 +179,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         playerRigidbody.velocity = Vector3.zero;
         myInputs.DisableGameActions();
-        cameraManager.LockCamera();
+        CameraManager.Instance.LockCamera();
     }
 
     public void BlockMovement()
@@ -203,7 +202,7 @@ public class Player : MonoBehaviour, IDamageable
     public void AllowInputs()
     {
         myInputs.EnableGameActions();
-        cameraManager.UnlockCamera();
+        CameraManager.Instance.UnlockCamera();
     }
 
 

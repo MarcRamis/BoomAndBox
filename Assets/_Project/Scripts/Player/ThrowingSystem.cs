@@ -75,8 +75,8 @@ public class ThrowingSystem : MonoBehaviour
 
         InterpolateComeback();
     }
-
-    private void DoAim()
+    
+    public void DoAim()
     {
         if (player.CanThrow())
         {
@@ -87,19 +87,21 @@ public class ThrowingSystem : MonoBehaviour
         }
     }
 
-    private void RestartCompanionPosition()
+    public void RestartCompanionPosition()
     {
         SwapAim();
         companion.SetNewState(ECompanionState.ATTACHED);
 
         if (!isAiming)
         {
+            CameraManager.Instance.SetRegularMode();
             playerFeedbackController.StopAimingFeedback();
             companion.ResetPosition(standPosition.position);
             companion.ResetInitialProperties(true);
         }
         else
         {
+            CameraManager.Instance.SetAimMode();
             playerFeedbackController.PlayAimingFeedback();
             companion.SetNewState(ECompanionState.ATTACHED);
             companion.ResetLocalPosition(Vector3.zero);
@@ -198,6 +200,13 @@ public class ThrowingSystem : MonoBehaviour
         companion.HandleState();
         companion.ApplyThrow(forceDirection, force);
     }
+
+    public void ThrowLarge(Vector3 forceDirection, float force)
+    {
+        companion.SetNewState(ECompanionState.THROW_LARGE);
+        Throw(forceDirection, force);
+    }
+
     private void InterpolateComeback()
     {
         startPosition = objectToThrow.transform.position;

@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 337694777680541083}
   - component: {fileID: 337694777680541082}
   - component: {fileID: 337694777680541080}
-  - component: {fileID: 6651125753086868616}
   m_Layer: 0
   m_Name: MainSoundtrack
   m_TagString: Untagged
@@ -52,7 +51,7 @@ MonoBehaviour:
   soundtrackManager: {fileID: 337694777680541080}
   soundtrackPrefab: {fileID: 4662607948214100722, guid: 5a6f916e6c2ccde4ba2cd4621686a58a, type: 3}
   soundtrackParent: {fileID: 337694777680541086}
-  soundtrackState: 1
+  soundtrackState: 3
   rythmMode: 0
   audioExtraBase: {fileID: 0}
   simonMode: 0
@@ -82,9 +81,6 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   baseSequence:
     buttonSequence: 
     isCompleted: 0
@@ -94,9 +90,6 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   currentIteration: 0
 --- !u!114 &337694777680541083
 MonoBehaviour:
@@ -125,9 +118,6 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   baseSequence:
     buttonSequence: 
     isCompleted: 0
@@ -137,9 +127,6 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   currentIteration: 0
 --- !u!114 &337694777680541082
 MonoBehaviour:
@@ -168,9 +155,6 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   baseSequence:
     buttonSequence: 
     isCompleted: 0
@@ -180,9 +164,6 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   currentIteration: 0
 --- !u!114 &337694777680541080
 MonoBehaviour:
@@ -212,9 +193,6 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   - buttonSequence: 00000000
     isCompleted: 0
     currentLoopControl: 0
@@ -223,9 +201,6 @@ MonoBehaviour:
       threshold: 100
       multiplierNeeded: 100000
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   currentSequence:
     buttonSequence: 
     isCompleted: 0
@@ -235,9 +210,6 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   baseSequence:
     buttonSequence: 
     isCompleted: 0
@@ -247,108 +219,4 @@ MonoBehaviour:
       threshold: 0
       multiplierNeeded: 0
       intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
   currentIteration: 0
---- !u!114 &6651125753086868616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 337694777680541086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b13d2d19044576b429cce34567c2d5b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSources: []
-  audios:
-  - {fileID: 8300000, guid: 41dfc32197b2bc244971fd7db961b484, type: 3}
-  - {fileID: 8300000, guid: 15151295777ce824481f3644c29dabb0, type: 3}
-  - {fileID: 8300000, guid: e25981a2acfebc34a99256f3c584eb8a, type: 3}
-  - {fileID: 8300000, guid: 7b6ae5b84e8c60c45ae4db39c5763565, type: 3}
-  buttonSequences:
-  - buttonSequence: 
-    isCompleted: 0
-    currentLoopControl: 0
-    instrument:
-      instrumentRef: {fileID: 0}
-      threshold: 0
-      multiplierNeeded: 0
-      intensity: 0
-      canRythm: 0
-      rythmOnce: 0
-      rythmOpportunityCd: 0
-  - buttonSequence: 00000000
-    isCompleted: 0
-    currentLoopControl: 0
-    instrument:
-      instrumentRef: {fileID: 0}
-      threshold: 100
-      multiplierNeeded: 1000000
-      intensity: 0
-      canRythm: 0
-      rythmOnce: 0
-      rythmOpportunityCd: 0
-  - buttonSequence: 00000000
-    isCompleted: 0
-    currentLoopControl: 0
-    instrument:
-      instrumentRef: {fileID: 0}
-      threshold: 0
-      multiplierNeeded: 0
-      intensity: 0
-      canRythm: 0
-      rythmOnce: 0
-      rythmOpportunityCd: 0
-  - buttonSequence: 00000000
-    isCompleted: 0
-    currentLoopControl: 0
-    instrument:
-      instrumentRef: {fileID: 0}
-      threshold: 0
-      multiplierNeeded: 0
-      intensity: 0
-      canRythm: 0
-      rythmOnce: 0
-      rythmOpportunityCd: 0
-  - buttonSequence: 00000000
-    isCompleted: 0
-    currentLoopControl: 0
-    instrument:
-      instrumentRef: {fileID: 0}
-      threshold: 0
-      multiplierNeeded: 0
-      intensity: 0
-      canRythm: 0
-      rythmOnce: 0
-      rythmOpportunityCd: 0
-  currentSequence:
-    buttonSequence: 
-    isCompleted: 0
-    currentLoopControl: 0
-    instrument:
-      instrumentRef: {fileID: 0}
-      threshold: 0
-      multiplierNeeded: 0
-      intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
-  baseSequence:
-    buttonSequence: 
-    isCompleted: 0
-    currentLoopControl: 0
-    instrument:
-      instrumentRef: {fileID: 0}
-      threshold: 0
-      multiplierNeeded: 0
-      intensity: 0
-      canRythm: 0
-      rythmOnce: 1
-      rythmOpportunityCd: 0.5
-  currentIteration: 0
-  introSong: []
-  loopSong: []

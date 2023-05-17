@@ -9,6 +9,8 @@ public class PlayerFeedbackController : FeedbackController
 {
     [SerializeField] private AudioClip receiveDamageSound;
     [SerializeField] private AudioClip attackSound;
+    [SerializeField] private AudioClip pianoSound;
+    [SerializeField] private AudioClip bomboSound;
     
     [Header("Visual Effects")]
     [Space]
@@ -22,6 +24,7 @@ public class PlayerFeedbackController : FeedbackController
     [SerializeField] private MMFeedbacks hitImpactFeedback;
     [SerializeField] private MMFeedbacks attackFeedback;
     [SerializeField] private MMFeedbacks rhythmFeedback;
+    [SerializeField] private MMFeedbacks rhythmFComboFeedback;
 
     [Space]
     [SerializeField] private TrailRenderer trailLeftShoe;
@@ -33,10 +36,12 @@ public class PlayerFeedbackController : FeedbackController
     [Space]
     [SerializeField] private GameObject speedPs;
     [SerializeField] private GameObject rythmFoot;
-    [SerializeField] private DecalProjector rythmShadow;
     [SerializeField] private GameObject rythmCombo;
     [SerializeField] private GameObject splashPrefab;
+    [SerializeField] private GameObject rhytmFinalComboPrefab;
 
+    [Space]
+    [SerializeField] private DecalProjector rythmShadow;
     [Space]
     [SerializeField] private Image cursor;
     [Space]
@@ -132,7 +137,6 @@ public class PlayerFeedbackController : FeedbackController
     /////////// RYTHM
     public void PlayRythmMoment()
     {
-
         splashPrefab.SetActive(true);
         rythmFoot.SetActive(true);
         rythmShadow.size = new Vector3(4,4, rythmShadow.size.z);
@@ -144,17 +148,42 @@ public class PlayerFeedbackController : FeedbackController
         rythmFoot.SetActive(false);
         rythmShadow.size = new Vector3(2, 2, rythmShadow.size.z);
     }
-
+    
     /////////// RYTHM OPPORTUNITY ADQUIRED
-    public void PlayRythmed()
+    public void PlayRythmed(int combo)
     {
         rhythmFeedback.PlayFeedbacks();
         rythmCombo.SetActive(true);
+        
+        switch(combo)
+        {
+            case 0:
+                PlaySoundEffect(pianoSound, 0.2f);
+                break;
+            case 1:
+                PlaySoundEffect(pianoSound, 0.2f);
+                break;
+            case 2:
+                PlaySoundEffect(pianoSound, 0.4f);
+                break;                
+            case 3:
+                PlaySoundEffect(pianoSound, 1f);
+                break;
+            default:
+                break;
+        }
     }
 
     public void StopRythmed()
     {
         rythmCombo.SetActive(false);
+    }
+
+    public void PlayRythmedFinalCombo()
+    {
+        rhythmFComboFeedback.PlayFeedbacks();
+        rhytmFinalComboPrefab.SetActive(true);
+        PlaySoundEffect(bomboSound, 1f);
     }
 
     /////////// HIT IMPACT

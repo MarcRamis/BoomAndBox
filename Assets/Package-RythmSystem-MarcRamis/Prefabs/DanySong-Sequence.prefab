@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7780671537160798842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7780671537160798853}
+  - component: {fileID: 7780671537160798852}
+  m_Layer: 0
+  m_Name: DanySong-Sequence
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7780671537160798853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780671537160798842}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7780671537160798852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780671537160798842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1912e2caa6b9064882cd85cc90bbb19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sequences:
+  - buttonSequence: 
+    currentLoopControl: 0
+  - buttonSequence: 01000000020000000300000001000000
+    currentLoopControl: 0
+  - buttonSequence: 01000000010000000400000003000000
+    currentLoopControl: 0
+  - buttonSequence: 02000000020000000300000003000000040000000400000003000000
+    currentLoopControl: 0
+  exampleSequenceContainer: {fileID: 0}
+  sequenceContainer: {fileID: 0}
+  currentExampleSequenceGO: []
+  currentSequenceGO: []
+  currentControlToShow: {fileID: 0}
+  square: {fileID: 2780437384970694135, guid: c03b7c142932821458e57913b1495289, type: 3}
+  cross: {fileID: 2780437384970694135, guid: 6f266334597094b47b5a0085dbb4dcf1, type: 3}
+  triangle: {fileID: 2780437384970694135, guid: 098d8f460d2316648b545a0324b7e6bb, type: 3}
+  circle: {fileID: 2780437384970694135, guid: ea0b11e40f71b924b856d041222c52a4, type: 3}
