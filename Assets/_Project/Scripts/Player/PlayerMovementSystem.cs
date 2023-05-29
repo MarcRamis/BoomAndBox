@@ -6,7 +6,6 @@ using MoreMountains.Feedbacks;
 using UnityEngine.InputSystem;
 
 public enum EMoveState { WALKING, DASHING, AIMING, SLIDING, AIR, COMBAT }
-public enum EAnimState { IDLE, RUNNING }
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovementSystem : MonoBehaviour
@@ -99,7 +98,6 @@ public class PlayerMovementSystem : MonoBehaviour
     
     [HideInInspector] private EMoveState lastState;
     [HideInInspector] public EMoveState movementState;
-    [HideInInspector] public EAnimState animState;
     
     private void Awake()
     {
@@ -143,7 +141,6 @@ public class PlayerMovementSystem : MonoBehaviour
         SpeedControl();
 
         HandleMovementState();
-        HandleAnimState();
         HandleDrag();
     }
 
@@ -230,23 +227,29 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void MovePlayer()
     {
+        // If the movement state is DASHING, return and don't perform any movement
         if (movementState == EMoveState.DASHING) return;
-        
+
         // Calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        // On ground
+        // If the player is on the ground
         if (isGrounded)
         {
+            // Apply a force to the player's rigidbody in the direction of movement, 
+            // adjusted by the move speed
             playerRigidbody.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         }
-        
-        // In air
+
+        // If the player is in the air
         else
         {
+            // Apply a force to the player's rigidbody in the direction of movement, 
+            // adjusted by the move speed and air multiplier
             playerRigidbody.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
+
     private void OnLand()
     {
         if (isGrounded)
@@ -323,32 +326,27 @@ public class PlayerMovementSystem : MonoBehaviour
         // Mode - Dashing
         if (isDashing)
         {
+            // Sets the movement state to DASHING when the player is dashing
             movementState = EMoveState.DASHING;
             desiredMoveSpeed = dashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
 
+            // Resets the time in the air to 0 when the player starts dashing
             timeInAir = 0;
         }
 
         // Mode - Aiming
         else if (isAiming)
         {
+            // Sets the movement state to AIMING when the player is aiming
             movementState = EMoveState.AIMING;
             desiredMoveSpeed = aimSpeed;
         }
-        
+
         // Mode - Walking
         else if (isGrounded)
         {
-            if (playerRigidbody.velocity.magnitude > 0.1f)
-            {
-                animState = EAnimState.RUNNING;
-            }
-            else
-            {
-                animState = EAnimState.IDLE;
-            }
-
+            // Sets the movement state to WALKING when the player is on the ground
             movementState = EMoveState.WALKING;
             currentDoubleJumps = doubleJumpCounter;
             desiredMoveSpeed = walkSpeed;
@@ -357,20 +355,27 @@ public class PlayerMovementSystem : MonoBehaviour
         // Mode - Air
         else
         {
+            // Sets the landing flag to true when the player is in the air
             landing = true;
             movementState = EMoveState.AIR;
         }
-        
+
+        // Checks if the desired move speed has changed
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
-        if (lastState == EMoveState.DASHING) keepMomentum = true;
-        
+
+        // If the last state was DASHING, keeps the momentum for smooth transition
+        if (lastState == EMoveState.DASHING)
+            keepMomentum = true;
+
         if (desiredMoveSpeedHasChanged)
         {
+            // If keepMomentum is true, smoothly lerps the move speed
             if (keepMomentum)
             {
                 StopAllCoroutines();
                 StartCoroutine(SmoothlyLerpMoveSpeed());
             }
+            // Otherwise, instantly sets the move speed
             else
             {
                 StopAllCoroutines();
@@ -378,26 +383,19 @@ public class PlayerMovementSystem : MonoBehaviour
             }
         }
 
+        // Updates the last desired move speed and movement state
         lastDesiredMoveSpeed = desiredMoveSpeed;
         lastState = movementState;
     }
-    
-    private void HandleAnimState()
-    {
-        switch (animState)
-        {
-            case EAnimState.IDLE:
-                //playerCollider.radius = 0.56f;
-                break;
-            case EAnimState.RUNNING:
-                //playerCollider.radius = 1.15f;
-                break;
-        }
-    }
+
+    // This coroutine smoothly adjusts the move speed of the character over time using a lerping approach.
+    // It calculates the difference between the desired move speed and the current move speed,
+    // and gradually updates the move speed by interpolating between the start and desired values.
+    // The boostFactor determines the speed at which the move speed changes during the interpolation.
+    // The coroutine continues until the time reaches the difference, ensuring a smooth transition.
 
     private IEnumerator SmoothlyLerpMoveSpeed()
     {
-        // smoothly lerp movementSpeed to desired value
         float time = 0;
         float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
         float startValue = moveSpeed;
@@ -413,11 +411,13 @@ public class PlayerMovementSystem : MonoBehaviour
             yield return null;
         }
 
+        // After the interpolation is complete, set the move speed to the desired value,
+        // reset the speed change factor, and disable momentum keeping.
         moveSpeed = desiredMoveSpeed;
         speedChangeFactor = 1f;
         keepMomentum = false;
     }
-    
+
     private void RotateModel()
     {
         // Calculate the view direction from the player to the main camera
