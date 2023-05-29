@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 // Define una clase serializable llamada "Beat"
 [System.Serializable]
@@ -41,6 +42,30 @@ public class Beat
 
             // Indica que no se puede detectar otro beat hasta que el temporizador alcance su límite de tiempo
             canRythm = true;
+        }
+
+        // Actualiza el temporizador
+        rythmTimer.Update(Time.deltaTime);
+    }
+    
+    // Método utilizado para actualizar el estado del objeto "Beat" cada vez que se actualiza el marco del juego
+    public void Update(Instrument[] instruments)
+    {
+        foreach (Instrument i in instruments)
+        {
+            // Si se detecta un beat y no se ha detectado otro previamente
+            if (i.isBeating && i.IsIntensityGreater() && !canRythm)
+            {
+                // Inicia el temporizador
+                rythmTimer.StartTimer();
+
+                // Invoca el evento "OnBeat"
+                OnBeat?.Invoke();
+
+                // Indica que no se puede detectar otro beat hasta que el temporizador alcance su límite de tiempo
+                canRythm = true;
+            }
+
         }
 
         // Actualiza el temporizador

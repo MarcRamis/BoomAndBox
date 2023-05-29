@@ -4,104 +4,98 @@ using UnityEngine;
 
 public class SoundtrackGooFunk : SoundtrackManager
 {
-    public List<AudioSource> introSong;
-    public List<AudioSource> loopSong;
-
-    private bool isLoopSong = false;
-
     public override void InitializeSoundtracks()
     {
         base.InitializeSoundtracks();
-        
-        baseInstrument = instruments[3];
-        
-        introSong.Add(instruments[2].instrumentRef);
-        introSong.Add(instruments[3].instrumentRef);
-
-        loopSong.Add(instruments[1].instrumentRef);
-        loopSong.Add(instruments[4].instrumentRef);
-
-        instruments[1].instrumentRef.volume = 0.7f;
-        instruments[4].instrumentRef.volume = 0.15f;
-        instruments[2].instrumentRef.volume = 0.6f;
-        instruments[3].instrumentRef.volume = 0.1f;
-        
-        instruments[1].instrumentRef.Stop();
-        instruments[4].instrumentRef.Stop();
-       
-        instruments[2].instrumentRef.Stop();
-        instruments[3].instrumentRef.Stop();
-        instruments[2].instrumentRef.Play();
-        instruments[3].instrumentRef.Play();
     }
 
-    public override void UpdateSoundtracks()
+
+    // rytming always with bombo 
+
+    /// First sequence
+    // play chords & drumkit
+
+    /// Second sequence 
+    // play bass & melodia
+
+    /// Third sequence
+    // play chords && melodia
+
+
+    public override void RythmOn()
     {
-        if (isLoopSong)
-        {
-            CheckIfLoopFinalized();
-        }
-        else
-        {
-            CheckIfIntroFinalized();
-        }
+        base.RythmOn();
 
-        foreach (Instrument i in instruments)
+        switch (currentIteration)
         {
-            i.UpdateSpectrumIntensity();
-        }
+            case 0:
 
-        foreach (Instrument i in instruments)
-        {
-            i.beating.UpdateBeating();
-        }
-    }
+                SelectInstrumentToBeat(3, 0.6f);
+                SelectInstrumentToBeat(4, 0.6f);
+                SelectInstrumentToBeat(5, 0.6f);
 
-    private void CheckIfIntroFinalized()
-    {
-        foreach (AudioSource audioSource in introSong)
-        {
-            if (audioSource.isPlaying)
-            {
-                return;
-            }
-            else
-            {
-                baseInstrument = instruments[4];
-                PlayLoopSong();
-            }
+                break;
+                
+            case 1:
+                
+                SelectInstrumentToBeat(1, 0.6f);
+                SelectInstrumentToBeat(6, 0.6f);
+
+                break;
+
+            case 2:
+
+                SelectInstrumentToBeat(3, 0.6f);
+                SelectInstrumentToBeat(4, 0.6f);
+                SelectInstrumentToBeat(6, 0.6f);
+
+                break;
+
+            default:
+                break;
         }
     }
 
-    private void CheckIfLoopFinalized()
+    public override void RythmOff()
     {
-        foreach (AudioSource audioSource in loopSong)
+        base.RythmOff();
+        switch (currentIteration)
         {
-            if (audioSource.isPlaying)
-            {
-                return;
-            }
-            else
-            {
-                ReloadSong();
-            }
+            case 0:
+
+                SelectInstrumentToStopBeating(3);
+                SelectInstrumentToStopBeating(4);
+                SelectInstrumentToStopBeating(5);
+
+                break;
+
+            case 1:
+
+                SelectInstrumentToStopBeating(1);
+                SelectInstrumentToStopBeating(6);
+
+                break;
+
+            case 2:
+
+                SelectInstrumentToStopBeating(3);
+                SelectInstrumentToStopBeating(4);
+                SelectInstrumentToStopBeating(6);
+
+                break;
+
+            default:
+                break;
         }
     }
-
-    protected override void CheckIfMusicFinalized()
+    
+    public override void FreedInitialize()
     {
+        base.FreedInitialize();
     }
 
-    protected override void ReloadSong()
+    public override void ConfigurateFinal()
     {
-        instruments[1].instrumentRef.Play();
-        instruments[4].instrumentRef.Play();
-    }
-
-    private void PlayLoopSong()
-    {
-        instruments[1].instrumentRef.Play();
-        instruments[4].instrumentRef.Play();
-        isLoopSong = true;
+        AllBeating();
     }
 }

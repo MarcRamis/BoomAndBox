@@ -1,5 +1,7 @@
 ﻿
 // Esta clase Combo define el comportamiento del sistema de combos en un videojuego.
+using System;
+
 public class Combo
 {
     // Variables de la clase
@@ -11,9 +13,10 @@ public class Combo
 
     // Método que establece el contador máximo de combo posible
     public void SetMaxCombo(int _maxCombo) { maxCombo = _maxCombo; }
-
+    
     // Método que suma uno al contador de combo actual
     public void SumCombo() { if (comboCounter < maxCombo) comboCounter++; }
+    public void SumCombo(int sumCounter) { if (comboCounter < maxCombo) comboCounter += sumCounter; }
 
     // Método que reinicia el contador de combo actual
     public void ComboFailed() { comboCounter = 0; }
@@ -31,4 +34,8 @@ public class Combo
         return false;
     }
 
+    public void Rest()
+    {
+        comboCounter--;
+    }
 }

@@ -73,6 +73,14 @@ public class CombatSystem : MonoBehaviour
     private void Start()
     {
         collisionSize = weaponCollider.size;
+
+        SimonController.instance.OnCorrectButton += CorrectButton;
+        SimonController.instance.OnCorrectSequence += CorrectSequence;
+        SimonController.instance.OnTooLateButton += TooLateButton;
+        SimonController.instance.OnNoRhythmPressedButton += NoRhythmPressedButton;
+
+        RythmController.instance.OnFreeMode += FreeMode;
+        RythmController.instance.OnScheduledMode += ScheduledMode;
     }
 
     private void Update()
@@ -343,6 +351,33 @@ public class CombatSystem : MonoBehaviour
                 Gizmos.DrawWireCube(Vector3.zero, bo.size);
             }
         }
+    }
+
+    private void CorrectButton()
+    {
+        //currentTarget = MathUtils.Randomize.GetRandomTarget(graffitiTargets);
+        //throwingSystem.ThrowLarge(currentTarget.position, 50f);
+    }
+    private void CorrectSequence()
+    {
+
+    }
+    private void TooLateButton()
+    {
+
+    }
+    private void NoRhythmPressedButton()
+    {
+
+    }
+
+    private void FreeMode()
+    {
+
+    }
+    private void ScheduledMode()
+    {
+
     }
 }
  

@@ -32,7 +32,7 @@ public class Controller : MonoBehaviour
     {
         trailRenderer_RythmTime.emitting = false;
         trailRender_FinalCombo.emitting = false;
-
+        
         combo.SetMaxCombo(3);
         RythmController.instance.beat.OnBeat += Rythm;
     }

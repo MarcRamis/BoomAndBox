@@ -7,7 +7,6 @@ public class Simon : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private ThrowingSystem throwingSystem;
-    [SerializeField] private SimonController simonController;
     [SerializeField] private DecalProjector graffiti;
     [SerializeField] private CustomSimonEvent simonEvent;
     
@@ -15,27 +14,24 @@ public class Simon : MonoBehaviour
     [Space]
     [SerializeField] private Transform[] graffitiTargets;
     [HideInInspector] private Transform currentTarget;
-
+    
     private void Start()
     {
-        simonEvent.OnTrigger += simonController.Initialize;
+        SimonController.instance.OnCorrectButton += CorrectButton;
+        SimonController.instance.OnCorrectSequence += CorrectSequence;
+        SimonController.instance.OnTooLateButton += TooLateButton;
+        SimonController.instance.OnNoRhythmPressedButton += NoRhythmPressedButton;
         
-        simonController.OnCorrectButton += CorrectButton;
-        simonController.OnWrongButton += WrongButton;
-        simonController.OnTooLateButton += TooLateButton;
-        simonController.OnNoRhythmPressedButton += NoRhythmPressedButton;
-        simonController.OnExampleCompletedSequence += ExampleCompletedSequence;
-        simonController.OnPlayerCompletedSequence += PlayerCompletedSequence;
-        simonController.OnStart += StartSimon;
-        simonController.OnFinished += Finished;
+        RythmController.instance.OnFreeMode += FreeMode;
+        RythmController.instance.OnScheduledMode += ScheduledMode;
     }
     
     private void CorrectButton()
     {
-        currentTarget = MathUtils.Randomize.GetRandomTarget(graffitiTargets);
-        throwingSystem.ThrowLarge(currentTarget.position, 50f);
+        //currentTarget = MathUtils.Randomize.GetRandomTarget(graffitiTargets);
+        //throwingSystem.ThrowLarge(currentTarget.position, 50f);
     }
-    private void WrongButton()
+    private void CorrectSequence()
     {
 
     }
@@ -47,19 +43,12 @@ public class Simon : MonoBehaviour
     {
 
     }
-    private void ExampleCompletedSequence()
+
+    private void FreeMode()
     {
 
     }
-    private void PlayerCompletedSequence()
-    {
-
-    }
-    private void StartSimon()
-    {
-
-    }
-    private void Finished()
+    private void ScheduledMode()
     {
 
     }
