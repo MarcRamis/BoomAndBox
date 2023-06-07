@@ -218,26 +218,34 @@ public class Player : MonoBehaviour, IDamageable
         Invoke(nameof(AllowInputs), time);
     }
 
+    // Triggered when a GameObject enters the collider
     private void OnTriggerEnter(Collider other)
     {
+        // Check if the entered GameObject has the IInteractuable interface
         IInteractuable interactuable = other.gameObject.GetComponent<IInteractuable>();
         if (interactuable != null)
         {
+            // Set the currentInteraction to the interactuable GameObject
             currentInteraction = interactuable;
+            // Call the InteractStarts() method on the interactuable GameObject
             interactuable.InteractStarts();
         }
     }
     
+    // Triggered when a GameObject exits the collider
     private void OnTriggerExit(Collider other)
     {
+        // Check if the exited GameObject has the IInteractuable interface
         IInteractuable interactuable = other.gameObject.GetComponent<IInteractuable>();
         if (interactuable != null)
         {
-
+            // Clear the currentInteraction
             currentInteraction = null;
+            // Call the InteractEnds() method on the interactuable GameObject
             interactuable.InteractEnds();
         }
     }
+
 
     public void Knockback(float force)
     {

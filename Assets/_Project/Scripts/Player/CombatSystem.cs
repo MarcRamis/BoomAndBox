@@ -216,18 +216,27 @@ public class CombatSystem : MonoBehaviour
 
     private void RealCollider(BufferObj bo)
     {
+        // Get all colliders that overlap with the area defined by 'bo'
         Collider[] hits = Physics.OverlapBox(bo.pos, bo.size / 2, bo.rot, hittableLayers, QueryTriggerInteraction.Ignore);
         Dictionary<long, Collider> colliderList = new Dictionary<long, Collider>();
 
+        // Collect the colliders into a dictionary to avoid duplicates
         CollectColliders(hits, colliderList);
+
+        // Iterate through the trailFillerList to check for additional colliders
         foreach (BufferObj cbo in trailFillerList)
         {
+            // Get the colliders that overlap with the area defined by 'cbo'
             hits = Physics.OverlapBox(cbo.pos, cbo.size / 2, cbo.rot, hittableLayers, QueryTriggerInteraction.Ignore);
+
+            // Collect the colliders into the same dictionary to avoid duplicates
             CollectColliders(hits, colliderList);
         }
 
+        // Apply damage to the obtained colliders
         Damage(colliderList);
     }
+
 
     private void Damage(Dictionary<long, Collider> colliderList)
     {

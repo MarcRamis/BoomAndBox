@@ -267,7 +267,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boom Attack 2
+  m_Name: Box Attack 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1690,7 +1690,7 @@ AnimatorStateMachine:
     m_Position: {x: 590, y: 390, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8394612185067348591}
-    m_Position: {x: -230, y: 420, z: 0}
+    m_Position: {x: -300, y: 480, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 227082811344171664}
     m_Position: {x: 410, y: 1050, z: 0}
@@ -1735,7 +1735,7 @@ AnimatorStateMachine:
     - {fileID: -3383320736217527665}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -270, y: 1100, z: 0}
-  m_EntryPosition: {x: -540, y: 400, z: 0}
+  m_EntryPosition: {x: -570, y: 490, z: 0}
   m_ExitPosition: {x: 570, y: -90, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 8394612185067348591}

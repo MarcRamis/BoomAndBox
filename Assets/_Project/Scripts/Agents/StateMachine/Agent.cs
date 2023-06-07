@@ -3,7 +3,6 @@ using UnityEngine.AI;
 
 public abstract class Agent : MonoBehaviour
 {
-
     [Header("Agent Settings")]
     [SerializeField] public EAIState initialState;
     [HideInInspector] public AIStateMachine stateMachine;
