@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 public class Hittable : MonoBehaviour, IDamageable
@@ -48,6 +48,5 @@ public class Hittable : MonoBehaviour, IDamageable
 
     public void Knockback(float force)
     {
-        //throw new NotImplementedException();
     }
 }

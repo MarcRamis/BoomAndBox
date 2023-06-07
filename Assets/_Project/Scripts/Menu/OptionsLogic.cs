@@ -19,12 +19,37 @@ public class OptionsLogic : MonoBehaviour
     [Header("Variables")]
     [SerializeField] private float initMasterVolume = 0.4f;
 
-    // Start is called before the first frame update
+    [SerializeField] private float timeToWait = 0.5f;
+
+    private float timer = 0.0f;
+    private bool wait = true;
+
+    private void Awake()
+    {
+        wait = true;
+        timer = 0.0f;
+    }
+
     void Start()
     {
         audioMixer.SetFloat("MasterVolume", initMasterVolume);
     }
+    
 
+    private void Update()
+    {
+        if (wait)
+        {
+            timer += Time.deltaTime;
+
+            if (timer > timeToWait)
+            {
+                wait = false;
+                timer = 0.0f;
+            }
+
+        }
+    }
     public void MasterMusicControl(float _sliderValue)
     {
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(_sliderValue) * 20.0f);
@@ -32,9 +57,12 @@ public class OptionsLogic : MonoBehaviour
 
     public void CloseOptions()
     {
-        var eventSystem = EventSystem.current;
-        eventSystem.SetSelectedGameObject(playButton, new BaseEventData(eventSystem));
-        this.gameObject.SetActive(false);
+        if(!wait)
+        {
+            var eventSystem = EventSystem.current;
+            eventSystem.SetSelectedGameObject(playButton, new BaseEventData(eventSystem));
+            this.gameObject.SetActive(false);
+        }
     }
 
 }

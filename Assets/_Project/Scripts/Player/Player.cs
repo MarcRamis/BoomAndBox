@@ -5,7 +5,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public enum EPlayerModeState { REGULAR, AIMING, COMBAT, COMPANION_TRANSFORMATION }
+public enum EPlayerModeState { REGULAR, ONBOARDING, SIMON, COMBAT, COMPANION_TRANSFORMATION }
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -20,7 +20,6 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Settings")]
     [SerializeField] private int health;
     [SerializeField] public EPlayerModeState modeState = EPlayerModeState.REGULAR;
-    [SerializeField] CameraManager cameraManager;
     [HideInInspector] public bool dashOnboarding = false;
     
     [HideInInspector] public ThrowingSystem throwingSystem;
@@ -37,7 +36,8 @@ public class Player : MonoBehaviour, IDamageable
 
     // Internal variables
     private bool justReceivedDamage = false;
-    private bool godMode;
+    private bool godMode = false;
+    private bool canMove = true;
 
     // Constant variables
     private const float justReceivedDamageTimer = 0.25f;
@@ -58,9 +58,11 @@ public class Player : MonoBehaviour, IDamageable
         myInputs.OnInteractPerformed += DoInteract;
         
         Health = health;
+
         SetNewState(modeState);
+        
     }
-    
+
     // Update
     private void Update()
     {
@@ -79,7 +81,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (!justReceivedDamage && !godMode)
         {
-            BlockInputsDamage();
+            BlockInputsWithTime(1f);
             
             //JSON creator events
             if(damageAmount > 0)
@@ -132,25 +134,25 @@ public class Player : MonoBehaviour, IDamageable
     
     public bool CanThrow()
     {
-        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING;
+        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.SIMON;
     }
     
     public bool CanDash()
     {
-        return (modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.AIMING ) && !dashOnboarding;
+        return (modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.SIMON) && !dashOnboarding;
     }
-
+    
     public bool CanMove()
     {
-        return modeState == EPlayerModeState.REGULAR;
+        return canMove;
     }
 
     public bool CanJump()
     {
-        return modeState == EPlayerModeState.REGULAR;
+        return modeState == EPlayerModeState.REGULAR || modeState == EPlayerModeState.ONBOARDING;
     }
     
-    public bool CanAttack()
+    public bool CanCombat()
     {
         return modeState == EPlayerModeState.COMBAT;
     }
@@ -160,7 +162,7 @@ public class Player : MonoBehaviour, IDamageable
         modeState = newState;
         HandleModeState();
     }
-
+    
     public void HandleModeState()
     {
         switch (modeState)
@@ -169,13 +171,16 @@ public class Player : MonoBehaviour, IDamageable
                 throwingSystem.YesMode();
                 combatSystem.HideWeapon();
                 break;
-            case EPlayerModeState.AIMING:
+            case EPlayerModeState.SIMON:
                 break;
             case EPlayerModeState.COMBAT:
                 combatSystem.ShowWeapon();
                 throwingSystem.NotMode();
                 break;
             case EPlayerModeState.COMPANION_TRANSFORMATION:
+                break;
+            case EPlayerModeState.ONBOARDING:
+                combatSystem.HideWeapon();
                 break;
         }
     }
@@ -190,14 +195,32 @@ public class Player : MonoBehaviour, IDamageable
     {
         playerRigidbody.velocity = Vector3.zero;
         myInputs.DisableGameActions();
-        cameraManager.LockCamera();
+        CameraManager.Instance.LockCamera();
+    }
+
+    public void BlockMovement()
+    {
+        playerRigidbody.velocity = Vector3.zero;
+        canMove = false;
+    }
+
+    public void AllowMovement()
+    {
+        canMove = true;
+    }
+    
+    public void BlockMovementWithTime(float time)
+    {
+        BlockMovement();
+        Invoke(nameof(AllowMovement), time);
     }
 
     public void AllowInputs()
     {
         myInputs.EnableGameActions();
-        cameraManager.UnlockCamera();
+        CameraManager.Instance.UnlockCamera();
     }
+
 
     public void BlockInputsDamage()
     {

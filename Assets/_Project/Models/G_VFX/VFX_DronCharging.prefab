@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.98039216, g: 0.8880548, b: 0.33725494, a: 0.5019608}
+      maxColor: {r: 0.98039216, g: 0.8880548, b: 0.33725494, a: 0.29803923}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1365,7 +1365,7 @@ ParticleSystem:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 0}
         key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 1, g: 1, b: 1, a: 0}
+        key2: {r: 1, g: 1, b: 1, a: 0.38039216}
         key3: {r: 0.4648342, g: 0, b: 1, a: 0.039215688}
         key4: {r: 1, g: 0.017601715, b: 0, a: 0.039215688}
         key5: {r: 1, g: 1, b: 1, a: 0.039215688}
@@ -9732,7 +9732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6106239336652604396
 Transform:
   m_ObjectHideFlags: 0
@@ -9760,8 +9760,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.9245283, g: 0.83320814, b: 0.15263437, a: 1}
-  m_Intensity: 0
-  m_Range: 8
+  m_Intensity: 1.7355881
+  m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -10056,7 +10056,7 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.9433962, g: 0.9259037, b: 0.06674972, a: 0.6}
+      minColor: {r: 0.9433962, g: 0.9259037, b: 0.06674972, a: 1}
       maxColor: {r: 0.9716981, g: 0.49441394, b: 0.022917405, a: 1}
       maxGradient:
         serializedVersion: 2

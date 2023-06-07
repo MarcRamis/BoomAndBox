@@ -18,7 +18,6 @@ public class CombatSystem : MonoBehaviour
     [HideInInspector] public bool hitIsOn = false;
     
     [HideInInspector] private Player player;
-    [HideInInspector] private RythmSystem rythmSystem;
     
     [Header("References")]
     [SerializeField] private GameObject weaponGameObject;
@@ -29,34 +28,94 @@ public class CombatSystem : MonoBehaviour
     [SerializeField] private float attackCd = 0.8f;
     [SerializeField] private float hitOnStartCd = 0.2f;
     [SerializeField] private float hitOnFinishCd = 0.5f;
-    [SerializeField] private float returnControlsAfterAttackCd = 0.7f;
+    [SerializeField] private float returnMovementCd = 0.55f;
+    [SerializeField] private float returnAttackCd = 0.2f;
     [SerializeField] private float attackImpulse = 50f;
     [SerializeField] private Vector3 collisionSize; 
     [SerializeField] private float sizeSmall;
     
     [HideInInspector] public bool attackIsReady = true;
     [HideInInspector] private bool hasHit = false;
-   
-    private bool rythmMoment;
+    
+    public bool canRythm;
+    public bool rythmOnce = true; //variable that im using to show the feeback when is the moment of the ryhm
+    private bool rythmOnceMoment = true; //variable that im using to show the feeback that the player could reach at the rythm moment
+    private readonly float rythmOpportunityCd = 0.5f;
     private readonly int maxFrameBuffer = 10;
+    private readonly int maxRythmCombo = 3;
+    
+    public int attackcounter;
+    public int maxAttackCounter;
 
+    private MTimer rythmMomentTimer;
+    private MTimer attackTimer;
+    public Combo rythmCombo;
+    
     private void Awake()
     {
         player = GetComponent<Player>();
-        //rythmSystem = GameObject.FindGameObjectWithTag("MainSoundtrack").GetComponent<RythmSystem>();
         
         player.myInputs.OnAttackPerformed += DoAttack;
+
+        RythmController.instance.beat.OnBeat += Rythm;
+
+        rythmMomentTimer = new MTimer();
+        rythmMomentTimer.SetTimeLimit(rythmOpportunityCd);
+        rythmMomentTimer.OnTimerEnd += ResetRythm;
+
+        attackTimer = new MTimer();
+        attackTimer.SetTimeLimit(returnAttackCd);
+        attackTimer.OnTimerEnd += ResetCounterAttack;
+
+        rythmCombo = new Combo();
+        rythmCombo.SetMaxCombo(maxRythmCombo);
     }
-    
-    private void Update()
+    private void Start()
     {
         collisionSize = weaponCollider.size;
     }
 
+    private void Update()
+    {
+        //if (player.CanCombat())
+        //{
+        //    combocounter = rythmCombo.GetComboCounter();
+        //}
+
+        attackTimer.Update(Time.deltaTime);
+        rythmMomentTimer.Update(Time.deltaTime);
+    }
+    
+    private void Rythm()
+    {
+        if(player.CanCombat())
+        {
+            canRythm = true;
+            rythmMomentTimer.StartTimer();
+
+            if (rythmOnce)
+            {
+                player.feedbackController.PlayRythmMoment();
+                rythmOnce = false;
+            }
+        }
+    }
+
+    private void ResetRythm()
+    {
+        canRythm = false;
+        rythmOnce = true;
+        player.feedbackController.StopRythmMoment();
+    }
+
+    private void ResetCounterAttack()
+    {
+        attackcounter = 0;
+        rythmCombo.ComboFailed();
+    }
+
     private void FixedUpdate()
     {
-        //rythmMoment = rythmSystem.IsRythmMoment();
-
         if (hitIsOn)
         {
             CheckTrail();
@@ -65,34 +124,51 @@ public class CombatSystem : MonoBehaviour
 
     private void DoAttack()
     {
-        if(player.CanAttack())
+        if(player.CanCombat())
         {
             if (attackIsReady)
             {
                 attackIsReady = false;
-                
-                //if (rythmMoment)
-                //{
-                //    //Debug.Log("Attack on rythm");
-                //}
-                //else
-                //{
-                //    //Debug.Log("Attack NORMAL");
-                //    
-                //}
 
-                player.feedbackController.PlayAttack();
+                if (canRythm)
+                {
+                    rythmCombo.SumCombo();
+                    HandleCombo();
+                    Invoke(nameof(StopFeedbackRythmed), 0.3f);
+                }
+                else
+                {
+                    rythmCombo.ComboFailed();
+                }
+                player.feedbackController.PlayAttack(attackcounter);
                 weaponFeedbackController.PlayAttack();
                 player.playerRigidbody.AddForce(player.model.forward * attackImpulse * 10f, ForceMode.Acceleration);
-                
-                Invoke(nameof(AttackOn),hitOnStartCd);
+                AttackCounter();
+
+                Invoke(nameof(AttackOn), hitOnStartCd);
                 Invoke(nameof(AttackOff), hitOnFinishCd);
-                player.BlockInputsWithTime(returnControlsAfterAttackCd);
+                player.BlockMovementWithTime(returnMovementCd);
                 Invoke(nameof(ResetAttack), attackCd);
             }
         }
     }
-    
+
+    private void AttackCounter()
+    {
+        attackcounter++;
+
+        if (attackcounter >= maxAttackCounter)
+        {
+            attackcounter = 0;
+        }
+        attackTimer.StartTimer();
+    }
+
+    private void StopFeedbackRythmed()
+    {
+        player.feedbackController.StopRythmed();
+    }
+
     private void ResetAttack()
     {
         attackIsReady = true;
@@ -126,8 +202,12 @@ public class CombatSystem : MonoBehaviour
         //{
         //    trailFillerList = FillTrail(trailList.First.Value, trailList.Last.Value);
         //}
-        
-        // Real collider
+
+        RealCollider(bo);
+    }
+
+    private void RealCollider(BufferObj bo)
+    {
         Collider[] hits = Physics.OverlapBox(bo.pos, bo.size / 2, bo.rot, hittableLayers, QueryTriggerInteraction.Ignore);
         Dictionary<long, Collider> colliderList = new Dictionary<long, Collider>();
 
@@ -138,12 +218,16 @@ public class CombatSystem : MonoBehaviour
             CollectColliders(hits, colliderList);
         }
 
-        foreach(Collider other in colliderList.Values)
+        Damage(colliderList);
+    }
+
+    private void Damage(Dictionary<long, Collider> colliderList)
+    {
+        foreach (Collider other in colliderList.Values)
         {
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.Damage(1);
                 HandleCombo(damageable);
                 player.feedbackController.PlayHit();
             }
@@ -156,7 +240,44 @@ public class CombatSystem : MonoBehaviour
 
     private void HandleCombo(IDamageable damageable)
     {
-        damageable.Knockback(15f);
+        switch (rythmCombo.GetComboCounter())
+        {
+            case 0:
+
+                damageable.Damage(1);
+                damageable.Knockback(3f);
+                weaponFeedbackController.PlayHitImpact(0);
+
+                break;
+
+            case 1:
+
+                damageable.Damage(1);
+                damageable.Knockback(3f);
+                weaponFeedbackController.PlayHitImpact(0);
+                break;
+
+            case 2:
+
+                damageable.Damage(10);
+                damageable.Knockback(15f);
+                weaponFeedbackController.PlayHitImpact(2);
+
+                break;
+
+            default:
+                break;
+        };
+    }
+
+    private void HandleCombo()
+    {
+        player.feedbackController.PlayRythmed(rythmCombo.GetComboCounter());
+
+        if (rythmCombo.ComboAccomplished())
+        {
+            player.feedbackController.PlayRythmedFinalCombo();
+        }
     }
 
     public void ShowWeapon()

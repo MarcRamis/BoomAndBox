@@ -53,13 +53,13 @@ public class EnemySpawner : MonoBehaviour
         enemy = Instantiate(enemyPref, spawnPos);
         enemy.GetComponent<AIDronManager>().seekTargets[0] = enemyToGo;
         //feedbackController.PlayEnemyMoveFeedback(); //Cambiar por un invoke que apunte a EnemySetNavMesh()
-        Invoke(nameof(EnemySetNavMesh), 0.2f);
+        Invoke(nameof(EnemySetNavMesh), 0.1f);
     }
 
     public void EnemySetNavMesh()
     {
         spawnPos.DetachChildren();
-        enemy.GetComponent<NavMeshAgent>().enabled = true;
+        //enemy.GetComponent<NavMeshAgent>().enabled = true;
     }
 
     public void EndSpawning()
